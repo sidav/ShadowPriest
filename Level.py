@@ -1,1 +1,1 @@
-#represents the game level (dungeon floor etc)
+#represents the game level (dungeon floor, etc)
