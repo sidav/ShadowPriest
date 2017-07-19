@@ -1,7 +1,7 @@
 import tdl
 
-SCREEN_WIDTH = 160#80
-SCREEN_HEIGHT = 75#25
+SCREEN_WIDTH = 80#80 is default
+SCREEN_HEIGHT = 25#25 is default
 
 LIMIT_FPS = 20  # 20 frames-per-second maximum
 
@@ -11,11 +11,18 @@ except:
     print("Oh fuck, the font is missing!")
     pass
 
-console = tdl.init(SCREEN_WIDTH, SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
+#console = tdl.init(SCREEN_WIDTH, SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
 FORECOLOR = (255,255,255)
 BACKCOLOR = (0, 0, 0)
 
 # LAST_KEY_PRESSED = tdl.event
+
+def initConsole(SW, SH, titleString):
+    global console
+    console = tdl.init(SW, SH, title=titleString, fullscreen=False, renderer="SDL")
+    clearConsole()
+    flushConsole()
+
 
 def putChar(char, x, y):
     console.draw_char(x, y, char, bg=BACKCOLOR, fg=FORECOLOR)
@@ -130,6 +137,10 @@ def flushConsole():
 
 def clearConsole():
     console.clear(bg = (0, 0, 0), fg = (0, 0, 0))
+
+
+def isWindowClosed():
+    return tdl.event.is_window_closed()
 
 
 def readKey():
