@@ -120,6 +120,20 @@ def drawCharArray(arr):
                 putChar(arr[x][y], x, y)
 
 
+def drawCharArrayAtPosition(arr, xpos, ypos, transpose=False):
+    if transpose:
+        for y in range(len(arr)):
+            putString(arr[y],xpos,y+ypos)
+            # for y in range(len(arr[x])):
+            #     if x < SCREEN_WIDTH and y < SCREEN_HEIGHT:
+            #         putChar(arr[x][y], y + ypos, x + xpos)
+    else:
+        for x in range(len(arr)):
+            for y in range(len(arr[x])):
+                if x < SCREEN_WIDTH and y < SCREEN_HEIGHT:
+                    putChar(arr[x][y], x+xpos, y+ypos)
+
+
 def setBackgroundColor(r, g, b):
     global BACKCOLOR
     BACKCOLOR = (r, g, b)
