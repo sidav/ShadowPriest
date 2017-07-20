@@ -1,4 +1,4 @@
-import Routines.ConsoleWrapper as CW
+import Routines.TdlConsoleWrapper as CW
 import Procedurals.BSPDungeonGenerator as BSP
 import TitleScreen
 

@@ -1,4 +1,4 @@
-import Routines.ConsoleWrapper as CW
+import Routines.TdlConsoleWrapper as CW
 import ShadowPriest as Main
 import Routines.SidavRandom as RNG
 
@@ -7,10 +7,10 @@ def _determineXPosition(arr):
     ww = Main.CONSOLE_WIDTH
     if isinstance(arr, list):
         picw = len(arr[0])
-        return int((ww-picw)/2)
+        return int((ww - picw) * 0.5)
     elif isinstance(arr, str):
         picw = len(arr)
-        return int((ww - picw) / 2)
+        return int((ww - picw)*0.47)
 
 
 def _determineYPosition(arr):
@@ -30,7 +30,7 @@ titlepic1 = \
         "                 mmmmmmmmmmmmmmmmmmmmmmmN                ",
         "                 dmmmmmdmd+++++smmmmmmmmm                ",
         "                 mmmmm+o+hmmmmmm+++sdmmmN                ",
-        "-==|- SHADOW     mmm++ommdmmmmmdmmys.mmdh    PRIEST -|==-",
+        "-==]-  SHADOW    mmm++ommdmmmmmdmmys.mmdh    PRIEST -[==-",
         "                ymmh+h.   /mmmm\   .m mmm                ",
         "                mmdysmmdmmmmmmmmmmmmm mmmm               ",
         "               mmmmm`+oo/.``..``-+o+/hmmmd+              ",
@@ -90,6 +90,7 @@ def _drawTitlePic3():
 def drawTitle():
     RNG.randomize()
     title = RNG.rand(3)+1
+    #title = 1
     if title == 1:
         _drawTitlePic1()
     elif title == 2:
@@ -97,5 +98,5 @@ def drawTitle():
     elif title == 3:
         _drawTitlePic3()
     CW.setForegroundColor(132, 132, 104)
-    pressanykey = "Press any key"
+    pressanykey = "Press spacebar"
     CW.putString(pressanykey, _determineXPosition(pressanykey), Main.CONSOLE_HEIGHT-2)

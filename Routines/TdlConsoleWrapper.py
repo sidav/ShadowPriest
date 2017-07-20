@@ -1,9 +1,9 @@
 import tdl
 
-SCREEN_WIDTH = 80#80 is default
-SCREEN_HEIGHT = 25#25 is default
+_SCREEN_WIDTH = 80#80 is default
+_SCREEN_HEIGHT = 25#25 is default
 
-LIMIT_FPS = 20  # 20 frames-per-second maximum
+_LIMIT_FPS = 10  # 20 frames-per-second maximum
 
 try:
     tdl.set_font('terminal8x12_gs_ro.png', greyscale=True, altLayout=False)
@@ -11,15 +11,19 @@ except:
     print("Oh fuck, the font is missing!")
     pass
 
-#console = tdl.init(SCREEN_WIDTH, SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
+#console = tdl.init(_SCREEN_WIDTH, _SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
 FORECOLOR = (255,255,255)
 BACKCOLOR = (0, 0, 0)
 
 # LAST_KEY_PRESSED = tdl.event
 
 def initConsole(SW, SH, titleString):
+    global _SCREEN_WIDTH, _SCREEN_HEIGHT
+    _SCREEN_WIDTH = SW
+    _SCREEN_HEIGHT = SH
     global console
     console = tdl.init(SW, SH, title=titleString, fullscreen=False, renderer="SDL")
+    tdl.set_fps(_LIMIT_FPS)
     clearConsole()
     flushConsole()
 
@@ -116,7 +120,7 @@ def drawRect(x0, y0, w, h):
 def drawCharArray(arr):
     for x in range(len(arr)):
         for y in range(len(arr[x])):
-            if x < SCREEN_WIDTH and y < SCREEN_HEIGHT:
+            if x < _SCREEN_WIDTH and y < _SCREEN_HEIGHT:
                 putChar(arr[x][y], x, y)
 
 
@@ -125,12 +129,12 @@ def drawCharArrayAtPosition(arr, xpos, ypos, transpose=False):
         for y in range(len(arr)):
             putString(arr[y],xpos,y+ypos)
             # for y in range(len(arr[x])):
-            #     if x < SCREEN_WIDTH and y < SCREEN_HEIGHT:
+            #     if x < _SCREEN_WIDTH and y < _SCREEN_HEIGHT:
             #         putChar(arr[x][y], y + ypos, x + xpos)
     else:
         for x in range(len(arr)):
             for y in range(len(arr[x])):
-                if x < SCREEN_WIDTH and y < SCREEN_HEIGHT:
+                if x < _SCREEN_WIDTH and y < _SCREEN_HEIGHT:
                     putChar(arr[x][y], x+xpos, y+ypos)
 
 
