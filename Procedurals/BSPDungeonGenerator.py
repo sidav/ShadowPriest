@@ -1,11 +1,26 @@
-from SidavRandom import * #Can be deleted if the following wrapper will be handled
+def _random(min, max): #IT'S JUST A WRAPPER. Min, max inclusive!
+    return _rand(max-min+1)+min
+
+_LCG_X = None
+
+def setRandomSeed(seed):
+    global _LCG_X
+    _LCG_X = seed
+
+def _rand(mod):
+    global _LCG_X
+    if _LCG_X is None:
+        _LCG_X = 1
+    LCG_A = 14741
+    LCG_C = 757
+    LCG_M = 77777677777
+    _LCG_X = (LCG_A*_LCG_X + LCG_C) % LCG_M
+    return _LCG_X%mod
 
 
-def random(min, max): #IT'S JUST A WRAPPER. Min, max inclusive!
-    return rand(max-min+1)+min
 
-_MAP_WIDTH = 160
-_MAP_HEIGHT = 75
+_MAP_WIDTH = 80
+_MAP_HEIGHT = 25
 _MIN_SPLIT_FACTOR = 25 #IT will be divided by 100 somewhen
 _MAX_SPLIT_FACTOR = 75 #It too
 _MIN_ROOM_WIDTH = 1
@@ -51,11 +66,11 @@ class treeNode:
         selfy = self.cont.y
         selfw = self.cont.w
         selfh = self.cont.h
-        horiz = random(0, 1)  # 1 is horizontal splitting, 0 is vertical
+        horiz = _random(0, 1)  # 1 is horizontal splitting, 0 is vertical
         for _ in range(5): #5 is just a number of tries
             horizOK = True
             vertOK = True
-            factor = random(_MIN_SPLIT_FACTOR, _MAX_SPLIT_FACTOR)
+            factor = _random(_MIN_SPLIT_FACTOR, _MAX_SPLIT_FACTOR)
             lefthorizh = selfh*factor//100
             righthorizh = selfh - lefthorizh
             leftvertw = selfw*factor//100
