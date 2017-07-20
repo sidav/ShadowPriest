@@ -1,4 +1,6 @@
 import Routines.ConsoleWrapper as CW
+import Procedurals.BSPDungeonGenerator as BSP
+import TitleScreen
 
 CONSOLE_WIDTH = 80
 CONSOLE_HEIGHT = 25
@@ -9,7 +11,9 @@ MAP_HEIGHT = CONSOLE_HEIGHT - LOG_HEIGHT
 
 def main():
     CW.initConsole(CONSOLE_WIDTH, CONSOLE_HEIGHT, "ShadowPriest")
-    CW.putString("Shadow Priest window operational!", 0, 0)
+    #CW.putString("Shadow Priest window operational!", 0, 0)
+    #CW.drawCharArray(BSP.generateMap())
+    TitleScreen.drawTitle()
     while not CW.isWindowClosed():
         CW.flushConsole()
 

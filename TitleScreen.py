@@ -5,8 +5,13 @@ import Routines.SidavRandom as RNG
 
 def _determineXPosition(arr):
     ww = Main.CONSOLE_WIDTH
-    picw = len(arr[0])
-    return int((ww-picw)/2)
+    if isinstance(arr, list):
+        picw = len(arr[0])
+        return int((ww-picw)/2)
+    elif isinstance(arr, str):
+        picw = len(arr)
+        return int((ww - picw) / 2)
+
 
 def _determineYPosition(arr):
     wh = Main.CONSOLE_HEIGHT
@@ -78,16 +83,19 @@ titlepic3 = \
 def _drawTitlePic3():
     x = _determineXPosition(titlepic3)
     y = _determineYPosition(titlepic3)
-    CW.setForegroundColor(128, 128, 96)
+    CW.setForegroundColor(132, 132, 104) #"pergament" color
     CW.drawCharArrayAtPosition(titlepic3, x, y, True)
 
 
 def drawTitle():
     RNG.randomize()
-    title = 1#RNG.rand(3)+1
+    title = RNG.rand(3)+1
     if title == 1:
         _drawTitlePic1()
     elif title == 2:
         _drawTitlePic2()
     elif title == 3:
         _drawTitlePic3()
+    CW.setForegroundColor(132, 132, 104)
+    pressanykey = "Press any key"
+    CW.putString(pressanykey, _determineXPosition(pressanykey), Main.CONSOLE_HEIGHT-2)
