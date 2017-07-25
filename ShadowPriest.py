@@ -1,6 +1,7 @@
 import Routines.TdlConsoleWrapper as CW
 import Procedurals.BSPDungeonGenerator as BSP
 import TitleScreen
+import _TESTDEBUG as _TESTDBG_
 
 CONSOLE_WIDTH = 80
 CONSOLE_HEIGHT = 25
@@ -14,6 +15,9 @@ def main():
     #CW.putString("Shadow Priest window operational!", 0, 0)
     #CW.drawCharArray(BSP.generateMap())
     TitleScreen.drawTitle()
+
+    _TESTDBG_.makeSomeTestCrap()# <--- SHOULD BE SAFELY DELETED!
+
     while not CW.isWindowClosed():
         CW.flushConsole()
 

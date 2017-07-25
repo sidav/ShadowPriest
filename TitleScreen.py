@@ -71,7 +71,7 @@ titlepic3 = \
         "    :    #                                                 :!                 ",
         "@@###  :@           !@!           !                        #             : #  ",
         "@!  /@  @  #   @#     @@:     :   @#  !  :      :  !  ! :  :    :     !  !@@##",
-        "@! /    @@@@#   !@@  @# @@  @ #@# :@! @#::@    !@@@@# @!# #@  #@ @# @@###  @# ",
+        "@! /    @@@@#   !@@  @# @@  @:#@# :@! @#::@    !@@@@# @!# #@  #@ @# @@###  @# ",
         " @!#@!  @  @@  @ ##  @# !@  @  ##  @: @@ :@     @  @@ @*  !#  !@  # @! /   @# ",
         " /  @@  @  @@ @  ##  @# !@  @  #!  @: @@ :@     @  @@ @   !#  !@@   #@!#@! @# ",
         "@   @!  @  @@ @  #@  @# :@  @  #!  @: @@ :@     @  @# @   !#  #@  #  /  @! @# ",
@@ -100,3 +100,11 @@ def drawTitle():
     CW.setForegroundColor(132, 132, 104)
     pressanykey = "Press spacebar"
     CW.putString(pressanykey, _determineXPosition(pressanykey), Main.CONSOLE_HEIGHT-2)
+
+    CW.flushConsole()
+    keypressed = CW.readKey()
+    while (keypressed.key != "ENTER" and keypressed.key != 'SPACE'):
+        keypressed = CW.readKey()
+        print(keypressed.key)
+        CW.flushConsole()
+    print("fuck)")
