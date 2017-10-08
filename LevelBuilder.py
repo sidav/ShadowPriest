@@ -9,7 +9,7 @@ _DOOR_CODE = '+'
 
 def _getBasicLevel(mapW, mapH): #makes the "skeleton" of the level from some procedural generation routine.
     BSPGen.setTileCodes(_FLOOR_CODE, _WALL_CODE, _DOOR_CODE)
-    basicMap = BSPGen.generateMap(mapW, mapH)
+    basicMap = BSPGen.generateMapWithRandomParams(mapW, mapH)
     readyMap = [[None]*mapH for _ in range(mapW)]
     for i in range(mapW):
         for j in range(mapH):
