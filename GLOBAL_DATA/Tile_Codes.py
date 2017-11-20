@@ -1,0 +1,3 @@
+_GROUND_CODE = '.'
+_MOUNTAIN_CODE = '^'
+_FOREST_CODE = 'f'

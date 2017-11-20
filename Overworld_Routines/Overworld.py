@@ -1,6 +1,8 @@
 import ShadowPriest as Main
 import Procedurals.CALandscapeGenerator as MapGenerator
+import Overworld_Routines.OverworldTile as OTile
 from ShadowPriest import MAP_WIDTH, MAP_HEIGHT
+
 
 #Represents the global map.
 class Overworld:
@@ -11,5 +13,4 @@ class Overworld:
         tempMap = MapGenerator.doCALandshit()
         for x in range(0, Main.MAP_WIDTH):
            for y in range(0, Main.MAP_HEIGHT):
-               #Need to translate the chars map from generator to OverworldTile map.
-               pass
+               self.overworldMap[x][y] =OTile(tempMap[x][y])
