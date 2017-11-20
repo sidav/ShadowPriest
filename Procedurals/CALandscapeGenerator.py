@@ -1,6 +1,24 @@
-from SidavRandom import * #Can be deleted if the following wrapper will be handled
-from ConsoleWrapper import drawCharArray, setForegroundColor, putChar
+#from SidavRandom import * #Can be deleted if the following wrapper will be handled
+#from ConsoleWrapper import drawCharArray, setForegroundColor, putChar
 
+LCG_X = 1
+
+
+def rand(mod):
+    global LCG_X
+    LCG_A = 14741
+    LCG_C = 757
+    LCG_M = 77777677777
+    LCG_X = (LCG_A*LCG_X + LCG_C) % LCG_M
+    return LCG_X%mod
+
+
+def srand(seed):
+    global LCG_X
+    LCG_X = seed
+
+def randomize():
+    srand(random.getrandbits(32))
 
 def random(min, max): #IT'S JUST A WRAPPER. Min, max inclusive!
     return rand(max-min+1)+min
@@ -18,10 +36,10 @@ def randVertDir(): #What a shame.
         return 0
 
 
-MAP_WIDTH = 160#80
-MAP_HEIGHT = 75#25
-TOTAL_LAND_AUTOMS = 26#8
-TOTAL_MNT_AUTOMS = 20#5
+MAP_WIDTH = 80#80
+MAP_HEIGHT = 25#25
+TOTAL_LAND_AUTOMS = 8#8
+TOTAL_MNT_AUTOMS = 5#5
 TOTAL_FOREST_AUTOMS = 14#12
 LAND_CYCLES = 1000
 MNT_CYCLES = 250
@@ -69,18 +87,18 @@ def addLandscapeElements(maparr, automs, brush, allowed:list, cycles, randomPlac
         for _ in range(cycles):
             aut.step()
 
-def drawMap(maparr):
-    for i in range(len(maparr)):
-        for j in range(len(maparr[i])):
-            if maparr[i][j] == "~":
-                setForegroundColor(0, 64, 255)
-            if maparr[i][j] == ".":
-                setForegroundColor(200, 64, 64)
-            if maparr[i][j] == "^":
-                setForegroundColor(200, 200, 200)
-            if maparr[i][j] == "f":
-                setForegroundColor(0, 255, 64)
-            putChar(maparr[i][j], i, j)
+# def drawMap(maparr):
+#     for i in range(len(maparr)):
+#         for j in range(len(maparr[i])):
+#             if maparr[i][j] == "~":
+#                 setForegroundColor(0, 64, 255)
+#             if maparr[i][j] == ".":
+#                 setForegroundColor(200, 64, 64)
+#             if maparr[i][j] == "^":
+#                 setForegroundColor(200, 200, 200)
+#             if maparr[i][j] == "f":
+#                 setForegroundColor(0, 255, 64)
+#             putChar(maparr[i][j], i, j)
 
 def doCALandshit():
     maparr = [["~"] * (MAP_HEIGHT + 1) for _ in range(MAP_WIDTH + 1)]
@@ -90,6 +108,7 @@ def doCALandshit():
     addLandscapeElements(maparr, TOTAL_MNT_AUTOMS, "^", ["."], MNT_CYCLES)
     # forest
     addLandscapeElements(maparr, TOTAL_FOREST_AUTOMS, "f", [".", "^"], FOREST_CYCLES)
-    setForegroundColor(255, 255, 255)
-    drawMap(maparr)
+    # setForegroundColor(255, 255, 255)
+    # drawMap(maparr)
     #drawCharArray(maparr)
+    return maparr

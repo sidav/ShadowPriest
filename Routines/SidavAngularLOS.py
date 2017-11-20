@@ -1,4 +1,4 @@
 #this is a routine for angular stealthy-shmealthy FOV behaviour.
-class AngularFOV 
+class AngularFOV:
 #TODO: copy LOS code here;
     pass
