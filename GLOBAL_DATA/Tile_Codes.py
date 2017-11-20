@@ -1,3 +1,8 @@
+_WATER_CODE = '~'
 _GROUND_CODE = '.'
 _MOUNTAIN_CODE = '^'
 _FOREST_CODE = 'f'
+_FIELD_CODE = '"'
+_TOWN_CODE = 'O'
+_MILITARY_BASE_CODE = '%'
+_LAB_CODE = '&'
