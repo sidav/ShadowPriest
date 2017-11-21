@@ -104,7 +104,11 @@ def drawTitle():
     CW.flushConsole()
     keypressed = CW.readKey()
     while (keypressed.key != "ENTER" and keypressed.key != 'SPACE'):
+        if keypressed.key == 'F4':
+            print('Oh fuck it\'s WRONG KEY OH CRAP')
+            break
+        keypressed = None #CW.readKey()
         keypressed = CW.readKey()
         print(keypressed.key)
         CW.flushConsole()
-    print("fuck)")
+    print("Title screen successful.")

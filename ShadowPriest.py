@@ -17,7 +17,7 @@ def main():
     TitleScreen.drawTitle()
 
     _TESTDBG_.makeSomeTestCrap()# <--- SHOULD BE SAFELY DELETED!
-
+    print("Oooh Long Johnson")
     while not CW.isWindowClosed():
         CW.flushConsole()
 
