@@ -17,3 +17,6 @@ class OverworldTile:
 
         elif appearance == CODES._MOUNTAIN_CODE:
             self._color = (128, 128, 128)
+
+    def getAppearance(self):
+        return self._appearance

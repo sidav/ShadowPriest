@@ -143,9 +143,12 @@ def setBackgroundColor(r, g, b):
     BACKCOLOR = (r, g, b)
 
 
-def setForegroundColor(r, g, b):
+def setForegroundColor(r, g = -1, b = -1):
     global FORECOLOR
-    FORECOLOR = (r, g, b)
+    if g != -1 and b != -1:
+        FORECOLOR = (r, g, b)
+    else:
+        FORECOLOR = (r[0], r[1], r[2])
 
 
 
