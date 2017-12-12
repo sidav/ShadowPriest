@@ -14,10 +14,10 @@ def main():
     CW.initConsole(CONSOLE_WIDTH, CONSOLE_HEIGHT, "ShadowPriest")
     #CW.putString("Shadow Priest window operational!", 0, 0)
     #CW.drawCharArray(BSP.generateMap())
-    TitleScreen.drawTitle()
 
     _TESTDBG_.makeSomeTestCrap()# <--- SHOULD BE SAFELY DELETED!
-    print("Oooh Long Johnson")
+
+    TitleScreen.drawTitle()
     while not CW.isWindowClosed():
         CW.flushConsole()
 
