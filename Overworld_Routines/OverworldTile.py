@@ -4,10 +4,14 @@ import GLOBAL_DATA.Tile_Codes as CODES
 class OverworldTile:
     _appearance = '?'
     _color = None
-    _passable = True;
+    _passable = True
+    _wasSeen = False
 
     def __init__(self, appearance):
+        self._wasSeen = False
+
         self._appearance = appearance
+
 
         if appearance == CODES._GROUND_CODE:
             self._color = (200, 100, 50)
@@ -20,3 +24,9 @@ class OverworldTile:
 
     def getAppearance(self):
         return self._appearance
+
+    def wasSeen(self):
+        return self._wasSeen
+
+    def setSeen(self, seenBool):
+        self._wasSeen = seenBool

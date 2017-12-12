@@ -13,6 +13,11 @@ class Overworld:
     def __init__(self, mapW, mapH):
         self.generateOverworld(mapW, mapH)
 
+    def setTilesVisible(self, x, y):
+        for i in [x-1, x, x+1]:
+            for j in [y-1, y, y+1]:
+                self.overworldMap[i][j].setSeen(True)
+
     #generates the overworld map from the world generation routine:
     def generateOverworld(self, mapW, mapH):
         self.MAP_WIDTH = mapW

@@ -11,19 +11,18 @@ def drawAllOverworldMap(owd):
     for i in range(len(curMap)):
         for j in range(len(curMap[0])):
             currentChar = curMap[i][j]._appearance
-            if currentChar != '~':
-                CW.putChar(currentChar, i,j)
-    CW.flushConsole()
+            CW.putChar(currentChar, i,j)
+    # CW.flushConsole()
 
-def drawOverworldMap(owd): # seen tiles only
+def drawSeenOverworldMap(owd): # seen tiles only
     CW.clearConsole()
-    curMap = []
+    CW.flushConsole()
     curMap = owd.overworldMap
     for i in range(len(curMap)):
         for j in range(len(curMap[0])):
-            currentChar = curMap[i][j].getAppearance()
-            color = DATA.getColor(currentChar)
-            if currentChar != '~':
+            if curMap[i][j].wasSeen:
+                currentChar = curMap[i][j].getAppearance()
+                color = DATA.getColor(currentChar)
                 CW.setForegroundColor(color)
-                CW.putChar(currentChar, i,j)
-    CW.flushConsole()
+                CW.putChar(currentChar, i, j)
+    # CW.flushConsole()
