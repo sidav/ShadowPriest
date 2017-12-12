@@ -16,13 +16,14 @@ def drawAllOverworldMap(owd):
 
 def drawSeenOverworldMap(owd): # seen tiles only
     CW.clearConsole()
-    CW.flushConsole()
     curMap = owd.overworldMap
     for i in range(len(curMap)):
         for j in range(len(curMap[0])):
-            if curMap[i][j].wasSeen:
+            if curMap[i][j].wasSeen():
                 currentChar = curMap[i][j].getAppearance()
                 color = DATA.getColor(currentChar)
                 CW.setForegroundColor(color)
                 CW.putChar(currentChar, i, j)
-    # CW.flushConsole()
+            else:
+                CW.setForegroundColor(64, 64, 64)
+                CW.putChar(DATA._UNEXPLORED_LAND_CODE, i, j)

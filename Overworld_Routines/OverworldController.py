@@ -13,8 +13,9 @@ def initialize():
 def control():
     global player_x, player_y
     while 1:
-        # currentWorld.setTilesVisible(player_x, player_y)
+        currentWorld.setTilesVisible(player_x, player_y)
         OW_View.drawSeenOverworldMap(currentWorld)
+        CW.setForegroundColor(200, 200, 200)
         CW.putChar('@', player_x, player_y)
         CW.flushConsole()
         keyPressed = CW.readKey()

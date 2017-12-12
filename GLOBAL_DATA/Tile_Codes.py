@@ -1,3 +1,6 @@
+_UNEXPLORED_LAND_CODE = '#'
+
+
 _WATER_CODE = '~'
 _WATER_COLOR = (10, 10, 200)
 _GROUND_CODE = '.'

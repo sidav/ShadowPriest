@@ -26,7 +26,7 @@ class OverworldTile:
         return self._appearance
 
     def wasSeen(self):
-        return self._wasSeen
+        return bool(self._wasSeen)
 
     def setSeen(self, seenBool):
         self._wasSeen = seenBool

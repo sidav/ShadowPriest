@@ -16,7 +16,8 @@ class Overworld:
     def setTilesVisible(self, x, y):
         for i in [x-1, x, x+1]:
             for j in [y-1, y, y+1]:
-                self.overworldMap[i][j].setSeen(True)
+                if (0 < i < self.MAP_WIDTH) and (0 < j < self.MAP_HEIGHT):
+                    self.overworldMap[i][j].setSeen(True)
 
     #generates the overworld map from the world generation routine:
     def generateOverworld(self, mapW, mapH):
