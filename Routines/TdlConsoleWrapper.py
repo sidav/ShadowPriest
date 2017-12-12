@@ -1,4 +1,5 @@
 import tdl
+from sys import exit as closeProgram
 
 _SCREEN_WIDTH = 80#80 is default
 _SCREEN_HEIGHT = 25#25 is default
@@ -165,8 +166,11 @@ def isWindowClosed():
 
 
 def readKey():
-    global LAST_KEY_PRESSED
-    LAST_KEY_PRESSED = tdl.event.key_wait()
-    return LAST_KEY_PRESSED
+    if not tdl.event.is_window_closed():
+        global LAST_KEY_PRESSED
+        LAST_KEY_PRESSED = tdl.event.key_wait()
+        return LAST_KEY_PRESSED
+    else:
+        closeProgram(0)
 
 
