@@ -1,5 +1,5 @@
 import Routines.TdlConsoleWrapper as CW
-from Overworld_Routines.Overworld import *
+from Overworld_Routines.OverworldModel import *
 import GLOBAL_DATA.Tile_Codes as DATA
 
 # that should render the overworld and whatever

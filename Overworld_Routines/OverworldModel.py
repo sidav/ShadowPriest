@@ -19,6 +19,9 @@ class Overworld:
                 if (0 <= i < self.MAP_WIDTH) and (0 <= j < self.MAP_HEIGHT):
                     self.overworldMap[i][j].setSeen(True)
 
+    def tile_is_passable(self, x, y):
+        return self.overworldMap[x][y].is_passable()
+
     #generates the overworld map from the world generation routine:
     def generateOverworld(self, mapW, mapH):
         self.MAP_WIDTH = mapW

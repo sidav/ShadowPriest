@@ -20,7 +20,11 @@ class OverworldTile:
             self._color = (25, 233, 50)
 
         elif appearance == CODES._MOUNTAIN_CODE:
+            self._passable = False
             self._color = (128, 128, 128)
+
+        elif appearance == CODES._WATER_CODE:
+            self._passable = False
 
     def getAppearance(self):
         return self._appearance
@@ -30,3 +34,6 @@ class OverworldTile:
 
     def setSeen(self, seenBool):
         self._wasSeen = seenBool
+
+    def is_passable(self):
+        return self._passable

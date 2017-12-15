@@ -1,7 +1,7 @@
 # MVC, anyone?
 import Routines.TdlConsoleWrapper as CW
 import GLOBAL_DATA.Global_Constants as GC
-from Overworld_Routines.Overworld import Overworld as OW
+from Overworld_Routines.OverworldModel import Overworld as OW
 import Overworld_Routines.OverworldView as OW_View
 
 player_x = player_y = 0
@@ -9,6 +9,16 @@ currentWorld = OW(GC.MAP_WIDTH, GC.MAP_HEIGHT)
 
 def initialize():
     currentWorld = OW(GC.MAP_WIDTH, GC.MAP_HEIGHT)
+    placePlayer()
+
+def placePlayer(): #stub. SHOULD BE IN MODEL OR something
+    global player_x, player_y
+    for i in range(len(currentWorld.overworldMap)):
+        for j in range(len(currentWorld.overworldMap[0])):
+            if currentWorld.overworldMap[i][j].is_passable():
+                player_x, player_y = i, j
+                return
+
 
 def control():
     global player_x, player_y
@@ -23,27 +33,31 @@ def control():
 
 
 
-def doKeyWork(keyPressed):
+def doKeyWork(keyPressed): # stub
     key = keyPressed.text
     global player_x, player_y
+    vector_x = vector_y = 0
     if key == 'h':
         print("zomg")
-        player_x -= 1
+        vector_x -= 1
     elif key == 'j':
-        player_y += 1
+        vector_y += 1
     elif key == 'k':
-        player_y -= 1
+        vector_y -= 1
     elif key == 'l':
-        player_x += 1
+        vector_x += 1
     elif key == 'y':
-        player_x -= 1
-        player_y -= 1
+        vector_x -= 1
+        vector_y -= 1
     elif key == 'u':
-        player_x += 1
-        player_y -= 1
+        vector_x += 1
+        vector_y -= 1
     elif key == 'b':
-        player_x -= 1
-        player_y += 1
+        vector_x -= 1
+        vector_y += 1
     elif key == 'n':
-        player_x += 1
-        player_y += 1
+        vector_x += 1
+        vector_y += 1
+    if (currentWorld.overworldMap[player_x + vector_x][player_y + vector_y].is_passable()):
+        player_x += vector_x
+        player_y += vector_y
