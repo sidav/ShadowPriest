@@ -24,7 +24,7 @@ def control():
     global player_x, player_y
     while 1:
         currentWorld.setTilesVisible(player_x, player_y)
-        OW_View.drawSeenOverworldMap(currentWorld)
+        OW_View.draw_seen_overworld_map(currentWorld)
         CW.setForegroundColor(200, 200, 200)
         CW.putChar('@', player_x, player_y)
         CW.flushConsole()

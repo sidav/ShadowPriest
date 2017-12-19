@@ -4,7 +4,8 @@ import GLOBAL_DATA.Tile_Codes as DATA
 
 # that should render the overworld and whatever
 
-def drawAllOverworldMap(owd):
+
+def draw_whole_overworld_map(owd):
     CW.clearConsole()
     curMap = []
     curMap = owd.overworldMap
@@ -14,7 +15,8 @@ def drawAllOverworldMap(owd):
             CW.putChar(currentChar, i,j)
     # CW.flushConsole()
 
-def drawSeenOverworldMap(owd: OWM): # seen tiles only
+
+def draw_seen_overworld_map(owd): # seen tiles only
     CW.clearConsole()
     for i in range(owd.MAP_WIDTH):
         for j in range(owd.MAP_HEIGHT):
