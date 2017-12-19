@@ -26,13 +26,13 @@ class OverworldTile:
         elif appearance == CODES._WATER_CODE:
             self._passable = False
 
-    def getAppearance(self):
+    def get_appearance(self):
         return self._appearance
 
-    def wasSeen(self):
+    def was_seen(self):
         return bool(self._wasSeen)
 
-    def setSeen(self, seenBool):
+    def set_seen(self, seenBool):
         self._wasSeen = seenBool
 
     def is_passable(self):

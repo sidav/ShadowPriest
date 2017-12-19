@@ -1,6 +1,6 @@
 import Routines.TdlConsoleWrapper as CW
 #from Level_Routines import LevelBuilder as LevelBld
-from Overworld_Routines.OverworldModel import Overworld
+from Overworld_Routines.OverworldModel import OverworldModel
 #import Overworld_Routines.OverworldView as OV
 from Overworld_Routines import OverworldController as OW_Cont
 

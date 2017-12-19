@@ -1,5 +1,5 @@
 import Routines.TdlConsoleWrapper as CW
-from Overworld_Routines.OverworldModel import *
+from Overworld_Routines.OverworldModel import OverworldModel as OWM
 import GLOBAL_DATA.Tile_Codes as DATA
 
 # that should render the overworld and whatever
@@ -14,13 +14,12 @@ def drawAllOverworldMap(owd):
             CW.putChar(currentChar, i,j)
     # CW.flushConsole()
 
-def drawSeenOverworldMap(owd): # seen tiles only
+def drawSeenOverworldMap(owd: OWM): # seen tiles only
     CW.clearConsole()
-    curMap = owd.overworldMap
-    for i in range(len(curMap)):
-        for j in range(len(curMap[0])):
-            if curMap[i][j].wasSeen():
-                currentChar = curMap[i][j].getAppearance()
+    for i in range(owd.MAP_WIDTH):
+        for j in range(owd.MAP_HEIGHT):
+            if owd.tile_was_seen(i, j):
+                currentChar = owd.get_tile_char(i, j)
                 color = DATA.getColor(currentChar)
                 CW.setForegroundColor(color)
                 CW.putChar(currentChar, i, j)
