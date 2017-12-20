@@ -3,6 +3,7 @@ import Routines.TdlConsoleWrapper as CW
 import GLOBAL_DATA.Global_Constants as GC
 from Overworld_Routines.OverworldModel import OverworldModel as OW
 import Overworld_Routines.OverworldView as OW_View
+import Message_Log.MessageLog as LOG
 
 player_x = player_y = 0
 currentWorld = OW(GC.MAP_WIDTH, GC.MAP_HEIGHT)
@@ -25,6 +26,7 @@ def control():
     while 1:
         currentWorld.setTilesVisible(player_x, player_y)
         OW_View.draw_seen_overworld_map(currentWorld)
+        LOG.append_message("Hello there at {0},{1}!".format(player_x, player_y)) # TODO BUG: duplicating log msgs for some reason.
         CW.setForegroundColor(200, 200, 200)
         CW.putChar('@', player_x, player_y)
         CW.flushConsole()
