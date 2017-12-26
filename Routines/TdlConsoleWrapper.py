@@ -168,9 +168,13 @@ def isWindowClosed():
 def readKey():
     if not tdl.event.is_window_closed():
         global LAST_KEY_PRESSED
-        LAST_KEY_PRESSED = tdl.event.key_wait()
+        while True:
+            LAST_KEY_PRESSED = tdl.event.key_wait()
+            if LAST_KEY_PRESSED.text != '' :
+                break
         return LAST_KEY_PRESSED
     else:
         closeProgram(0)
 
-
+# def wait_for_key_press():
+#         pass

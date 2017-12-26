@@ -26,21 +26,20 @@ def control():
     while 1:
         currentWorld.setTilesVisible(player_x, player_y)
         OW_View.draw_seen_overworld_map(currentWorld)
-        LOG.append_message("Hello there at {0},{1}!".format(player_x, player_y)) # TODO BUG: duplicating log msgs for some reason.
+        LOG.append_message("Hello there at {0},{1}!".format(player_x, player_y))
         CW.setForegroundColor(200, 200, 200)
         CW.putChar('@', player_x, player_y)
         CW.flushConsole()
-        keyPressed = CW.readKey()
-        doKeyWork(keyPressed)
+        doKeyWork()
 
 
 
-def doKeyWork(keyPressed): # stub
+def doKeyWork(): # stub
+    keyPressed = CW.readKey()
     key = keyPressed.text
     global player_x, player_y
     vector_x = vector_y = 0
     if key == 'h':
-        print("zomg")
         vector_x -= 1
     elif key == 'j':
         vector_y += 1
