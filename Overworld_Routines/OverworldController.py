@@ -6,6 +6,7 @@ import Overworld_Routines.OverworldView as OW_View
 import Message_Log.MessageLog as LOG
 
 player_x = player_y = 0
+last_tile = '.'
 currentWorld = OW(GC.MAP_WIDTH, GC.MAP_HEIGHT)
 
 def initialize():
@@ -21,14 +22,31 @@ def placePlayer(): #stub. SHOULD BE IN MODEL OR something
                 return
 
 
+def render_position_message():
+    global currentWorld, player_x, player_y, last_tile
+    message = '! NO MSG FOR THE TILE !'
+    current_tile = currentWorld.get_tile_char(player_x, player_y)
+    if current_tile != last_tile:
+        last_tile = current_tile
+        if current_tile == 'f':
+            message = "I walk into a sparce forest."
+        if current_tile == 'O':
+            message = "I come across some town."
+        if current_tile == '.':
+            message = "I've stepped out to plains."
+        if current_tile == '"':
+            message = "I cross a wheat field."
+        LOG.append_message(message)
+
 def control():
     global player_x, player_y
     while 1:
         currentWorld.setTilesVisible(player_x, player_y)
         OW_View.draw_seen_overworld_map(currentWorld)
-        LOG.append_message("Hello there at {0},{1}!".format(player_x, player_y))
         CW.setForegroundColor(200, 200, 200)
         CW.putChar('@', player_x, player_y)
+        render_position_message()
+        LOG.print_log()
         CW.flushConsole()
         doKeyWork()
 
