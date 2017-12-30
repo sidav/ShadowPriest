@@ -405,7 +405,9 @@ def placeInitialRoom(maparr):
     #pickRoomAndDig(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
     digLongRoom(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
 
-def generateDungeon():
+def generateDungeon(mapw, maph):
+    _MAP_WIDTH = mapw
+    _MAP_HEIGHT = maph
     # Fill the map with solid walls.
     maparr = [[_WALL_CODE] * (_MAP_HEIGHT + 1) for _ in range(_MAP_WIDTH + 1)]
     # Place the random room in center of the map.
