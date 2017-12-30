@@ -1,6 +1,6 @@
 # Room-By-Room dungeon generator.
 # Was already implemented in C# for my "StealthRoguelike" prototype.
-# LAST CHANGE: 20 NOV 2017.
+
 #############################################################################
 def _random(min, max): #IT'S JUST A WRAPPER. Min, max inclusive!            #
     return _rand(max-min+1)+min                                             #
@@ -14,7 +14,7 @@ def setRandomSeed(seed):                                                    # FO
 def _rand(mod):                                                             #
     global _LCG_X                                                           #
     if _LCG_X is None:                                                      #
-        _LCG_X = 7355608                                                    #
+        _LCG_X = 39#7355608                                                    #
     LCG_A = 14741                                                           #
     LCG_C = 757                                                             #
     LCG_M = 77777677777                                                     #
@@ -27,13 +27,13 @@ _MAP_HEIGHT = 25
 
 _MAX_PLACEMENT_TRIES = 1000
 
-_MAX_CORRIDORS_COUNT = 50
-_MAX_ROOMS_COUNT = 25
+_MAX_CORRIDORS_COUNT = 45
+_MAX_ROOMS_COUNT = 35
 
 _MIN_ROOM_SIZE = 3
 _MAX_ROOM_SIZE = 15
 _MIN_CORRIDOR_LENGTH = 2
-_MAX_CORRIDOR_LENGTH = 80
+_MAX_CORRIDOR_LENGTH = 10
 
 _FLOOR_CODE = ' '
 _WALL_CODE = '#'
@@ -60,6 +60,25 @@ def dig(maparr, x, y, w, h, char=_FLOOR_CODE): # fill rect with char
         for j in range (y, y+h):
             if (0 <= i < _MAP_WIDTH and 0 <= j < _MAP_HEIGHT):
                 maparr[i][j] = char
+
+
+def digEntryCorridor(maparr, x, y, w, h, entryX, entryY, length=0): #needed for irregular shaped rooms
+    if y <= entryY <= y + h:
+        if length == 0:
+            length = int(w / 2)
+        if entryX < x:
+            dig(maparr, entryX, entryY, length, 1)
+        else:
+            dig(maparr, entryX - length, entryY, length, 1)
+    elif x <= entryX <= x + w:
+        if length == 0:
+            length = int(h/2)
+        if entryY < y:
+            dig(maparr, entryX, entryY, 1, length)
+        else:
+            dig(maparr, entryX, entryY-length, 1, length)
+    else:
+        print("Some fuck occured at digEntryCorridor().")
 
 
 def makeOutline(maparr, x, y, w, h, char=_WALL_CODE):
@@ -95,33 +114,60 @@ def digRoomWithInnerRoom(maparr, x, y, w, h): # digs a room with a smaller room 
     maparr[doorX][doorY] = _DOOR_CODE
 
 
-def digCircularRoom(maparr, x, y, w, h):
-    #TODO: maybe empty outer space around the room?
-    #TODO: fix wrong corridor placement into the room.
-    # w and h should be equal, odd and greater than 5.
-    # make w and h equal
-    if w < h:
-        h = w
-    else:
-        w = h
+# def digCircularRoom(maparr, x, y, w, h, entryX, entryY): #deprecated
+#     #TODO: maybe empty outer space around the room?
+#     #TODO: fix wrong corridor placement into the room.
+#     # w and h should be equal, odd and greater than 5.
+#     # make w and h equal
+#     if w < h:
+#         h = w
+#     else:
+#         w = h
+#     if w < 5 or h < 5:
+#         return
+#     # oddity check
+#     # if w % 2 != 1:
+#     #     return
+#     roomRadius = int(w/2) - (w%2) # -1 # behaviour for the even w/h values may be weird.
+#     if w % 2 == 0:
+#         roomRadius -= 1
+#     roomCenterX = x+roomRadius
+#     roomCenterY = y+roomRadius
+#     print("rad {0} cx {1} cy {2}".format(roomRadius, roomCenterX, roomCenterY))
+#     for i in range (x, x+w):
+#         for j in range (y, y+h):
+#             currRelativeCoordX = i - roomCenterX
+#             currRelativeCoordY = j - roomCenterY
+#             if currRelativeCoordX ** 2 + currRelativeCoordY ** 2 <= roomRadius ** 2:
+#                 maparr[i][j] = _FLOOR_CODE
+#     digEntryCorridor(maparr, x, y, w, h, entryX, entryY, int(w/2)+1)
+
+
+def digEllipticRoom(maparr, x, y, w, h, entryX, entryY):
     if w < 5 or h < 5:
         return
-    # oddity check
-    # if w % 2 != 1:
-    #     return
-    roomRadius = int(w/2) - 1 - (w%2) # behaviour for the even w/h values may be weird.
-    roomCenterX = x+roomRadius
-    roomCenterY = y+roomRadius
-    print("rad {0} cx {1} cy {2}".format(roomRadius, roomCenterX, roomCenterY))
+    roomXRadius = int(w / 2)
+    roomYRadius = int(h / 2)
+    if w % 2 == 0:
+        roomXRadius -= 1
+    if h % 2 == 0:
+        roomYRadius -= 1
+    entryCorrLength = (w if w > h else h)
+    print("{0}, {1}".format(roomXRadius, roomYRadius))
+    roomCenterX = x + roomXRadius
+    roomCenterY = y + roomYRadius
     for i in range (x, x+w):
         for j in range (y, y+h):
             currRelativeCoordX = i - roomCenterX
             currRelativeCoordY = j - roomCenterY
-            if currRelativeCoordX ** 2 + currRelativeCoordY ** 2 <= roomRadius ** 2:
+            currXComponent = (currRelativeCoordX ** 2) * (roomYRadius ** 2)
+            currYComponent = (currRelativeCoordY ** 2) * (roomXRadius ** 2)
+            if currXComponent + currYComponent <= (roomXRadius ** 2) * (roomYRadius ** 2):
                 maparr[i][j] = _FLOOR_CODE
+    digEntryCorridor(maparr, x, y, w, h, entryX, entryY, entryCorrLength)
 
 
-def digCircularOutlinedRoom(maparr, x, y, w, h):
+def digCircularOutlinedRoom(maparr, x, y, w, h, entryX, entryY): # Square room with wall circle inside.
     # w and h should be equal, odd and greater than 5.
     # make w and h equal
     if w < h:
@@ -144,18 +190,92 @@ def digCircularOutlinedRoom(maparr, x, y, w, h):
             currRelativeCoordY = j - roomCenterY
             if currRelativeCoordX ** 2 + currRelativeCoordY ** 2 <= roomRadius ** 2 and currRelativeCoordX ** 2 + currRelativeCoordY ** 2 >= (roomRadius-1) ** 2:
                 maparr[i][j] = _WALL_CODE
+    digEntryCorridor(maparr, x, y, w, h, entryX, entryY)
 
 
-def pickRoomAndDig(maparr, x, y, w, h):  # Subject for changes.
+#######
+#     #
+#  #  #
+# ### #
+#  #  #
+#     #
+#######
+def digRoomWithCross(maparr, x, y, w, h):
+    dig(maparr, x, y, w, h)
+    roomMiddleX = x+int(w/2)
+    roomMiddleY = y + int(h / 2)
+    for i in range(x+1, x+w - 1):
+        maparr[i][roomMiddleY] = _WALL_CODE
+        if h % 2 == 0:
+            maparr[i][roomMiddleY-1] = _WALL_CODE
+    for i in range(y+1, y+h - 1):
+        maparr[roomMiddleX][i] = _WALL_CODE
+        if w % 2 == 0:
+            maparr[roomMiddleX-1][i] = _WALL_CODE
+
+
+
+#########
+# # # # #
+#       #
+# # # # #
+#########
+def digLongRoom(maparr, x, y, w, h): #need to change the name.
+    dig(maparr, x, y, w, h)
+    if w < h:
+        for i in range(y+1, y+h-1, 2):
+            maparr[x][i] = _WALL_CODE
+            maparr[x+w-1][i] = _WALL_CODE
+    else:
+        for i in range(x+1, x+w-1, 2):
+            maparr[i][y] = _WALL_CODE
+            maparr[i][y+h-1] = _WALL_CODE
+
+
+###########
+# #   #   #
+#   #   # #
+###########
+def digSnakeRoom(maparr, x, y, w, h, entryX, entryY):
+    obstacleWidth = 0
+    dig(maparr, x, y, w, h)
+    if w < h:
+        obstacleWidth = w - 1
+        for i in range(y+1, y+h-1, 4):
+            dig(maparr, x, i, obstacleWidth, 1, _WALL_CODE)
+            if i+2 < y+h:
+                dig(maparr, x+w-obstacleWidth, i+2, obstacleWidth, 1, _WALL_CODE)
+    else:
+        obstacleWidth = h - 1
+        for i in range(x+1, x+w-1, 4):
+            dig(maparr, i, y, 1, obstacleWidth, _WALL_CODE)
+            if i + 2 < x + w:
+                dig(maparr, i+2, y+h-obstacleWidth, 1, obstacleWidth, _WALL_CODE)
+    digEntryCorridor(maparr, x, y, w, h, entryX, entryY, 2)
+
+
+###########################
+## THERE ##################
+###########################
+def pickRoomAndDig(maparr, x, y, w, h, entryX, entryY):  # Subject for changes.
+    #roomIsDigged = False
     roomType = _random(0, 3)
-    if roomType == 0 or (w < 7 or h < 7):
-        dig(maparr, x, y, w, h)
-    elif roomType == 1:
-        digRoomWithInnerRoom(maparr, x, y, w, h)
-    elif roomType == 2:
-        digCircularRoom(maparr, x, y, w, h)
-    elif roomType == 3:
-        digCircularOutlinedRoom(maparr, x, y, w, h)
+    if (w >= 7 and h >= 7):
+        if roomType == 0:
+            digRoomWithInnerRoom(maparr, x, y, w, h)
+        elif roomType == 1:
+            digEllipticRoom(maparr, x, y, w, h, entryX, entryY)
+        elif roomType == 2:
+            digCircularOutlinedRoom(maparr, x, y, w, h, entryX, entryY)
+        elif roomType == 3:
+            digRoomWithCross(maparr, x, y, w, h)
+    else:
+        if roomType == 1:
+            digLongRoom(maparr, x, y, w, h)
+        elif roomType == 2:
+            digSnakeRoom(maparr, x, y, w, h, entryX, entryY)
+        else: dig(maparr, x, y, w, h)
+    print("room digged at ({0};{1}) with w{2}, h{3} entry({4};{5})".format(x, y, w, h, entryX, entryY))
 
 def isWall(maparr, x, y, w=1, h=1):
     for i in range (x, x+w):
@@ -204,22 +324,22 @@ def tryAddCorridor(maparr):
 
         # TODO: add dig up/down restrictions (i.e. there should be more "digged horizontally" corridors than "digged vertically" ones)
         if dirx == 1: # dig right
-            if isWall(maparr, currCell.x, currCell.y-1, corrLength+1, 3):
+            if isWall(maparr, currCell.x, currCell.y-1, corrLength, 3):
                 dig(maparr, currCell.x+1, currCell.y, corrLength, 1)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif dirx == -1: # dig left
-            if isWall(maparr, currCell.x-corrLength-1, currCell.y-1, corrLength+1, 3):
+            if isWall(maparr, currCell.x-corrLength-1, currCell.y-1, corrLength, 3):
                 dig(maparr, currCell.x-corrLength, currCell.y, corrLength, 1)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif diry == 1: # dig down
-            if isWall(maparr, currCell.x-1, currCell.y, 3, corrLength+1):
+            if isWall(maparr, currCell.x-1, currCell.y, 3, corrLength):
                 dig(maparr, currCell.x, currCell.y+1, 1, corrLength)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif diry == -1: # dig up
-            if isWall(maparr, currCell.x-1, currCell.y-corrLength, 3, corrLength+1):
+            if isWall(maparr, currCell.x-1, currCell.y-corrLength, 3, corrLength):
                 dig(maparr, currCell.x, currCell.y-corrLength, 1, corrLength)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
@@ -243,22 +363,22 @@ def tryAddRoom(maparr):
         #TODO: add dig up/down restrictions (i.e. there should be more "digged horizontally" rooms than "digged vertically" ones)
         if dirx == 1: # dig right
             if isWall(maparr, currCell.x, currCell.y-vertOffset-1, roomW+2, roomH+2):
-                pickRoomAndDig(maparr, currCell.x+1, currCell.y-vertOffset, roomW, roomH)
+                pickRoomAndDig(maparr, currCell.x+1, currCell.y-vertOffset, roomW, roomH, currCell.x, currCell.y)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif dirx == -1: # dig left
             if isWall(maparr, currCell.x-roomW-1, currCell.y-vertOffset-1, roomW+2, roomH+2):
-                pickRoomAndDig(maparr, currCell.x-roomW, currCell.y-vertOffset, roomW, roomH)
+                pickRoomAndDig(maparr, currCell.x-roomW, currCell.y-vertOffset, roomW, roomH, currCell.x, currCell.y)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif diry == 1: # dig down
             if isWall(maparr, currCell.x-horOffset-1, currCell.y, roomW+2, roomH+2):
-                pickRoomAndDig(maparr, currCell.x-horOffset, currCell.y+1, roomW, roomH)
+                pickRoomAndDig(maparr, currCell.x-horOffset, currCell.y+1, roomW, roomH, currCell.x, currCell.y)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
         elif diry == -1: # dig up
             if isWall(maparr, currCell.x-horOffset-1, currCell.y-roomH-1, roomW+2, roomH+2):
-                pickRoomAndDig(maparr, currCell.x-horOffset, currCell.y-roomH, roomW, roomH)
+                pickRoomAndDig(maparr, currCell.x-horOffset, currCell.y-roomH, roomW, roomH, currCell.x, currCell.y)
                 maparr[currCell.x][currCell.y] = _DOOR_CODE
                 return
 
@@ -282,33 +402,23 @@ def placeInitialRoom(maparr):
     halfRoomH = int(roomH / 2)
     halfMapW = int(_MAP_WIDTH / 2)
     halfMapH = int(_MAP_HEIGHT / 2)
-    pickRoomAndDig(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
+    #pickRoomAndDig(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
+    digLongRoom(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
 
 def generateDungeon():
     # Fill the map with solid walls.
     maparr = [[_WALL_CODE] * (_MAP_HEIGHT + 1) for _ in range(_MAP_WIDTH + 1)]
-
-    TESTING_SHIT = 0
-    if TESTING_SHIT == 1:
-        digCircularOutlinedRoom(maparr, 1, 1, 15, 15)
-
-
-    else:
-        # Place the random room in center of the map.
-        placeInitialRoom(maparr)
-        #TODO: all the other shit
-        currentRoomsCount = 0
-        currentCorrsCount = 0
-        while currentRoomsCount < _MAX_ROOMS_COUNT or currentCorrsCount < _MAX_CORRIDORS_COUNT:
-            if currentCorrsCount < _MAX_CORRIDORS_COUNT:
-                tryAddCorridor(maparr)
-                currentCorrsCount += 1
-            if currentRoomsCount < _MAX_ROOMS_COUNT:
-                tryAddRoom(maparr)
-                currentRoomsCount += 1
-
+    # Place the random room in center of the map.
+    placeInitialRoom(maparr)
+    #TODO: all the other shit
+    currentRoomsCount = 1
+    currentCorrsCount = 0
+    while currentRoomsCount < _MAX_ROOMS_COUNT or currentCorrsCount < _MAX_CORRIDORS_COUNT:
+        if currentCorrsCount < _MAX_CORRIDORS_COUNT:
+            tryAddCorridor(maparr)
+            currentCorrsCount += 1
+        if currentRoomsCount < _MAX_ROOMS_COUNT:
+            tryAddRoom(maparr)
+            currentRoomsCount += 1
+    makeOutline(maparr, 0, 0, _MAP_WIDTH, _MAP_HEIGHT, _WALL_CODE)
     return maparr
-
-
-def getMap(): # FOR TESTING PURPOSES
-    return generateDungeon()
