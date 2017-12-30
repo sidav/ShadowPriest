@@ -406,6 +406,7 @@ def placeInitialRoom(maparr):
     digLongRoom(maparr, halfMapW - halfRoomW, halfMapH - halfRoomH, roomW, roomH)
 
 def generateDungeon(mapw, maph):
+    global _MAP_WIDTH, _MAP_HEIGHT
     _MAP_WIDTH = mapw
     _MAP_HEIGHT = maph
     # Fill the map with solid walls.
