@@ -1,6 +1,6 @@
 import Routines.TdlConsoleWrapper as CW
 from Overworld_Routines.OverworldModel import OverworldModel as OWM
-import GLOBAL_DATA.Tile_Codes as DATA
+import GLOBAL_DATA.Overworld_Tile_Codes as DATA
 
 # that should render the overworld and whatever
 

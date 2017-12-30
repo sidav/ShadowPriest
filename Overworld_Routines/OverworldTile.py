@@ -1,4 +1,4 @@
-import GLOBAL_DATA.Tile_Codes as CODES
+import GLOBAL_DATA.Overworld_Tile_Codes as CODES
 
 #represents one tile of the global map.
 class OverworldTile:
