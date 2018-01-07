@@ -1,0 +1,15 @@
+For Linux:
+
+    1. Install Python 3.5 (not sure about later versions, but versions prior to 3.5 won't work, I suppose).
+       On Windows the project works on Python 3.6,  but I have not managed to run it in 3.6 on Linux.
+
+    2. Install the necessary packages for Python via commands:
+        $ sudo apt install gcc libsdl2-dev libffi-dev python-dev libomp-dev
+        $ pip install tdl
+
+            You may want to use "pip3 install" instead of plain pip.
+
+    3. The ``libtcod-cffi`` package may or may not be necessary to run the code.
+
+For Windows:
+    see the HOW-TO-BUILD-EXE file, ignoring everything with PyInstaller.

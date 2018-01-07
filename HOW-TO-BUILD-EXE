@@ -1,6 +1,6 @@
 First, install the packages: ``tdl``, ``libtcod-cffi``, and ``PyInstaller``.
-!!!PyInstaller should be the dev version to support python 3.6!!!
-!!! dev version is installed via "pip install https://github.com/pyinstaller/pyinstaller/archive/develop.zip" !!!
+!!! AFAIK PyInstaller should be the dev version to support python 3.6!!!
+!!! dev version of it is installed via "pip install https://github.com/pyinstaller/pyinstaller/archive/develop.zip" !!!
 
 On Windows you must also install the ``pywin32`` package
 (named ``pypiwin32`` if you're using pip install.)
@@ -15,6 +15,6 @@ You can also build to one file with the command (RECOMMENDED)::
 
     PyInstaller main.py --additional-hooks-dir=. -F
 
-DON'T FORGET TO INCLUDE THE png FONT TO DIST FOLDER
+DON'T FORGET TO INCLUDE THE png FONT TO THE RESULTING DIST FOLDER!
 
 The PyInstaller manual can be found at: https://pythonhosted.org/PyInstaller/
