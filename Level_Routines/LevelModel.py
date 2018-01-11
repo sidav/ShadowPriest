@@ -1,6 +1,6 @@
-from GLOBAL_DATA import Level_Tile_Data as LTD
-from Procedurals import RBRDungeonGenerator as RBR
 from Level_Routines.LevelTile import LevelTile as LTile
+from Procedurals import RBRDungeonGenerator as RBR
+
 
 #represents the game level (dungeon floor, etc)
 
