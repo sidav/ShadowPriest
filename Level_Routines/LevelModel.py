@@ -1,5 +1,7 @@
 from Level_Routines.LevelTile import LevelTile as LTile
+from Level_Routines.DoorTile import DoorTile
 from Procedurals import RBRDungeonGenerator as RBR
+from GLOBAL_DATA import Level_Tile_Data as LTD
 
 
 #represents the game level (dungeon floor, etc)
@@ -10,6 +12,12 @@ class LevelModel:
 
     def __init__(self, mapW, mapH):
         self.generate_level(mapW, mapH)
+
+    def pick_tile_class(self, appearance):
+        if appearance == LTD._CLDOOR_CODE or appearance == LTD._OPDOOR_CODE:
+            return DoorTile(appearance)
+        else:
+            return LTile(appearance)
 
     # generates the overworld map from the world generation routine:
     def generate_level(self, mapW, mapH):
@@ -25,7 +33,7 @@ class LevelModel:
         tempMap = RBR.generateDungeon(mapW, mapH)
         for x in range(0, mapW):
             for y in range(0, mapH):
-                self._level_map[x][y] = LTile(tempMap[x][y])
+                self._level_map[x][y] = self.pick_tile_class(tempMap[x][y])
 
     def tile_was_seen(self, x, y):
         return self._level_map[x][y].wasSeen
