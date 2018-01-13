@@ -9,7 +9,8 @@ currentLevel = None
 
 def initialize():
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
-    LevelView.draw_whole_level_map(currentLevel)
+    # LevelView.draw_whole_level_map(currentLevel)
+    LevelView.draw_absolutely_everything(currentLevel)
     placePlayer()
     CW.flushConsole()
     CW.readKey()

@@ -15,9 +15,8 @@ class LevelTile:
         # if appearance == LTD._WALL_CODE:
         #     self._color = LTD._WALL_COLOR
         #
-        # elif appearance == LTD._FLOOR_CODE:
-        #     self._color = LTD._FLOOR_COLOR
-        #     self._passable = True
+        if appearance == LTD._FLOOR_CODE:
+            self._passable = True
         #
         # elif appearance == LTD._DOOR_CODE:
         #     self._color = LTD._DOOR_COLOR # TODO: fucking doors.
