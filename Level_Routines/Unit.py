@@ -9,6 +9,7 @@ class Unit:
     _appearance = 'G'
 
     def __init__(self, posx, posy, appearance = 'G'):
+        self._appearance = appearance
         self._pos_x = posx
         self._pos_y = posy
         while self._look_x == 0 and self._look_y == 0:
@@ -17,7 +18,13 @@ class Unit:
         pass
 
     def move_forward(self):
-        # TODO
+        self._pos_x += self._look_x
+        self._pos_y += self._look_y
+        pass
+
+    def move_by_vector(self, x, y):
+        self._pos_x += x
+        self._pos_y += y
         pass
 
     def has_look_direction(self):

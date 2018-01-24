@@ -1,6 +1,8 @@
 from .LevelTile import LevelTile as LTile
 from .DoorTile import DoorTile
 from .Unit import Unit
+from .Actor import Actor
+from .Player import Player
 from Procedurals import RBRDungeonGenerator as RBR
 from GLOBAL_DATA import Level_Tile_Data as LTD
 
@@ -13,6 +15,7 @@ class LevelModel:
 
     _level_map = []
     _units = []
+    _player = None
 
     def __init__(self, mapW, mapH):
         self.generate_level(mapW, mapH)
@@ -40,6 +43,7 @@ class LevelModel:
                 self._level_map[x][y] = self.pick_tile_class(tempMap[x][y])
 
         self.place_random_units()
+        self.place_player()
 
     def tile_was_seen(self, x, y):
         return self._level_map[x][y].wasSeen
@@ -53,12 +57,23 @@ class LevelModel:
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable()
 
+    def get_player(self):
+        return self._player
+
+    def place_player(self):
+        posx = posy = 0
+        while not (self.is_tile_passable(posx, posy)):
+            print("Okay maan")
+            posx = rand.rand(self.MAP_WIDTH)
+            posy = rand.rand(self.MAP_HEIGHT)
+        self._player = Player(posx, posy)
+
     def place_random_units(self): # <- FUCKING TEMPORARY # TODO: REMOVE
-        rand.randomize()
+        # rand.randomize()
         for _ in range(10):
             posx = posy = 0
             while not (self.is_tile_passable(posx, posy)):
                 print("Okay maan")
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
-            self._units.append(Unit(posx, posy))
+            self._units.append(Unit(posx, posy, 'G'))

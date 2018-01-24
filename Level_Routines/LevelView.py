@@ -62,6 +62,14 @@ def draw_all_units(lvl): # draws all the units regardless of LOS from player.
             # CW.putChar(get_looking_thingy_char(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]) # that line looks like a bullshit...
         # TODO: colors
 
+def draw_player(lvl):
+    plr = lvl.get_player()
+    posx = plr.get_position()[0]
+    posy = plr.get_position()[1]
+    CW.setForegroundColor(200, 200, 200)
+    CW.putChar(plr.get_appearance(), posx, posy)
+
 def draw_absolutely_everything(lvl):
     draw_whole_level_map(lvl)
     draw_all_units(lvl)
+    draw_player(lvl)
