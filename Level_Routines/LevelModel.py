@@ -63,7 +63,6 @@ class LevelModel:
     def place_player(self):
         posx = posy = 0
         while not (self.is_tile_passable(posx, posy)):
-            print("Okay maan")
             posx = rand.rand(self.MAP_WIDTH)
             posy = rand.rand(self.MAP_HEIGHT)
         self._player = Player(posx, posy)
@@ -73,7 +72,6 @@ class LevelModel:
         for _ in range(10):
             posx = posy = 0
             while not (self.is_tile_passable(posx, posy)):
-                print("Okay maan")
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
             self._units.append(Unit(posx, posy, 'G'))

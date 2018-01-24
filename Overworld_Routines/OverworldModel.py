@@ -36,5 +36,4 @@ class OverworldModel:
         tempMap = MapGenerator.generateMap(mapW, mapH)
         for x in range(0, mapW):
            for y in range(0, mapH):
-               print("Current xy: {0},{1}".format(x, y))
                self._overworldMap[x][y] = OTile(tempMap[x][y])

@@ -21,3 +21,6 @@ class DoorTile(LevelTile):
 
     def get_closed(self):
         return self._closed
+
+    def get_passable(self):
+        return not self._closed

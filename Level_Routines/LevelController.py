@@ -1,22 +1,23 @@
 from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as GC
-from Level_Routines.LevelModel import LevelModel
-from Level_Routines import LevelView
+from .LevelModel import LevelModel
+from . import LevelView
+from . import PlayerController as P_C
 
 player_x = player_y = 0
 last_tile = '.'
 currentLevel = None
 
 def initialize():
+    global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
-    # LevelView.draw_whole_level_map(currentLevel)
-    LevelView.draw_absolutely_everything(currentLevel)
-    placePlayer()
-    CW.flushConsole()
-    CW.readKey()
+    while not CW.isWindowClosed():
+        LevelView.draw_absolutely_everything(currentLevel)
+        CW.flushConsole()
+        control()
+        # LevelView.draw_whole_level_map(currentLevel)
 
 def control():
-    pass
+    global currentLevel
+    P_C.do_key_action(currentLevel)
 
-def placePlayer():
-    pass
