@@ -74,4 +74,4 @@ class LevelModel:
             while not (self.is_tile_passable(posx, posy)):
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
-            self._units.append(Unit(posx, posy, 'G'))
+            self._units.append(Actor(posx, posy, 'G'))

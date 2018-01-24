@@ -4,6 +4,11 @@ from Routines import TdlConsoleWrapper as CW
 
 def do_key_action(lvl):
     player = lvl.get_player()
+    if not do_move_keys_action(lvl, player):
+        print("Not movement key!")
+
+
+def do_move_keys_action(lvl, player):
     px, py = player.get_position()
     keyPressed = CW.readKey()
     key = keyPressed.text
@@ -28,5 +33,9 @@ def do_key_action(lvl):
     elif key == 'n':
         vector_x = 1
         vector_y = 1
-    if (lvl.is_tile_passable(px+vector_x, py+vector_y)):
+    if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
         player.move_by_vector(vector_x, vector_y)
+    if vector_x != 0 and vector_y != 0:
+        return True
+    else:
+        return False
