@@ -7,9 +7,10 @@ _SCREEN_HEIGHT = 25#25 is default
 _LIMIT_FPS = 10  # 20 frames-per-second maximum
 
 try:
-    tdl.set_font('terminal8x12_gs_ro.png', greyscale=True, altLayout=False)
+    tdl.set_font('shadowpriest8x12_gs_ro.png', greyscale=True, altLayout=False)
 except:
     print("Oh fuck, the font is missing!")
+    closeProgram()
     pass
 
 #console = tdl.init(_SCREEN_WIDTH, _SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
