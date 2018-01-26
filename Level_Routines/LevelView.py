@@ -64,27 +64,36 @@ def get_unit_arrow(look_dir):
         return chr(131)
 
 
+def draw_unit_itself_only(curr_unit):
+    # TODO: colors.
+    CW.setForegroundColor(32, 192, 32)
+    curr_appearance = curr_unit.get_appearance()
+    curr_position = curr_unit.get_position()
+    CW.putChar(curr_appearance, curr_position[0], curr_position[1])
+
+
+def draw_unit_look_direction_only(lvl, curr_unit):
+    curr_position = curr_unit.get_position()
+    curr_look_dir = curr_unit.get_look_direction()
+    if SINGLE_ARROW_MODE:
+        CW.putChar(get_unit_arrow(curr_look_dir), curr_position[0],
+                   curr_position[1])  # TODO: make custom font arrows optional.
+    else:
+        arrow_x = curr_position[0] + curr_look_dir[0]
+        arrow_y = curr_position[1] + curr_look_dir[1]
+        if not lvl.is_unit_present(arrow_x, arrow_y):
+            if not lvl.is_tile_passable(arrow_x, arrow_y):
+                CW.setForegroundColor(0, 0, 0)
+                CW.setBackgroundColor(32, 192, 32)
+            CW.putChar(get_unit_arrow(curr_look_dir), arrow_x, arrow_y)  # TODO: make custom font arrows optional.
+            CW.setBackgroundColor(0, 0, 0)
+    # CW.putChar(get_looking_thingy_char(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]) # that line looks like a bullshit...
+
 def draw_all_units(lvl): # draws all the units regardless of LOS from player.
     # TODO: make this not crap.
     unit_list = lvl.get_all_units()
     for curr_unit in unit_list:
-        CW.setForegroundColor(32, 192, 32)
-        curr_appearance = curr_unit.get_appearance()
-        curr_position = curr_unit.get_position()
-        CW.putChar(curr_appearance, curr_position[0], curr_position[1])
+        draw_unit_itself_only(curr_unit)
         if curr_unit.has_look_direction:
-            curr_look_dir = curr_unit.get_look_direction()
-            if SINGLE_ARROW_MODE:
-                CW.putChar(get_unit_arrow(curr_look_dir), curr_position[0],
-                           curr_position[1])  # TODO: make custom font arrows optional.
-            else:
-                arrow_x = curr_position[0] + curr_look_dir[0]
-                arrow_y = curr_position[1] + curr_look_dir[1]
-                if not lvl.is_unit_present(arrow_x, arrow_y):
-                    if not lvl.is_tile_passable(arrow_x, arrow_y):
-                        CW.setForegroundColor(0, 0, 0)
-                        CW.setBackgroundColor(32, 192, 32)
-                    CW.putChar(get_unit_arrow(curr_look_dir), arrow_x, arrow_y)  # TODO: make custom font arrows optional.
-                    CW.setBackgroundColor(0, 0, 0)
-            #CW.putChar(get_looking_thingy_char(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]) # that line looks like a bullshit...
-        # TODO: colors
+            draw_unit_look_direction_only(lvl, curr_unit)
+
