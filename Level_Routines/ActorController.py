@@ -14,7 +14,8 @@ def pick_action_and_do(lvl):
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
     posx, posy = actor.get_position()
     lookx, looky = actor.get_look_direction()
-    if lvl.is_tile_passable(posx + lookx, posy+looky):
+    # everything after "and" is an experimental behaviour. TODO: decide whether to remove or not that.  
+    if lvl.is_tile_passable(posx + lookx, posy+looky) and lvl.is_tile_passable(posx + 2 * lookx, posy + 2 * looky):
         actor.move_forward()
         if actor.was_rotated_previous_turn:
             actor.was_rotated_previous_turn = False
