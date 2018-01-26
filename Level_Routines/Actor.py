@@ -8,7 +8,7 @@ class Actor(Unit): # Not needed?
     current_state = None
     prefers_clockwise_rotation = True
 
-    nameme = False #NAME IT
+    was_rotated_previous_turn = False # For AI.
 
     def __init__(self, x, y, appearance = '?'):
         super(Actor, self).__init__(x, y, appearance=appearance)
