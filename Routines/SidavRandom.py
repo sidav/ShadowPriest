@@ -1,4 +1,4 @@
-import random
+import time
 
 LCG_X = 1
 
@@ -12,9 +12,15 @@ def rand(mod):
     return LCG_X%mod
 
 
+def rand_bool():
+    return bool(rand(2))
+
+
 def srand(seed):
     global LCG_X
     LCG_X = seed
 
+
 def randomize():
-    srand(random.getrandbits(32))
+    int(time.time())
+    # srand(random.getrandbits(32))
