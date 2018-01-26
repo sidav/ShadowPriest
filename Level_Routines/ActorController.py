@@ -1,4 +1,4 @@
-
+from Routines import SidavRandom as RND
 
 
 # Controls AI-controlled units.
@@ -16,5 +16,9 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
     lookx, looky = actor.get_look_direction()
     if lvl.is_tile_passable(posx + lookx, posy+looky):
         actor.move_forward()
+        if actor.nameme:
+            actor.nameme = False
+            actor.prefers_clockwise_rotation = bool(RND.rand(2))
     else:
-        actor.rotate_45_degrees()
+        actor.rotate_45_degrees(actor.prefers_clockwise_rotation)
+        actor.nameme = True

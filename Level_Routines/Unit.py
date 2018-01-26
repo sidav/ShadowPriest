@@ -42,8 +42,8 @@ class Unit:
             self._look_x += - self._look_y
             self._look_y += temp_x
         else:
-            self._look_x = self._look_y
-            self._look_y = - temp_x
+            self._look_x += self._look_y
+            self._look_y += - temp_x
 
         if self._look_x != 0:
             self._look_x //= abs(self._look_x)
