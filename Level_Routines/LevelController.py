@@ -1,3 +1,4 @@
+from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as GC
 from .LevelModel import LevelModel
@@ -14,6 +15,7 @@ def initialize():
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     while not CW.isWindowClosed():
         LevelView.draw_absolutely_everything(currentLevel)
+        LOG.print_log()
         CW.flushConsole()
         control()
         # LevelView.draw_whole_level_map(currentLevel)
