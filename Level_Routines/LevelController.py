@@ -3,6 +3,7 @@ from GLOBAL_DATA import Global_Constants as GC
 from .LevelModel import LevelModel
 from . import LevelView
 from . import PlayerController as P_C
+from . import ActorController as A_C
 
 player_x = player_y = 0
 last_tile = '.'
@@ -20,4 +21,5 @@ def initialize():
 def control():
     global currentLevel
     P_C.do_key_action(currentLevel)
+    A_C.pick_action_and_do(currentLevel)
 

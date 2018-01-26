@@ -27,6 +27,29 @@ class Unit:
         self._pos_y += y
         pass
 
+    def rotate_90_degrees(self, clockwise=True):
+        temp_x = self._look_x
+        if clockwise:
+            self._look_x = - self._look_y
+            self._look_y = temp_x
+        else:
+            self._look_x = self._look_y
+            self._look_y = - temp_x
+
+    def rotate_45_degrees(self, clockwise=True):
+        temp_x = self._look_x
+        if clockwise:
+            self._look_x += - self._look_y
+            self._look_y += temp_x
+        else:
+            self._look_x = self._look_y
+            self._look_y = - temp_x
+
+        if self._look_x != 0:
+            self._look_x //= abs(self._look_x)
+        if self._look_y != 0:
+            self._look_y //= abs(self._look_y)
+
     def has_look_direction(self):
         return self._has_look_direction
 
