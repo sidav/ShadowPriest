@@ -11,7 +11,7 @@ def do_key_action(lvl):
     if not do_move_keys_action(lvl, player, key):
         if key == '-':
             LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
-            LOG.append_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
+            LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
         else:
             print("Not movement key!")
 
