@@ -78,10 +78,13 @@ def draw_all_units(lvl): # draws all the units regardless of LOS from player.
                 CW.putChar(get_unit_arrow(curr_look_dir), curr_position[0],
                            curr_position[1])  # TODO: make custom font arrows optional.
             else:
-                if not lvl.is_tile_passable(curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]):
-                    CW.setForegroundColor(0, 0, 0)
-                    CW.setBackgroundColor(32, 192, 32)
-                CW.putChar(get_unit_arrow(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1])  # TODO: make custom font arrows optional.
-                CW.setBackgroundColor(0, 0, 0)
+                arrow_x = curr_position[0] + curr_look_dir[0]
+                arrow_y = curr_position[1] + curr_look_dir[1]
+                if not lvl.is_unit_present(arrow_x, arrow_y):
+                    if not lvl.is_tile_passable(arrow_x, arrow_y):
+                        CW.setForegroundColor(0, 0, 0)
+                        CW.setBackgroundColor(32, 192, 32)
+                    CW.putChar(get_unit_arrow(curr_look_dir), arrow_x, arrow_y)  # TODO: make custom font arrows optional.
+                    CW.setBackgroundColor(0, 0, 0)
             #CW.putChar(get_looking_thingy_char(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]) # that line looks like a bullshit...
         # TODO: colors

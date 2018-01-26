@@ -57,6 +57,14 @@ class LevelModel:
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable()
 
+    def is_unit_present(self, x, y):
+        # TODO: Check for the player?..
+        for unit in self._units:
+            if (x, y) == unit.get_position():
+                return True
+        return False
+
+
     def get_player(self):
         return self._player
 
