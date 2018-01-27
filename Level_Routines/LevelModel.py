@@ -34,6 +34,7 @@ class LevelModel:
         import time                         # <-- bad starts here
         seed = int(time.time())
         print("SEED IS {0} ".format(seed))
+        BSP.setRandomSeed(seed)
         RBR.setRandomSeed(seed)             # <-- bad ends (?) here
 
         self.MAP_WIDTH = mapW
