@@ -427,6 +427,12 @@ def try_add_more_doors(maparr):
                         maparr[x-1][y] = _DOOR_CODE
 
 
+def remove_some_doors(maparr):
+    for x in range (_MAP_WIDTH):
+        for y in range(_MAP_HEIGHT):
+            if maparr[x][y] == _DOOR_CODE and _rand(100) < 30:
+                maparr[x][y] = _FLOOR_CODE
+
 def placeInitialRoom(maparr):
     roomW = _random(_MIN_ROOM_SIZE, _MAX_ROOM_SIZE)
     roomH = _random(_MIN_ROOM_SIZE, _MAX_ROOM_SIZE)
@@ -455,6 +461,9 @@ def generateDungeon(mapw, maph):
         if currentRoomsCount < _MAX_ROOMS_COUNT:
             tryAddRoom(maparr)
             currentRoomsCount += 1
+
     try_add_more_doors(maparr)
+    remove_some_doors(maparr)
+
     makeOutline(maparr, 0, 0, _MAP_WIDTH, _MAP_HEIGHT, _WALL_CODE)
     return maparr
