@@ -394,6 +394,38 @@ def tryAddRoom(maparr):
 #         if () or ():
 
 
+def count_walls_around(maparr, x, y):
+    walls = 0
+    for i in [x-1, x, x+1]:
+        for j in [y-1, y, y+1]:
+            if maparr[i][j] == _WALL_CODE:
+                walls += 1
+    return walls
+
+
+def try_add_more_doors(maparr):
+    for x in range (2, _MAP_WIDTH - 2):
+        for y in range(2, _MAP_HEIGHT - 2):
+            if maparr[x][y] == _FLOOR_CODE:
+                curr_walls = count_walls_around(maparr, x, y)
+                if curr_walls == 6:
+                    chance = 15
+                else:
+                    chance = 95
+                if curr_walls >= 6:
+                    # try up
+                    if maparr[x][y-2] == _FLOOR_CODE and maparr[x][y-1] == _WALL_CODE and _rand(100) < chance:
+                        maparr[x][y - 1] = _DOOR_CODE
+                    # down
+                    if maparr[x][y+2] == _FLOOR_CODE and maparr[x][y+1] == _WALL_CODE and _rand(100) < chance:
+                        maparr[x][y + 1] = _DOOR_CODE
+                    # right
+                    if maparr[x+2][y] == _FLOOR_CODE and maparr[x+1][y] == _WALL_CODE and _rand(100) < chance:
+                        maparr[x+1][y] = _DOOR_CODE
+                    # left
+                    if maparr[x-2][y] == _FLOOR_CODE and maparr[x-1][y] == _WALL_CODE and _rand(100) < chance:
+                        maparr[x-1][y] = _DOOR_CODE
+
 
 def placeInitialRoom(maparr):
     roomW = _random(_MIN_ROOM_SIZE, _MAX_ROOM_SIZE)
@@ -423,5 +455,6 @@ def generateDungeon(mapw, maph):
         if currentRoomsCount < _MAX_ROOMS_COUNT:
             tryAddRoom(maparr)
             currentRoomsCount += 1
+    try_add_more_doors(maparr)
     makeOutline(maparr, 0, 0, _MAP_WIDTH, _MAP_HEIGHT, _WALL_CODE)
     return maparr
