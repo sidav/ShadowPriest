@@ -112,16 +112,18 @@ def _checkNeighbouringTiles(x, y, firstStageTable): #checks if the tile has some
 
 
 
-def getVisibilityTable(fromx, fromy):
+def getVisibilityTableFromPosition(fromx, fromy, table=None, vision_range=-1):
+    if table is not None:
+        setvisionObstructingMap(table)
     mapW = len(_visionObstructingMap)
     mapH = len(_visionObstructingMap[0])
-    resultingMap = [[False] * (mapH) for _ in range(mapW)]
+    resultingMap = [[False] * mapH for _ in range(mapW)]
     #first stage
     #firstStage = [[False] * (mapH) for _ in range(mapW)]
     # for i in range(mapW):
     #     for j in range(mapH):
     #         firstStage[i][j] = _straightLOSCheck(fromx, fromy, i, j)
-    firstStage = fullLOSLineCheck(fromx, fromy)
+    firstStage = fullLOSLineCheck(fromx, fromy, viewRange=vision_range)
     #second stage
     secondStage = [[False] * (mapH) for _ in range(mapW)]
     for i in range(mapW):
