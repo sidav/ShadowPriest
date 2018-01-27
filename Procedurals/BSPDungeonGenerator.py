@@ -36,16 +36,16 @@ class treeNode:
         self.right = None
         self.cont = cont
 
-    def getLevel(self, lvl, nodelist=None): #should be called from the root node only
+    def get_leafs_of_level(self, lvl, nodelist=None): #should be called from the root node only
         if nodelist == None:
             nodelist = []
         if lvl == 0:
             nodelist.append(self)
         else:
             if self.left is not None:
-                self.left.getLevel(lvl-1, nodelist)
+                self.left.get_leafs_of_level(lvl - 1, nodelist)
             if self.right is not None:
-                self.right.getLevel(lvl-1, nodelist)
+                self.right.get_leafs_of_level(lvl - 1, nodelist)
         return nodelist
 
     def getLeafs(self, leafs=None):
@@ -133,7 +133,7 @@ def placeConnections(root, arr):
     traverseEnded = False
     curlvl = 0
     while not traverseEnded:
-        a = root.getLevel(curlvl)
+        a = root.get_leafs_of_level(curlvl)
         if len(a) is 0:
             traverseEnded = True
         for i in a:
