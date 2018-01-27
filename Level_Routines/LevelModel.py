@@ -39,7 +39,8 @@ class LevelModel:
         self.MAP_WIDTH = mapW
         self.MAP_HEIGHT = mapH
         self._level_map = [[None] * mapH for _ in range(mapW)] # <-- don't touch that fucking magic please
-        tempMap = RBR.generateDungeon(mapW, mapH)
+        # tempMap = RBR.generateDungeon(mapW, mapH)
+        tempMap = BSP.generateMapWithRandomParams(mapW, mapH)
         for x in range(0, mapW):
             for y in range(0, mapH):
                 self._level_map[x][y] = self.pick_tile_class(tempMap[x][y])

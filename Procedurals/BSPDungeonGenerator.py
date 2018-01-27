@@ -25,9 +25,9 @@ _MIN_ROOM_WIDTH = 3
 _MIN_ROOM_HEIGHT = 3
 _SPLITS = 12
 
-_FLOOR_CODE = ' '
-_WALL_CODE = '#'
-_DOOR_CODE = '+'
+_FLOOR_CODE = 'floor'
+_WALL_CODE = 'wall'
+_DOOR_CODE = 'door'
 
 class treeNode:
     def __init__(self, parent=None, cont=None):
