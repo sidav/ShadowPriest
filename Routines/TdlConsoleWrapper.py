@@ -167,16 +167,15 @@ def isWindowClosed():
 
 
 def readKey():
-    if not tdl.event.is_window_closed():
-        global LAST_KEY_PRESSED
-        while True:
-            LAST_KEY_PRESSED = tdl.event.key_wait()
-            print(LAST_KEY_PRESSED)
-            if LAST_KEY_PRESSED.key != 'CHAR':
-                break
-        return LAST_KEY_PRESSED
-    else:
+    global LAST_KEY_PRESSED
+    while not tdl.event.is_window_closed():
+        LAST_KEY_PRESSED = tdl.event.key_wait()
+        print("{}, {}, {}".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
+        if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F'):
+            break
+    if tdl.event.is_window_closed():
         closeProgram(0)
+    return LAST_KEY_PRESSED
 
 # def wait_for_key_press():
 #         pass

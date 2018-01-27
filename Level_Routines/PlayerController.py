@@ -22,24 +22,24 @@ def do_key_action(lvl):
 def do_move_keys_action(lvl, player, key):
     px, py = player.get_position()
     vector_x = vector_y = 0
-    if key == 'h':
+    if key == 'h' or key == '4':
         vector_x = -1
-    elif key == 'j':
+    elif key == 'j' or key == '2':
         vector_y = 1
-    elif key == 'k':
+    elif key == 'k' or key == '8':
         vector_y = -1
-    elif key == 'l':
+    elif key == 'l' or key == '6':
         vector_x = 1
-    elif key == 'y':
+    elif key == 'y' or key == '7':
         vector_x = -1
         vector_y = -1
-    elif key == 'u':
+    elif key == 'u' or key == '9':
         vector_x = 1
         vector_y = -1
-    elif key == 'b':
+    elif key == 'b' or key == '1':
         vector_x = -1
         vector_y = 1
-    elif key == 'n':
+    elif key == 'n' or key == '3':
         vector_x = 1
         vector_y = 1
     if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
