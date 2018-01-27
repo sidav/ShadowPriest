@@ -1,4 +1,5 @@
 #import Routines.TdlConsoleWrapper as CW
+import math
 
 _lastFromX = _lastFromY = -1
 _lastVisibilityTable = [[]]
@@ -139,21 +140,32 @@ def getVisibilityTableFromPosition(fromx, fromy, table=None, vision_range=-1):
     return resultingMap
 
 
-def visibleLineExists(fromx, fromy, tox, toy):
-    global _lastFromX, _lastFromY, _lastVisibilityTable
-    mapW = len(_visionObstructingMap)
-    mapH = len(_visionObstructingMap[0])
-    if fromx == tox and fromy == toy:
+def is_point_in_sector(from_x, from_y, look_x, look_y, target_x, target_y, sector_angle):
+    half_of_sector_angle = (sector_angle / 2) * math.pi / 180
+    centered_x, centered_y = target_x - from_x, target_y - from_y
+    looking_angle = math.atan2(look_y, look_x)
+    taget_angle = math.atan2(centered_y, centered_x)
+    if centered_x < 0 and centered_y < 0 and look_y >= 0:
+        taget_angle += 2 * math.pi
+    if looking_angle - half_of_sector_angle <= taget_angle <= looking_angle + half_of_sector_angle:
         return True
-    if fromx < 0 or fromx >= mapW or fromy < 0 or fromy >= mapH:
-        return False
-    if fromx == _lastFromX and fromy == _lastFromY and _lastVisibilityTable != [[]]:
-        try:
-            return bool(_lastVisibilityTable[tox][toy])
-        except:
-            print("PROBLEM: tox = {}, toy = {}".format(tox, toy))
-    else:
-        _lastFromX = fromx
-        _lastFromY = fromy
-        _lastVisibilityTable = getVisibilityTable(fromx, fromy)
-        return bool(_lastVisibilityTable[tox][toy])
+    return False
+
+# def visibleLineExists(fromx, fromy, tox, toy): # TODO: rewrite lol
+#     global _lastFromX, _lastFromY, _lastVisibilityTable
+#     mapW = len(_visionObstructingMap)
+#     mapH = len(_visionObstructingMap[0])
+#     if fromx == tox and fromy == toy:
+#         return True
+#     if fromx < 0 or fromx >= mapW or fromy < 0 or fromy >= mapH:
+#         return False
+#     if fromx == _lastFromX and fromy == _lastFromY and _lastVisibilityTable != [[]]:
+#         try:
+#             return bool(_lastVisibilityTable[tox][toy])
+#         except:
+#             print("PROBLEM: tox = {}, toy = {}".format(tox, toy))
+#     else:
+#         _lastFromX = fromx
+#         _lastFromY = fromy
+#         _lastVisibilityTable = getVisibilityTable(fromx, fromy)
+#         return bool(_lastVisibilityTable[tox][toy])
