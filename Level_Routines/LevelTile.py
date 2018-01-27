@@ -6,11 +6,12 @@ class LevelTile:
 
     _appearance = '?'
     # __color = 0xFFFFFF #fuck
-    _vision_obstructing = True
+    _opaque = True # True means 'vision obstructing'
     _passable = False
     _was_seen = False
 
     def __init__(self, appearance):
+        self._opaque = LTD.get_tile_opaque(appearance)
         self._appearance = appearance
         # if appearance == LTD._WALL_CODE:
         #     self._color = LTD._WALL_COLOR
@@ -27,8 +28,11 @@ class LevelTile:
     def get_passable(self):
         return self._passable
     
-    def get_vision_obstructing(self):
-        return self._vision_obstructing
+    def get_opaque(self):
+        return self._opaque
 
     def get_was_seen(self):
         return self._was_seen
+
+    def set_was_seen(self, seen=True):
+        self._was_seen = seen

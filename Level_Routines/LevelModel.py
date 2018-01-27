@@ -45,8 +45,8 @@ class LevelModel:
         self.place_random_units()
         self.place_player()
 
-    def tile_was_seen(self, x, y):
-        return self._level_map[x][y].wasSeen
+    def get_tile_was_seen(self, x, y):
+        return self._level_map[x][y].get_was_seen()
 
     def get_tile_char(self, x, y):
         return self._level_map[x][y].get_tile_char()
@@ -57,12 +57,23 @@ class LevelModel:
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable()
 
+    def set_tile_was_seen(self, x, y):
+        self._level_map[x][y].set_was_seen()
+
     def is_unit_present(self, x, y):
         # TODO: Check for the player?..
         for unit in self._units:
             if (x, y) == unit.get_position():
                 return True
         return False
+
+    def get_opacity_map(self):
+        mapw, maph = self.MAP_WIDTH, self.MAP_HEIGHT
+        vis_map = [[None] * maph for _ in range(mapw)]
+        for x in range(mapw):
+            for y in range(maph):
+                vis_map[x][y] = self._level_map[x][y].get_opaque()
+        return vis_map
 
 
     def get_player(self):

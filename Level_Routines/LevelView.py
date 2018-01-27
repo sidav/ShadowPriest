@@ -1,10 +1,11 @@
 import Routines.TdlConsoleWrapper as CW
 import GLOBAL_DATA.Level_Tile_Data as DATA
+from Routines import SidavLOS as LOS
 import tdl
 
 
 SINGLE_ARROW_MODE = False
-
+NON_VISIBLE_TILE_COLOR = (32, 32, 64)
 
 def draw_whole_level_map(lvl): # seen tiles only
     CW.clearConsole()
@@ -15,6 +16,24 @@ def draw_whole_level_map(lvl): # seen tiles only
             CW.setForegroundColor(color)
             CW.putChar(currentChar, i, j)
 
+
+def draw_level_map_in_LOS(lvl, vis_table):
+    for i in range(lvl.MAP_WIDTH):
+        for j in range(lvl.MAP_HEIGHT):
+            currentChar = lvl.get_tile_char(i, j)
+            draw_this_tile = False
+            if vis_table[i][j]:
+                color = DATA.get_tile_color(currentChar)
+                lvl.set_tile_was_seen(i, j)
+                draw_this_tile = True
+            elif lvl.get_tile_was_seen(i, j):
+                color = NON_VISIBLE_TILE_COLOR
+                draw_this_tile = True
+            if draw_this_tile:
+                CW.setForegroundColor(color)
+                CW.putChar(currentChar, i, j)
+
+
 def draw_player(lvl):
     plr = lvl.get_player()
     posx = plr.get_position()[0]
@@ -22,10 +41,45 @@ def draw_player(lvl):
     CW.setForegroundColor(200, 200, 200)
     CW.putChar(plr.get_appearance(), posx, posy)
 
+
+def draw_all_units(lvl): # draws all the units regardless of LOS from player.
+    # TODO: make this not crap.
+    unit_list = lvl.get_all_units()
+    for curr_unit in unit_list:
+        draw_unit_itself_only(curr_unit)
+        if curr_unit.has_look_direction:
+            draw_unit_look_direction_only(lvl, curr_unit)
+
+
 def draw_absolutely_everything(lvl):
     draw_whole_level_map(lvl)
     draw_all_units(lvl)
     draw_player(lvl)
+
+
+def draw_everything_in_player_LOS(lvl):
+    CW.clearConsole()
+    player = lvl.get_player()
+    px, py = player.get_position()
+    opacity_map = lvl.get_opacity_map()
+    vis_map = LOS.getVisibilityTableFromPosition(px, py, opacity_map, 6)
+    # print(opacity_map)
+    draw_level_map_in_LOS(lvl, vis_map)
+    draw_units_in_player_LOS(lvl, vis_map)
+    draw_player(lvl)
+
+
+def draw_units_in_player_LOS(lvl, vis_map):
+    unit_list = lvl.get_all_units()
+    for curr_unit in unit_list:
+        ux, uy = curr_unit.get_position()
+        if vis_map[ux][uy]:
+            draw_unit_itself_only(curr_unit)
+            if curr_unit.has_look_direction:
+                draw_unit_look_direction_only(lvl, curr_unit)
+
+# ---------------------------------------------------------------------------------------------------------- #
+
 
 def get_looking_thingy_char(look_dir):
     x = look_dir[0]
@@ -88,12 +142,3 @@ def draw_unit_look_direction_only(lvl, curr_unit):
             CW.putChar(get_unit_arrow(curr_look_dir), arrow_x, arrow_y)  # TODO: make custom font arrows optional.
             CW.setBackgroundColor(0, 0, 0)
     # CW.putChar(get_looking_thingy_char(curr_look_dir), curr_position[0] + curr_look_dir[0], curr_position[1] + curr_look_dir[1]) # that line looks like a bullshit...
-
-def draw_all_units(lvl): # draws all the units regardless of LOS from player.
-    # TODO: make this not crap.
-    unit_list = lvl.get_all_units()
-    for curr_unit in unit_list:
-        draw_unit_itself_only(curr_unit)
-        if curr_unit.has_look_direction:
-            draw_unit_look_direction_only(lvl, curr_unit)
-

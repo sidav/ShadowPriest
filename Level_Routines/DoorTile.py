@@ -24,3 +24,6 @@ class DoorTile(LevelTile):
 
     def get_passable(self):
         return not self._closed
+
+    def get_opaque(self):
+        return self._closed

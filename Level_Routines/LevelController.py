@@ -14,7 +14,8 @@ def initialize():
     global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     while not CW.isWindowClosed():
-        LevelView.draw_absolutely_everything(currentLevel)
+        # LevelView.draw_absolutely_everything(currentLevel)
+        LevelView.draw_everything_in_player_LOS(currentLevel)
         LOG.print_log()
         CW.flushConsole()
         control()
