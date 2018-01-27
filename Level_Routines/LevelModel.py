@@ -3,6 +3,7 @@ from .DoorTile import DoorTile
 from .Unit import Unit
 from .Actor import Actor
 from .Player import Player
+from Procedurals import BSPDungeonGenerator as BSP
 from Procedurals import RBRDungeonGenerator as RBR
 from GLOBAL_DATA import Level_Tile_Data as LTD
 
@@ -60,6 +61,11 @@ class LevelModel:
 
     def set_tile_was_seen(self, x, y):
         self._level_map[x][y].set_was_seen()
+
+    def set_all_tiles_seen(self):
+        for x in range(self.MAP_WIDTH):
+            for y in range(self.MAP_HEIGHT):
+                self.set_tile_was_seen(x, y)
 
     def is_unit_present(self, x, y):
         # TODO: Check for the player?..

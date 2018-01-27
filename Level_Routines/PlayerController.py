@@ -6,12 +6,15 @@ from Message_Log import MessageLog as LOG
 
 def do_key_action(lvl):
     keyPressed = CW.readKey()
-    key = keyPressed.text
+    key_text = keyPressed.text
     player = lvl.get_player()
-    if not do_move_keys_action(lvl, player, key):
-        if key == '-':
+    if not do_move_keys_action(lvl, player, key_text):
+        if key_text == '-':
             LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
             LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
+        if keyPressed.key == 'F1':
+            lvl.set_all_tiles_seen()
+            LOG.append_replaceable_message('Set all tiles as seen. ')
         else:
             print("Not movement key!")
 

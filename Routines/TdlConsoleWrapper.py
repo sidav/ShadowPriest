@@ -171,7 +171,7 @@ def readKey():
         global LAST_KEY_PRESSED
         while True:
             LAST_KEY_PRESSED = tdl.event.key_wait()
-            if LAST_KEY_PRESSED.text != '' :
+            if LAST_KEY_PRESSED.text != 'KEYUP':
                 break
         return LAST_KEY_PRESSED
     else:
