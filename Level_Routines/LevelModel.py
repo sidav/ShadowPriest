@@ -20,7 +20,8 @@ class LevelModel:
     def __init__(self, mapW, mapH):
         self.generate_level(mapW, mapH)
 
-    def pick_tile_class(self, appearance):
+    def pick_tile_class(self, tile_name):
+        appearance = LTD.tile_name_to_code(tile_name)
         if appearance == LTD._CLDOOR_CODE or appearance == LTD._OPDOOR_CODE:
             return DoorTile(appearance)
         else:

@@ -35,9 +35,9 @@ _MAX_ROOM_SIZE = 15
 _MIN_CORRIDOR_LENGTH = 2
 _MAX_CORRIDOR_LENGTH = 10
 
-_FLOOR_CODE = ' '
-_WALL_CODE = '#'
-_DOOR_CODE = '\\'#'\''
+_FLOOR_CODE = 'floor'
+_WALL_CODE = 'wall'
+_DOOR_CODE = 'door'
 
 
 class _Vector:
