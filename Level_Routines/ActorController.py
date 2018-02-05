@@ -19,7 +19,7 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
     if lvl.is_door_present(posx - lookx, posy - looky) and not lvl.is_door_closed(posx - lookx, posy - looky):
         LC.try_close_door(posx - lookx, posy - looky)
 
-    elif lvl.is_tile_passable(posx + lookx, posy+looky) and lvl.is_tile_passable(posx + 2 * lookx, posy + 2 * looky) or lvl.is_door_present(posx + 2 * lookx, posy+2*looky):
+    elif lvl.is_tile_passable(posx + lookx, posy+looky) and (lvl.is_tile_passable(posx + 2 * lookx, posy + 2 * looky) or lvl.is_door_present(posx + 2 * lookx, posy+2*looky)):
         actor.move_forward()
         if actor.was_rotated_previous_turn:
             actor.was_rotated_previous_turn = False

@@ -59,7 +59,7 @@ class LevelModel:
         return self._units
 
     def is_tile_passable(self, x, y):
-        return self._level_map[x][y].get_passable()
+        return self._level_map[x][y].get_passable() and not self.is_unit_present(x, y)
 
     def set_tile_was_seen(self, x, y):
         self._level_map[x][y].set_was_seen()
@@ -83,10 +83,11 @@ class LevelModel:
                 self.set_tile_was_seen(x, y)
 
     def is_unit_present(self, x, y):
-        # TODO: Check for the player?..
         for unit in self._units:
             if (x, y) == unit.get_position():
                 return True
+        if self._player is not None and (x, y) == self._player.get_position():
+            return True
         return False
 
     def get_opacity_map(self):
