@@ -17,7 +17,7 @@ def initialize():
 
 def try_open_door(x, y):
     if currentLevel.is_door_present(x, y):
-        currentLevel.set_door_opened(x, y)
+        currentLevel.set_door_closed(x, y, False)
     return False
 
 def try_close_door(x, y):

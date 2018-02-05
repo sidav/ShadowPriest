@@ -64,18 +64,18 @@ class LevelModel:
     def set_tile_was_seen(self, x, y):
         self._level_map[x][y].set_was_seen()
 
+    def is_door_closed(self, x, y):
+        if self._level_map[x][y].__class__.__name__ == 'DoorTile':
+            return self._level_map[x][y].get_closed()
+
     def is_door_present(self, x, y):
-        if self._level_map[x][y] is DoorTile:
+        if self._level_map[x][y].__class__.__name__ == 'DoorTile':
             return True
         return False
 
-    def set_door_opened(self, x, y):
-        if self._level_map[x][y] is DoorTile:
-            self._level_map[x][y].set_opened()
-
-    def set_door_closed(self, x, y):
-        if self._level_map[x][y] is DoorTile:
-            self._level_map[x][y].set_closed()
+    def set_door_closed(self, x, y, closed=True):
+        if self._level_map[x][y].__class__.__name__ == 'DoorTile':
+            self._level_map[x][y].set_closed(closed)
 
     def set_all_tiles_seen(self):
         for x in range(self.MAP_WIDTH):

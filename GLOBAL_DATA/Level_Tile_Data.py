@@ -6,7 +6,7 @@ _OPDOOR_CODE = '\\'
 tile_names = {
     'wall': _WALL_CODE,
     'floor': _FLOOR_CODE,
-    'door': _OPDOOR_CODE
+    'door': _CLDOOR_CODE
 }
 
 tile_colors = {
