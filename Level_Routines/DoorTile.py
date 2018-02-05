@@ -19,6 +19,12 @@ class DoorTile(LevelTile):
         else:
             return '\\'
 
+    def set_opened(self):
+        self._closed = False
+
+    def set_closed(self):
+        self._closed = True
+
     def get_closed(self):
         return self._closed
 
