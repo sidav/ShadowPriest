@@ -21,6 +21,22 @@ def do_key_action(lvl):
 
 def do_move_keys_action(lvl, player, key):
     px, py = player.get_position()
+    vector_x, vector_y = key_to_direction(key)
+    if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
+        player.move_by_vector(vector_x, vector_y)
+    if vector_x != 0 and vector_y != 0:
+        return True
+    else:
+        return False
+
+
+def ask_for_direction():
+    LOG.append_replaceable_message('Pick a direction... ')
+    keyPressed = CW.readKey()
+    return key_to_direction(keyPressed.text)
+
+
+def key_to_direction(key):
     vector_x = vector_y = 0
     if key == 'h' or key == '4':
         vector_x = -1
@@ -42,9 +58,4 @@ def do_move_keys_action(lvl, player, key):
     elif key == 'n' or key == '3':
         vector_x = 1
         vector_y = 1
-    if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
-        player.move_by_vector(vector_x, vector_y)
-    if vector_x != 0 and vector_y != 0:
-        return True
-    else:
-        return False
+    return vector_x, vector_y
