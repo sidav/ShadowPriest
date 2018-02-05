@@ -14,6 +14,13 @@ def initialize():
     global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
 
+
+def try_open_door(x, y):
+    if currentLevel.is_door_present(x, y):
+        currentLevel.
+    return False
+
+
 def control():
     global currentLevel
     while not CW.isWindowClosed():
