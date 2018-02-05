@@ -20,6 +20,10 @@ def try_open_door(x, y):
         currentLevel.set_door_opened(x, y)
     return False
 
+def try_close_door(x, y):
+    if currentLevel.is_door_present(x, y):
+        currentLevel.set_door_closed(x, y)
+    return False
 
 def control():
     global currentLevel

@@ -101,6 +101,7 @@ class LevelModel:
     def get_player(self):
         return self._player
 
+    # Should the following be in the controller?
     def place_player(self):
         posx = posy = 0
         while not (self.is_tile_passable(posx, posy)):
