@@ -1,5 +1,5 @@
 from Routines import TdlConsoleWrapper as CW
-from . import LevelView
+from . import LevelView, LevelController
 from Message_Log import MessageLog as LOG
 # from .LevelModel import LevelModel
 
@@ -15,23 +15,38 @@ def do_key_action(lvl):
         if keyPressed.key == 'F1':
             lvl.set_all_tiles_seen()
             LOG.append_replaceable_message('Set all tiles as seen. ')
-        else:
-            print("Not movement key!")
+        if keyPressed.text == 'c':
+            try_close_door(lvl, player)
 
 
 def do_move_keys_action(lvl, player, key):
-    px, py = player.get_position()
     vector_x, vector_y = key_to_direction(key)
+    if vector_x == vector_y == 0:
+        return False
+    px, py = player.get_position()
+
     if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
         player.move_by_vector(vector_x, vector_y)
-    if vector_x != 0 and vector_y != 0:
-        return True
+    elif lvl.is_door_present(px + vector_x, py + vector_y):
+        LevelController.try_open_door(px + vector_x, py + vector_y)
+        LOG.append_message("I open the door. ")
+    return True
+
+
+def try_close_door(lvl, player):
+    px, py = player.get_position()
+    to_x, to_y = ask_for_direction('Where to close a door?')
+    if lvl.is_door_present(px+to_x, py+to_y):
+        if LevelController.try_close_door(px+to_x, py+to_y):
+            LOG.append_message("I close the door.")
+        else:
+            LOG.append_message("I can't close the door! ")
     else:
-        return False
+        LOG.append_message('There is no door here!')
 
 
-def ask_for_direction():
-    LOG.append_replaceable_message('Pick a direction... ')
+def ask_for_direction(log_text='Pick a direction...'):
+    LOG.append_replaceable_message(log_text)
     keyPressed = CW.readKey()
     return key_to_direction(keyPressed.text)
 

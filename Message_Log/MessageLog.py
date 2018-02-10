@@ -19,6 +19,8 @@ def append_message(text):
 
 def append_replaceable_message(text):
     _add_message_object_to_list(LogMessage(text, replaceable=True))
+    print_log()
+    CW.flushConsole()
 
 def print_log():
     last_msgs = all_messages[-LOG_HEIGHT:]

@@ -18,11 +18,13 @@ def initialize():
 def try_open_door(x, y):
     if currentLevel.is_door_present(x, y):
         currentLevel.set_door_closed(x, y, False)
+        return True
     return False
 
 def try_close_door(x, y):
     if currentLevel.is_door_present(x, y):
         currentLevel.set_door_closed(x, y)
+        return True
     return False
 
 def control():
