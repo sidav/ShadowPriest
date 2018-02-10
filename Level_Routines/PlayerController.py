@@ -5,18 +5,27 @@ from Message_Log import MessageLog as LOG
 
 
 def do_key_action(lvl):
+
+    player = lvl.get_player()
+
+    if player.is_peeking():
+        continue_peeking(player)
+        return
+
     keyPressed = CW.readKey()
     key_text = keyPressed.text
-    player = lvl.get_player()
+
     if not do_move_keys_action(lvl, player, key_text):
         if key_text == '-':
             LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
             LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
-        if keyPressed.key == 'F1':
+        if keyPressed.key == 'F1': # debug: magic mapping
             lvl.set_all_tiles_seen()
             LOG.append_replaceable_message('Set all tiles as seen. ')
-        if keyPressed.text == 'c':
+        if keyPressed.text == 'c': # close door
             try_close_door(lvl, player)
+        if keyPressed.text == 'p': # peek
+            do_peeking(lvl, player)
 
 
 def do_move_keys_action(lvl, player, key):
@@ -43,6 +52,26 @@ def try_close_door(lvl, player):
             LOG.append_message("I can't close the door! ")
     else:
         LOG.append_message('There is no door here!')
+
+
+def do_peeking(lvl, player):
+    px, py = player.get_position()
+    peek_x, peek_y = ask_for_direction('Peep in which direction?')
+    if not (lvl.is_door_present(px + peek_x, py + peek_y) or lvl.is_tile_passable(px + peek_x, py + peek_y)):
+        LOG.append_message("I can't peek there! ")
+        return
+    player.set_peeking(True)
+    player.set_peeking_vector(peek_x, peek_y)
+    LOG.append_message('I carefully peek there... ')
+    LOG.append_replaceable_message('I can pass turns with space or 5 to continue peeking.')
+
+
+def continue_peeking(player):
+    LOG.append_replaceable_message('I continue peeking... ')
+    keyPressed = CW.readKey()
+    if keyPressed.text != '5' and keyPressed.text != ' ':
+        player.set_peeking(False)
+        LOG.append_message('I recoil and look around. ')
 
 
 def ask_for_direction(log_text='Pick a direction...'):

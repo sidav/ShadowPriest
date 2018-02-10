@@ -87,6 +87,10 @@ def fullLOSLineCheck(fromx, fromy, viewRange = -1):
             for i, currCell in enumerate(line):
                 x = currCell.x
                 y = currCell.y
+                if i == 0: # TODO: is the starting cell visible?
+                    # TODO: The answer is 'yes' here.
+                    fullView[x][y] = True
+                    continue
                 # if (x < 0 or y < 0 or x > mapW - 1 or y > mapH - 1):
                 #     return False
                 if (x-fromx)**2 + (y-fromy)**2 > viewRange ** 2 and viewRange != -1:
