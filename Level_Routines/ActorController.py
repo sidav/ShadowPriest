@@ -1,11 +1,15 @@
 from Routines import SidavRandom as RND
-from . import LevelController as LC
-
+from . import LevelController as LC, ActorDetectionRoutine as ADR
+from Message_Log import MessageLog as LOG
 # Controls AI-controlled units.
 
 def pick_action_and_do(lvl):
     all_units = lvl.get_all_units()
+    player = lvl.get_player()
+    px, py = player.get_position()
     for current in all_units:
+        if ADR.is_unit_seeing_position(lvl, current, px, py):
+            LOG.append_message('Someone sees you!')
         if current.current_state == current.states.calm:
             do_roam(lvl, current)
         pass

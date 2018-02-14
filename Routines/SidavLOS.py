@@ -1,5 +1,7 @@
 #import Routines.TdlConsoleWrapper as CW
 
+# TODO: looks like the EVERYTHING here is crap. Except for get_line lol
+
 _lastFromX = _lastFromY = -1
 _lastVisibilityTable = [[]]
 
