@@ -5,7 +5,7 @@ class Unit:
 
     _pos_x = _pos_y = 0
     _look_x = _look_y = 0
-    _fov_angle = 90
+    _fov_angle = 110
     _has_look_direction = True # <-- is the "looking thingy" neccessary to draw?
     _appearance = 'G'
 

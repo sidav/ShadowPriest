@@ -9,7 +9,9 @@ def pick_action_and_do(lvl):
     px, py = player.get_position()
     for current in all_units:
         if ADR.is_unit_seeing_position(lvl, current, px, py):
-            LOG.append_message('Someone sees you!')
+            current.set_current_state(current.states.alerted)
+        else:
+            current.set_current_state(current.states.distracted)
         if current.current_state == current.states.calm:
             do_roam(lvl, current)
         pass
