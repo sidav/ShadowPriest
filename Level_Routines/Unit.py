@@ -7,6 +7,7 @@ class Unit:
     _look_x = _look_y = 0
     _fov_angle = 110
     _has_look_direction = True # <-- is the "looking thingy" neccessary to draw?
+    _looking_range = 6
     _appearance = 'G'
 
     def __init__(self, posx, posy, appearance = 'G'):
@@ -65,3 +66,6 @@ class Unit:
 
     def get_fov_angle(self):
         return self._fov_angle
+
+    def get_looking_range(self):
+        return self._looking_range

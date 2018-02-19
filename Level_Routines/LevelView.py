@@ -57,10 +57,10 @@ def draw_absolutely_everything(lvl):
     draw_player(lvl)
 
 
-def draw_everything_in_LOS_from_position(lvl, px, py):
+def draw_everything_in_LOS_from_position(lvl, px, py, looking_range=1):
     CW.clearConsole()
     opacity_map = lvl.get_opacity_map()
-    vis_map = LOS.getVisibilityTableFromPosition(px, py, opacity_map, 6)
+    vis_map = LOS.getVisibilityTableFromPosition(px, py, opacity_map, looking_range)
     # print(opacity_map)
     draw_level_map_in_LOS(lvl, vis_map)
     draw_units_in_visibility_map(lvl, vis_map)
