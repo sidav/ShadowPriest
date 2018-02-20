@@ -3,18 +3,25 @@ from . import LevelController as LC, ActorDetectionRoutine as ADR
 from Message_Log import MessageLog as LOG
 # Controls AI-controlled units.
 
-def pick_action_and_do(lvl):
-    all_units = lvl.get_all_units()
+
+def decide_state(lvl, actor):
     player = lvl.get_player()
     px, py = player.get_position()
-    for current in all_units:
-        if ADR.is_unit_seeing_position(lvl, current, px, py):
-            current.set_current_state(current.states.alerted)
-        else:
-            current.set_current_state(current.states.distracted)
-        if current.current_state == current.states.calm:
-            do_roam(lvl, current)
-        pass
+    if ADR.is_unit_seeing_position(lvl, actor, px, py):
+        actor.set_current_state(actor.states.alerted, 25)
+    elif actor.get_current_state_timeout() > 0:
+        actor.set_current_state(actor.states.distracted)
+    else:
+        actor.set_current_state(actor.states.calm)
+
+
+def pick_action_and_do(lvl):
+    all_units = lvl.get_all_units()
+    for current_actor in all_units:
+        decide_state(lvl, current_actor)
+        if current_actor.current_state == current_actor.states.calm:
+            do_roam(lvl, current_actor)
+        current_actor.decrease_current_state_timeout()
 
 
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
