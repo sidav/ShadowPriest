@@ -1,5 +1,5 @@
 from Routines import SidavRandom as RND
-from . import LevelController as LC, ActorDetectionRoutine as ADR
+from . import LevelController as LC, ActorController_Detection as AC_D
 from Message_Log import MessageLog as LOG
 # Controls AI-controlled units.
 
@@ -7,7 +7,7 @@ from Message_Log import MessageLog as LOG
 def decide_state(lvl, actor):
     player = lvl.get_player()
     px, py = player.get_position()
-    if ADR.is_unit_seeing_position(lvl, actor, px, py):
+    if AC_D.is_unit_seeing_position(lvl, actor, px, py):
         actor.set_current_state(actor.states.alerted, 25)
     elif actor.get_current_state_timeout() > 0:
         actor.set_current_state(actor.states.distracted)
