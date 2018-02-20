@@ -17,6 +17,7 @@ class LevelModel:
     _level_map = []
     _units = []
     _player = None
+    _current_turn = 0
 
     def __init__(self, mapW, mapH):
         self.generate_level(mapW, mapH)
@@ -97,6 +98,12 @@ class LevelModel:
             for y in range(maph):
                 vis_map[x][y] = self._level_map[x][y].get_opaque()
         return vis_map
+
+    def get_current_turn(self):
+        return self._current_turn
+
+    def next_turn(self):
+        self._current_turn += 1
 
 
     def get_player(self):

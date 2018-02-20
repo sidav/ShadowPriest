@@ -9,6 +9,7 @@ class Unit:
     _has_look_direction = True # <-- is the "looking thingy" neccessary to draw?
     _looking_range = 6
     _appearance = 'G'
+    _next_turn_to_act = 0
 
     def __init__(self, posx, posy, appearance = 'G'):
         self._appearance = appearance
@@ -51,6 +52,12 @@ class Unit:
             self._look_x //= abs(self._look_x)
         if self._look_y != 0:
             self._look_y //= abs(self._look_y)
+
+    def spend_turns_for_action(self, turns):
+        self._next_turn_to_act += turns
+
+    def get_next_turn_to_act(self):
+        return self._next_turn_to_act
 
     def has_look_direction(self):
         return self._has_look_direction

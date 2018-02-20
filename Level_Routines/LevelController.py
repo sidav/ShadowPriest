@@ -3,6 +3,7 @@ from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as GC
 from .LevelModel import LevelModel
 from . import LevelView
+from . import Statusbar
 from . import PlayerController as P_C
 from . import ActorController as A_C
 
@@ -27,20 +28,37 @@ def try_close_door(x, y):
         return True
     return False
 
+def is_time_to_act(unit):
+    current_turn = currentLevel.get_current_turn()
+    if unit.get_next_turn_to_act() <= current_turn:
+        return True
+    return False
+
 def control():
     global currentLevel
+    player = currentLevel.get_player()
+
     while not CW.isWindowClosed():
-        player = currentLevel.get_player()
         player_looking_range = player.get_looking_range()
         player_x, player_y = player.get_position()
         peek_x, peek_y = player.get_peeking_vector()
-        # LevelView.draw_absolutely_everything(currentLevel)
-        if player.is_peeking():
-            LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x+peek_x, player_y+peek_y, player_looking_range)
-        else:
-            LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x, player_y, player_looking_range)
-        LOG.print_log()
-        CW.flushConsole()
-        P_C.do_key_action(currentLevel)
-        A_C.pick_action_and_do(currentLevel)
 
+        all_units = currentLevel.get_all_units()
+
+        current_turn = currentLevel.get_current_turn()
+        if current_turn % 5 == 0 or is_time_to_act(player):
+            # LevelView.draw_absolutely_everything(currentLevel)
+            if player.is_peeking():
+                LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x+peek_x, player_y+peek_y, player_looking_range)
+            else:
+                LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x, player_y, player_looking_range)
+            LOG.print_log()
+            Statusbar.print_statusbar(current_turn)
+            CW.flushConsole()
+
+        if is_time_to_act(player):
+            P_C.do_key_action(currentLevel)
+        for unit in all_units:
+            if is_time_to_act(unit):
+                A_C.control(currentLevel, unit)
+        currentLevel.next_turn()

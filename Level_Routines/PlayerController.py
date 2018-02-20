@@ -36,9 +36,11 @@ def do_move_keys_action(lvl, player, key):
 
     if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
         player.move_by_vector(vector_x, vector_y)
+        player.spend_turns_for_action(9)
     elif lvl.is_door_present(px + vector_x, py + vector_y):
         LevelController.try_open_door(px + vector_x, py + vector_y)
         LOG.append_message("I open the door. ")
+        player.spend_turns_for_action(15)
     return True
 
 
@@ -50,13 +52,14 @@ def try_close_door(lvl, player):
             LOG.append_message("I close the door.")
         else:
             LOG.append_message("I can't close the door! ")
+        player.spend_turns_for_action(12)
     else:
         LOG.append_message('There is no door here!')
 
 
 def do_peeking(lvl, player):
     px, py = player.get_position()
-    peek_x, peek_y = ask_for_direction('Peep in which direction?')
+    peek_x, peek_y = ask_for_direction('Peek in which direction?')
     if not (lvl.is_door_present(px + peek_x, py + peek_y) or lvl.is_tile_passable(px + peek_x, py + peek_y)):
         LOG.append_message("I can't peek there! ")
         return
@@ -64,6 +67,7 @@ def do_peeking(lvl, player):
     player.set_peeking_vector(peek_x, peek_y)
     LOG.append_message('I carefully peek there... ')
     LOG.append_replaceable_message('I can pass turns with space or 5 to continue peeking.')
+    player.spend_turns_for_action(5)
 
 
 def continue_peeking(player):
@@ -72,6 +76,8 @@ def continue_peeking(player):
     if keyPressed.text != '5' and keyPressed.text != ' ':
         player.set_peeking(False)
         LOG.append_message('I recoil and look around. ')
+    else:
+        player.spend_turns_for_action(5)
 
 
 def ask_for_direction(log_text='Pick a direction...'):

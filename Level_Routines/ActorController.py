@@ -4,6 +4,15 @@ from Message_Log import MessageLog as LOG
 # Controls AI-controlled units.
 
 
+def control(lvl, current_actor):
+    # all_units = lvl.get_all_units()
+    # for current_actor in all_units:
+    decide_state(lvl, current_actor)
+    if current_actor.current_state == current_actor.states.calm:
+        do_roam(lvl, current_actor)
+    current_actor.decrease_current_state_timeout()
+
+
 def decide_state(lvl, actor):
     player = lvl.get_player()
     px, py = player.get_position()
@@ -15,15 +24,6 @@ def decide_state(lvl, actor):
         actor.set_current_state(actor.states.calm)
 
 
-def pick_action_and_do(lvl):
-    all_units = lvl.get_all_units()
-    for current_actor in all_units:
-        decide_state(lvl, current_actor)
-        if current_actor.current_state == current_actor.states.calm:
-            do_roam(lvl, current_actor)
-        current_actor.decrease_current_state_timeout()
-
-
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
     posx, posy = actor.get_position()
     lookx, looky = actor.get_look_direction()
@@ -31,16 +31,19 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
 
     if lvl.is_door_present(posx - lookx, posy - looky) and not lvl.is_door_closed(posx - lookx, posy - looky):
         LC.try_close_door(posx - lookx, posy - looky)
+        actor.spend_turns_for_action(15)
 
     elif lvl.is_tile_passable(posx + lookx, posy+looky) and (lvl.is_tile_passable(posx + 2 * lookx, posy + 2 * looky) or lvl.is_door_present(posx + 2 * lookx, posy+2*looky)):
         actor.move_forward()
+        actor.spend_turns_for_action(10)
         if actor.was_rotated_previous_turn:
             actor.was_rotated_previous_turn = False
             actor.prefers_clockwise_rotation = RND.rand_bool()
 
     elif lvl.is_door_present(posx + lookx, posy+looky) and lvl.is_door_closed(posx + lookx, posy+looky):
         LC.try_open_door(posx + lookx, posy+looky)
-
+        actor.spend_turns_for_action(15)
     else:
         actor.rotate_45_degrees(actor.prefers_clockwise_rotation)
+        actor.spend_turns_for_action(7)
         actor.was_rotated_previous_turn = True
