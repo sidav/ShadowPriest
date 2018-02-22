@@ -10,7 +10,9 @@ def cost_for(action, unit=None):
     elif action == 'turn':
         return 7
     elif action == 'open door':
-        return 13
+        return 15
+    elif action == 'close door':
+        return 12
 
     else:
         LOG.append_error_message('Unknown action "{0}" executed'.format(action))
