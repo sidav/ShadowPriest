@@ -1,5 +1,5 @@
 from Level_Routines import LevelView, LevelController
-from Level_Routines.Units import TurnCosts as TC
+from ..Units import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 
