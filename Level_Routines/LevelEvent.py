@@ -1,5 +1,5 @@
 
-class Level_Event:
+class LevelEvent:
 
     text = "empty event"
 
