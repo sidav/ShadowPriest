@@ -1,13 +1,11 @@
-from .LevelTile import LevelTile as LTile
-from .DoorTile import DoorTile
-from .Unit import Unit
-from .Actor import Actor
-from .Player import Player
+import Routines.SidavRandom as rand
+from GLOBAL_DATA import Level_Tile_Data as LTD
+from .Level_Features.LevelTile import LevelTile as LTile
+from .Player.Player import Player
+from .Units.Actor import Actor
 from Procedurals import BSPDungeonGenerator as BSP
 from Procedurals import RBRDungeonGenerator as RBR
-from GLOBAL_DATA import Level_Tile_Data as LTD
-
-import Routines.SidavRandom as rand
+from .Level_Features.DoorTile import DoorTile
 
 
 #represents the game level (dungeon floor, etc)

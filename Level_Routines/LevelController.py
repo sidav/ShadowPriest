@@ -1,11 +1,10 @@
+from GLOBAL_DATA import Global_Constants as GC
+from .Player import PlayerController as P_C, Statusbar
+from .Units import ActorController as A_C
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
-from GLOBAL_DATA import Global_Constants as GC
-from .LevelModel import LevelModel
 from . import LevelView
-from . import Statusbar
-from . import PlayerController as P_C
-from . import ActorController as A_C
+from .LevelModel import LevelModel
 
 player_x = player_y = 0
 last_tile = '.'
