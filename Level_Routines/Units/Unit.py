@@ -1,8 +1,9 @@
 import Routines.SidavRandom as random
+from .Inventory import Inventory
 
 # Represents (as superclass) the player, some character or enemy or what the heck you want to.
 class Unit:
-
+    _inventory = None
     _pos_x = _pos_y = 0
     _look_x = _look_y = 0
     _fov_angle = 110
@@ -12,6 +13,7 @@ class Unit:
     _next_turn_to_act = 0
 
     def __init__(self, posx, posy, appearance = 'G'):
+        self._inventory = Inventory()
         self._appearance = appearance
         self._pos_x = posx
         self._pos_y = posy
