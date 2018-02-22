@@ -1,6 +1,7 @@
 class LogMessage:
 
     text = "EMPTY"
+    stack = 1 # for more than one equal message in a row
     replaceable = False
     color = (200, 200, 200)
 
