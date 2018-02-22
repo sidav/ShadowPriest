@@ -5,23 +5,26 @@ from Message_Log import MessageLog as LOG
 
 
 def control(lvl, current_actor):
-    # all_units = lvl.get_all_units()
-    # for current_actor in all_units:
     decide_state(lvl, current_actor)
     if current_actor.current_state == current_actor.states.calm:
         do_roam(lvl, current_actor)
-    current_actor.decrease_current_state_timeout()
+    else:
+        current_actor.spend_turns_for_action(TC.cost_for('wait'))
 
 
 def decide_state(lvl, actor):
+    state_turns_left = actor.get_current_state_expiration_turn() - lvl.get_current_turn()
     player = lvl.get_player()
     px, py = player.get_position()
     if AC_D.is_unit_seeing_position(lvl, actor, px, py):
-        actor.set_current_state(actor.states.alerted, 25)
-    elif actor.get_current_state_timeout() > 0:
+        actor.set_current_state(actor.states.alerted, lvl.get_current_turn() + 250)
+    elif state_turns_left > 0 and actor.get_current_state() == actor.states.alerted:
         actor.set_current_state(actor.states.distracted)
-    else:
+    elif state_turns_left <= 0:
         actor.set_current_state(actor.states.calm)
+    else:
+        pass
+        # actor.set_current_state(actor.states.calm)
 
 
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
