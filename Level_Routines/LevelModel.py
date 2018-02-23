@@ -55,9 +55,6 @@ class LevelModel:
     def get_tile_char(self, x, y):
         return self._level_map[x][y].get_tile_char()
 
-    def get_all_units(self):
-        return self._units
-
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable() and not self.is_unit_present(x, y)
 
@@ -82,6 +79,10 @@ class LevelModel:
             for y in range(self.MAP_HEIGHT):
                 self.set_tile_was_seen(x, y)
 
+    # units
+    def get_all_units(self):
+        return self._units
+
     def is_unit_present(self, x, y):
         for unit in self._units:
             if (x, y) == unit.get_position():
@@ -89,13 +90,18 @@ class LevelModel:
         if self._player is not None and (x, y) == self._player.get_position():
             return True
         return False
+    # /units
+
+    # items
+    def add_item_on_floor_at_coordinates(self, item, x, y):
+        item.set_position(x, y)
+        self._items_on_floor.append(item)
 
     def is_item_present(self, x, y):
         for item in self._items_on_floor:
             if item.get_position() == (x, y):
                 return True
         return False
-
 
     def get_all_items_on_floor(self):
         return self._items_on_floor
@@ -106,6 +112,10 @@ class LevelModel:
             if item.get_position() == (x, y):
                 list_items.append(item)
         return list_items
+
+    def remove_item_from_floor(self, item):
+        self._items_on_floor.remove(item)
+    # /items
 
     def get_opacity_map(self):
         mapw, maph = self.MAP_WIDTH, self.MAP_HEIGHT
@@ -120,7 +130,6 @@ class LevelModel:
 
     def next_turn(self):
         self._current_turn += 1
-
 
     def get_player(self):
         return self._player

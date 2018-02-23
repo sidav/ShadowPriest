@@ -21,11 +21,13 @@ def try_open_door(x, y):
         return True
     return False
 
+
 def try_close_door(x, y):
     if currentLevel.is_door_present(x, y):
         currentLevel.set_door_closed(x, y)
         return True
     return False
+
 
 def is_time_to_act(unit):
     current_turn = currentLevel.get_current_turn()
@@ -33,9 +35,22 @@ def is_time_to_act(unit):
         return True
     return False
 
-def unit_pick_up_item(unit):
-    cx, cy = unit.get_position()
+def is_item_present(x, y):
+    return currentLevel.is_item_present(x, y)
 
+def get_items_at_coordinates(x, y):
+    return currentLevel.get_items_at_coordinates(x, y)
+
+
+def try_pick_up_item(unit, item):
+    x, y = unit.get_position()
+    ix, iy = item.get_position()
+    if (x, y) == (ix, iy):
+        unit.inventory.add_item(item)
+        currentLevel.remove_item_from_floor(item)
+        return True
+    else:
+        return False
 
 
 def control():

@@ -1,7 +1,8 @@
-from Level_Routines import LevelView, LevelController
+from Level_Routines import LevelView, LevelController as LC
 from ..Units import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
+from . import PlayerController_Inventory as PC_I
 
 
 # from .LevelModel import LevelModel
@@ -32,6 +33,8 @@ def do_key_action(lvl):
             try_close_door(lvl, player)
         if keyPressed.text == 'p': # peek
             do_peeking(lvl, player)
+        if keyPressed.text == 'g': # grab
+            PC_I.do_grabbing(player)
 
 
 def do_move_keys_action(lvl, player, key):
@@ -44,7 +47,7 @@ def do_move_keys_action(lvl, player, key):
         player.move_by_vector(vector_x, vector_y)
         player.spend_turns_for_action(TC.cost_for('move'))
     elif lvl.is_door_present(px + vector_x, py + vector_y):
-        LevelController.try_open_door(px + vector_x, py + vector_y)
+        LC.try_open_door(px + vector_x, py + vector_y)
         LOG.append_message("I open the door. ")
         player.spend_turns_for_action(TC.cost_for('open door'))
     return True
@@ -54,7 +57,7 @@ def try_close_door(lvl, player):
     px, py = player.get_position()
     to_x, to_y = ask_for_direction('Where to close a door?')
     if lvl.is_door_present(px+to_x, py+to_y):
-        if LevelController.try_close_door(px+to_x, py+to_y):
+        if LC.try_close_door(px+to_x, py+to_y):
             LOG.append_message("I close the door.")
         else:
             LOG.append_message("I can't close the door! ")
