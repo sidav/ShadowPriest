@@ -6,6 +6,7 @@ import Routines.SidavLOS as LOS
 
 from Level_Routines import LevelController as LC, LevelView as LV
 from Level_Routines.LevelModel import LevelModel as LM
+import SidavMenu as MENU
 
 #Following file is just a testing ground for any shit possible. It should not interfere with any other logic and should cause no problems when deleted.
 
@@ -28,5 +29,9 @@ def makeSomeTestCrap():
     #     while key.text != 'SPACE':
     #         key = CW.readKey()
 
-    LC.initialize()
-    LC.control()
+    MENU.single_select_menu("AHAHA MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third'])
+    CW.flushConsole()
+    CW.readKey()
+
+    # LC.initialize()
+    # LC.control()

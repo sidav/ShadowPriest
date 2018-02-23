@@ -140,9 +140,12 @@ def drawCharArrayAtPosition(arr, xpos, ypos, transpose=False):
                     putChar(arr[x][y], x+xpos, y+ypos)
 
 
-def setBackgroundColor(r, g, b):
+def setBackgroundColor(r, g=-1, b=-1):
     global BACKCOLOR
-    BACKCOLOR = (r, g, b)
+    if g != -1 and b != -1:
+        BACKCOLOR = (r, g, b)
+    else:
+        BACKCOLOR = (r[0], r[1], r[2])
 
 
 def setForegroundColor(r, g = -1, b = -1):
@@ -170,8 +173,9 @@ def readKey():
     global LAST_KEY_PRESSED
     while not tdl.event.is_window_closed():
         LAST_KEY_PRESSED = tdl.event.key_wait()
-        print("{}, {}, {}".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
-        if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F'):
+        print("text: {}, char: {}, keychar: {}".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
+        if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
+            LAST_KEY_PRESSED.keychar == 'DOWN' or LAST_KEY_PRESSED.keychar == 'UP' or LAST_KEY_PRESSED.keychar == 'ENTER':
             break
     if tdl.event.is_window_closed():
         closeProgram(0)
