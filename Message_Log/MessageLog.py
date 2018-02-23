@@ -10,6 +10,10 @@ def _add_message_object_to_list(msg):
         if all_messages[-1].text == msg.text:
             all_messages[-1].stack += 1
             return
+        elif len(all_messages) > 1 and all_messages[-2].text == msg.text:
+            all_messages.pop()
+            all_messages[-1].stack += 1
+            return
         elif all_messages[-1].replaceable:
             all_messages[-1] = msg
             return
