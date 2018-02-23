@@ -33,6 +33,11 @@ def is_time_to_act(unit):
         return True
     return False
 
+def unit_pick_up_item(unit):
+    cx, cy = unit.get_position()
+
+
+
 def control():
     global currentLevel
     player = currentLevel.get_player()

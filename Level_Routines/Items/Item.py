@@ -14,3 +14,6 @@ class Item:
         self._color = color
         self._name = name
         self._weight = weight
+
+    def get_position(self):
+        return self._pos_x, self._pos_y

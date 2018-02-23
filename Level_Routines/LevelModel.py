@@ -14,6 +14,7 @@ class LevelModel:
 
     _level_map = []
     _units = []
+    _items_on_floor = []
     _player = None
     _current_turn = 0
 
@@ -88,6 +89,23 @@ class LevelModel:
         if self._player is not None and (x, y) == self._player.get_position():
             return True
         return False
+
+    def is_item_present(self, x, y):
+        for item in self._items_on_floor:
+            if item.get_position() == (x, y):
+                return True
+        return False
+
+
+    def get_all_items_on_floor(self):
+        return self._items_on_floor
+
+    def get_items_at_coordinates(self, x, y):
+        list_items = []
+        for item in self._items_on_floor:
+            if item.get_position() == (x, y):
+                list_items.append(item)
+        return list_items
 
     def get_opacity_map(self):
         mapw, maph = self.MAP_WIDTH, self.MAP_HEIGHT
