@@ -8,6 +8,8 @@ from .LevelModel import LevelModel
 
 player_x = player_y = 0
 last_tile = '.'
+redraw_map_timeout = 10
+DEFAULT_REDRAW_MAP_TIMEOUT = 10
 currentLevel = None
 
 def initialize():
@@ -54,7 +56,7 @@ def try_pick_up_item(unit, item):
 
 
 def control():
-    global currentLevel
+    global currentLevel, redraw_map_timeout
     player = currentLevel.get_player()
 
     while not CW.isWindowClosed():
@@ -65,7 +67,8 @@ def control():
         all_units = currentLevel.get_all_units()
 
         current_turn = currentLevel.get_current_turn()
-        if current_turn % 5 == 0 or is_time_to_act(player):
+        # do we need to redraw the map?
+        if redraw_map_timeout == 0 or is_time_to_act(player):
             # LevelView.draw_absolutely_everything(currentLevel)
             if player.is_peeking():
                 LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x+peek_x, player_y+peek_y, player_looking_range)
@@ -74,6 +77,7 @@ def control():
             LOG.print_log()
             Statusbar.print_statusbar(current_turn)
             CW.flushConsole()
+            redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
         if is_time_to_act(player):
             P_C.do_key_action(currentLevel)
@@ -81,3 +85,4 @@ def control():
             if is_time_to_act(unit):
                 A_C.control(currentLevel, unit)
         currentLevel.next_turn()
+        redraw_map_timeout -= 1
