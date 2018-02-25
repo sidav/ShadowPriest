@@ -46,6 +46,7 @@ def do_move_keys_action(lvl, player, key):
     if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
         player.move_by_vector(vector_x, vector_y)
         player.spend_turns_for_action(TC.cost_for('move'))
+        check_for_items_on_floor(player)
     elif lvl.is_door_present(px + vector_x, py + vector_y):
         LC.try_open_door(px + vector_x, py + vector_y)
         LOG.append_message("I open the door. ")
@@ -87,6 +88,18 @@ def continue_peeking(player):
         LOG.append_message('I recoil and look around. ')
     else:
         player.spend_turns_for_action(TC.cost_for('peek'))
+
+
+def check_for_items_on_floor(player):
+    px, py = player.get_position()
+    if LC.is_item_present(px, py):
+        item_message = 'I see here: '
+        items_here = LC.get_items_at_coordinates(px, py)
+        item_message += items_here[0].get_name()
+        if len(items_here) >= 1:
+            item_message += ' and {} more items'.format(len(items_here))
+        LOG.append_message(item_message)
+
 
 
 def ask_for_direction(log_text='Pick a direction...'):
