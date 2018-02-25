@@ -3,6 +3,7 @@ from GLOBAL_DATA import Level_Tile_Data as LTD
 from .Level_Features.LevelTile import LevelTile as LTile
 from .Player.Player import Player
 from .Units.Actor import Actor
+from .Items.Item import Item
 from Procedurals import BSPDungeonGenerator as BSP
 from Procedurals import RBRDungeonGenerator as RBR
 from .Level_Features.DoorTile import DoorTile
@@ -48,6 +49,7 @@ class LevelModel:
 
         self.place_random_units()
         self.place_player()
+        self.place_random_items()
 
     def get_tile_was_seen(self, x, y):
         return self._level_map[x][y].get_was_seen()
@@ -150,3 +152,12 @@ class LevelModel:
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
             self._units.append(Actor(posx, posy, 'G'))
+
+    def place_random_items(self): # <- FUCKING TEMPORARY # TODO: REMOVE
+        # rand.randomize()
+        for _ in range(10):
+            posx = posy = 0
+            while not (self.is_tile_passable(posx, posy)):
+                posx = rand.rand(self.MAP_WIDTH)
+                posy = rand.rand(self.MAP_HEIGHT)
+            self._items_on_floor.append(Item(posx, posy))

@@ -29,10 +29,8 @@ def makeSomeTestCrap():
     #     while key.text != 'SPACE':
     #         key = CW.readKey()
 
-    print(MENU.single_select_menu("AHAHA MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
-    print(MENU.multi_select_menu("AHAHA MULTISELECT MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
-    CW.flushConsole()
-    # CW.readKey()
+    # print(MENU.single_select_menu("AHAHA MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
+    # print(MENU.multi_select_menu("AHAHA MULTISELECT MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
 
-    # LC.initialize()
-    # LC.control()
+    LC.initialize()
+    LC.control()

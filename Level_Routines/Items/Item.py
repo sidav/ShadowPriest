@@ -17,3 +17,12 @@ class Item:
 
     def get_position(self):
         return self._pos_x, self._pos_y
+
+    def get_name(self):
+        return self._name
+
+    def get_color(self):
+        return self._color
+
+    def get_appearance(self):
+        return self._appearance

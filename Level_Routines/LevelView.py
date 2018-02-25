@@ -64,6 +64,7 @@ def draw_everything_in_LOS_from_position(lvl, px, py, looking_range=1):
     # print(opacity_map)
     draw_level_map_in_LOS(lvl, vis_map)
     draw_units_in_visibility_map(lvl, vis_map)
+    draw_items_in_visibility_map(lvl, vis_map)
     draw_player(lvl)
 
 
@@ -76,7 +77,22 @@ def draw_units_in_visibility_map(lvl, vis_map):
             if curr_unit.has_look_direction:
                 draw_unit_look_direction_only(lvl, curr_unit)
 
+
+def draw_items_in_visibility_map(lvl, vis_map):
+    item_list = lvl.get_all_items_on_floor()
+    for curr_item in item_list:
+        ix, iy = curr_item.get_position()
+        if vis_map[ix][iy]:
+            draw_item(curr_item)
+
 # ---------------------------------------------------------------------------------------------------------- #
+
+
+def draw_item(item):
+    CW.setForegroundColor(item.get_color())
+    curr_appearance = item.get_appearance()
+    curr_position = item.get_position()
+    CW.putChar(curr_appearance, curr_position[0], curr_position[1])
 
 
 def get_looking_thingy_char(look_dir):

@@ -78,3 +78,6 @@ class Unit:
 
     def get_looking_range(self):
         return self._looking_range
+
+    def get_inventory(self):
+        return self._inventory

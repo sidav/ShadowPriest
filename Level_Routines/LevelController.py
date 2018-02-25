@@ -46,7 +46,7 @@ def try_pick_up_item(unit, item):
     x, y = unit.get_position()
     ix, iy = item.get_position()
     if (x, y) == (ix, iy):
-        unit.inventory.add_item(item)
+        unit.get_inventory().add_item(item)
         currentLevel.remove_item_from_floor(item)
         return True
     else:
