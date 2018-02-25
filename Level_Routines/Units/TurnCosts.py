@@ -15,6 +15,8 @@ def cost_for(action, unit=None):
         return 12
     elif action == 'peek':
         return 10
+    elif action == 'pick up':
+        return 12
 
     else:
         LOG.append_error_message('Time cost for unknown action "{0}" requested.'.format(action))
