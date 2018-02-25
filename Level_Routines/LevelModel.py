@@ -160,4 +160,6 @@ class LevelModel:
             while not (self.is_tile_passable(posx, posy)):
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
-            self._items_on_floor.append(Item(posx, posy))
+            num_of_items = rand.rand(7)  # <-- PLACEHOLDER! TODO: deal with it B-/
+            for _ in range(num_of_items):
+                self._items_on_floor.append(Item(posx, posy))
