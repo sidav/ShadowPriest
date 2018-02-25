@@ -173,7 +173,7 @@ def readKey():
     global LAST_KEY_PRESSED
     while not tdl.event.is_window_closed():
         LAST_KEY_PRESSED = tdl.event.key_wait()
-        print("text: {}, char: {}, keychar: {}".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
+        print("text: '{}', char: '{}', keychar: '{}'".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
         if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
             LAST_KEY_PRESSED.keychar == 'DOWN' or LAST_KEY_PRESSED.keychar == 'UP' or LAST_KEY_PRESSED.keychar == 'ENTER':
             break
