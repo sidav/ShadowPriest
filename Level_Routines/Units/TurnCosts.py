@@ -17,5 +17,5 @@ def cost_for(action, unit=None):
         return 10
 
     else:
-        LOG.append_error_message('Unknown action "{0}" executed'.format(action))
+        LOG.append_error_message('Time cost for unknown action "{0}" requested.'.format(action))
         return 1
