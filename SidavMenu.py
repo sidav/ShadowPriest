@@ -16,6 +16,13 @@ def draw_titlebar(title, fgcolor=(128, 128, 128), bgcolor=(128, 0, 0)):
     CW.setForegroundColor(bgcolor)
     CW.putString(title, title_xcoord, 0)
 
+
+def draw_line_at_the_bottom(text):
+    CW.setBackgroundColor(0, 0, 0)
+    CW.setForegroundColor(192, 192, 192)
+    CW.putString(text, 0, C_H-1)
+
+
 def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
     cursor_line = 0
     color = (128, 128, 128)
@@ -58,6 +65,9 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
 
     CW.setForegroundColor(color)
     CW.putString(subheading, 0, 1)
+
+    draw_line_at_the_bottom('SPACE: select at the cursor, a/d: select/deselect all, ENTER: confirm selected')
+
     while 1:
         for i, item in enumerate(items):
             if (i == cursor_line):
@@ -80,6 +90,12 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
             cursor_line -= 1
             if cursor_line < 0:
                 cursor_line = items_in_menu - 1
+        elif key.text == 'a':
+            for i in range(items_in_menu):
+                selected_items[i] = 1
+        elif key.text == 'd':
+            for i in range(items_in_menu):
+                selected_items[i] = 0
         elif key.text == ' ':
             selected_items[cursor_line] ^= 1
         elif key.keychar == 'ENTER':
