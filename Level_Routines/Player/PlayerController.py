@@ -98,8 +98,9 @@ def notify_for_items_on_floor(player):
         item_message = 'I see here: '
         items_here = LC.get_items_at_coordinates(px, py)
         item_message += items_here[0].get_name()
-        if len(items_here) >= 1:
+        if len(items_here) > 1:
             item_message += ' and {} more items'.format(len(items_here)-1)
+        item_message += '.'
         LOG.append_message(item_message)
 
 
