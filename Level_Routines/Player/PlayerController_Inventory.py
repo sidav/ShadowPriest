@@ -53,9 +53,21 @@ def pickup_with_pickup_menu(player, items):
             LOG.append_error_message("Can't pick up items here for unknown reason!")
 
 
+def show_equipped_items(player):
+    inv = player.get_inventory()
 
-def get_names_from_list_of_items(items):
+    items_in_slots = [inv.get_equipped_weapon(), inv.get_equipped_armor(), inv.get_equipped_ammo()]
+
+    item_slot_names = ['Weapon in hand', 'Equipped armor', 'Ammo in ready']
+    items_in_slots_names = get_names_from_list_of_items(items_in_slots, 'Nothing')
+
+    MENU.name_value_menu('INVENTORY', 'Look at my fucking inventory. Look. ', item_slot_names, items_in_slots_names)
+
+def get_names_from_list_of_items(items, placeholder_for_empty='None_Item'):
     name_list = []
     for item in items:
-        name_list.append(item.get_name())
+        if item is not None:
+            name_list.append(item.get_name())
+        else:
+            name_list.append(placeholder_for_empty)
     return name_list

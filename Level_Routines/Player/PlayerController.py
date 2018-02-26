@@ -37,6 +37,8 @@ def do_key_action(lvl):
             PC_I.do_grabbing(player)
         if keyPressed.text == 'd': # drop
             PC_I.do_dropping(player)
+        if keyPressed.text == 'i': # list equipped items
+            PC_I.show_equipped_items(player)
 
 
 def do_move_keys_action(lvl, player, key):
