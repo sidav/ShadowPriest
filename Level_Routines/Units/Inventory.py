@@ -1,7 +1,7 @@
 from ..Items.Item import Item
 
 class Inventory:
-    
+
     backpack = []
 
     equipped_weapon = None
@@ -14,5 +14,11 @@ class Inventory:
             wght += item._weight
         return wght
 
+    def get_backpack(self):
+        return self.backpack
+
     def add_item(self, item):
         self.backpack.append(item)
+
+    def remove_item(self, item):
+        self.backpack.remove(item)

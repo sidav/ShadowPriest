@@ -55,6 +55,13 @@ def try_pick_up_item(unit, item):
         return False
 
 
+def try_drop_item(unit, item):
+    x, y = unit.get_position()
+    unit.get_inventory().remove_item(item)
+    currentLevel.add_item_on_floor_at_coordinates(item, x, y)
+    return True
+
+
 def control():
     global currentLevel, redraw_map_timeout
     player = currentLevel.get_player()

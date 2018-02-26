@@ -155,11 +155,11 @@ class LevelModel:
 
     def place_random_items(self): # <- FUCKING TEMPORARY # TODO: REMOVE
         # rand.randomize()
-        for _ in range(10):
+        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
             posx = posy = 0
             while not (self.is_tile_passable(posx, posy)):
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
-            num_of_items = rand.rand(7)  # <-- PLACEHOLDER! TODO: deal with it B-/
+            num_of_items = rand.rand(7)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
             for _ in range(num_of_items):
                 self._items_on_floor.append(Item(posx, posy))

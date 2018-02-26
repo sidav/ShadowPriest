@@ -15,6 +15,9 @@ class Item:
         self._name = name
         self._weight = weight
 
+    def set_position(self, x, y):
+        self._pos_x, self._pos_y = x, y
+
     def get_position(self):
         return self._pos_x, self._pos_y
 
