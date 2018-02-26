@@ -22,17 +22,53 @@ def _draw_line_at_the_bottom(text):
     CW.setForegroundColor(192, 192, 192)
     CW.putString(text, 0, C_H-1)
 
+def draw_title_and_subheading(title, subheading):
+    CW.clearConsole()
+    color = (128, 128, 128)
+    _draw_titlebar(title)
+    CW.setForegroundColor(color)
+    CW.putString(subheading, 0, 1)
+
+
+def name_value_menu(title='Name-value menu. Pick a title, dummy!', subheading='Pick subheading, dummy!',
+                    names = [], values=[]):  # for inventory and whatever
+    # cursor_line = 0
+    # items_in_menu = len(items)
+
+    draw_title_and_subheading(title, subheading)
+    names_color = (192, 192, 192)
+    values_color = (128, 128, 128)
+
+    width_of_name_column = 0
+    for name in names:
+        if len(name) >= width_of_name_column:
+            width_of_name_column = len(name) + 3
+
+    CW.setForegroundColor(names_color)
+    for i, name in enumerate(names):
+        CW.putString(name+':  ', 0, i+2)
+
+    CW.setForegroundColor(values_color)
+    for i, value in enumerate(values):
+        CW.putString(value, width_of_name_column, i + 2)
+
+    CW.flushConsole()
+
+    while 1:
+        key = CW.readKey()
+        if key.keychar.__contains__('ENTER') or key.keychar == 'ESCAPE' or key.text == ' ':
+            return
+
+
+
 
 def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
-    CW.clearConsole()
     cursor_line = 0
     color = (128, 128, 128)
     items_in_menu = len(items)
 
-    _draw_titlebar(title)
+    draw_title_and_subheading(title, subheading)
 
-    CW.setForegroundColor(color)
-    CW.putString(subheading, 0, 1)
     while 1:
         for i, item in enumerate(items):
             if (i == cursor_line):
@@ -57,18 +93,15 @@ def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='
         elif key.keychar.__contains__('ENTER') or key.text == ' ':
             return cursor_line
 
+
 def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
     # returns the list of indexes of selected values.
-    CW.clearConsole()
     cursor_line = 0
     color = (128, 128, 128)
     items_in_menu = len(items)
     selected_items = [False for _ in range(items_in_menu)]
 
-    _draw_titlebar(title)
-
-    CW.setForegroundColor(color)
-    CW.putString(subheading, 0, 1)
+    draw_title_and_subheading(title, subheading)
 
     _draw_line_at_the_bottom('SPACE: select at the cursor, a/d: select/deselect all, ENTER: confirm selected')
 
