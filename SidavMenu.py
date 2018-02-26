@@ -54,7 +54,7 @@ def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='
             cursor_line -= 1
             if cursor_line < 0:
                 cursor_line = items_in_menu - 1
-        elif key.keychar == 'ENTER' or key.text == ' ':
+        elif key.keychar.__contains__('ENTER') or key.text == ' ':
             return cursor_line
 
 def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
@@ -104,7 +104,7 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
                 selected_items[i] = 0
         elif key.text == ' ':
             selected_items[cursor_line] ^= 1
-        elif key.keychar == 'ENTER':
+        elif key.keychar.__contains__('ENTER'):
             # form a list of indices
             result = []
             for i, bool in enumerate(selected_items):
