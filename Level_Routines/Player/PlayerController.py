@@ -35,6 +35,8 @@ def do_key_action(lvl):
             do_peeking(lvl, player)
         if keyPressed.text == 'g': # grab
             PC_I.do_grabbing(player)
+        if keyPressed.text == 'd': # drop
+            PC_I.do_dropping(player)
 
 
 def do_move_keys_action(lvl, player, key):
@@ -97,7 +99,7 @@ def notify_for_items_on_floor(player):
         items_here = LC.get_items_at_coordinates(px, py)
         item_message += items_here[0].get_name()
         if len(items_here) >= 1:
-            item_message += ' and {} more items'.format(len(items_here))
+            item_message += ' and {} more items'.format(len(items_here)-1)
         LOG.append_message(item_message)
 
 
