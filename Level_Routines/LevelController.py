@@ -47,11 +47,14 @@ def try_stack_items_at_coordinates(x, y):
     items_count = len(items)
     stack_successful = False
     if items_count > 1:  # then attempt to stack those items
-        for i in range(1, items_count):
-            if items[0].is_stackable_with(items[i]):
-                items[0].change_quantity_by(items[i].get_quantity())
-                currentLevel.remove_item_from_floor(items[i])
-                stack_successful = True
+        for i in range(items_count):
+            for j in range(i, items_count):
+                if items[i].is_stackable_with(items[j]):
+                    items[i].change_quantity_by(items[j].get_quantity())
+                    currentLevel.remove_item_from_floor(items[j])
+                    stack_successful = True
+            items = currentLevel.get_items_at_coordinates(x, y)
+            items_count = len(items)
     return stack_successful
 
 
