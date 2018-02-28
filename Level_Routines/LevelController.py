@@ -37,10 +37,27 @@ def is_time_to_act(unit):
         return True
     return False
 
+
 def is_item_present(x, y):
     return currentLevel.is_item_present(x, y)
 
+
+def try_stack_items_at_coordinates(x, y):
+    items = currentLevel.get_items_at_coordinates(x, y)
+    items_count = len(items)
+    stack_successful = False
+    if items_count > 1:  # then attempt to stack those items
+        for i in range(1, items_count):
+            if items[0].is_stackable_with(items[i]):
+                items[0].change_quantity_by(items[i].get_quantity())
+                currentLevel.remove_item_from_floor(items[i])
+                stack_successful = True
+    return stack_successful
+
+
 def get_items_at_coordinates(x, y):
+    while try_stack_items_at_coordinates(x, y):
+        pass
     return currentLevel.get_items_at_coordinates(x, y)
 
 
