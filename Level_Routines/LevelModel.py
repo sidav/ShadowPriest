@@ -160,6 +160,22 @@ class LevelModel:
             while not (self.is_tile_passable(posx, posy)):
                 posx = rand.rand(self.MAP_WIDTH)
                 posy = rand.rand(self.MAP_HEIGHT)
-            num_of_items = rand.rand(7)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
+            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
             for _ in range(num_of_items):
                 self._items_on_floor.append(Item(posx, posy))
+        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
+            posx = posy = 0
+            while not (self.is_tile_passable(posx, posy)):
+                posx = rand.rand(self.MAP_WIDTH)
+                posy = rand.rand(self.MAP_HEIGHT)
+            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
+            for _ in range(num_of_items):
+                self._items_on_floor.append(Item(posx, posy, name='Another unknown item', color=(192, 0, 32)))
+        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
+            posx = posy = 0
+            while not (self.is_tile_passable(posx, posy)):
+                posx = rand.rand(self.MAP_WIDTH)
+                posy = rand.rand(self.MAP_HEIGHT)
+            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
+            for _ in range(num_of_items):
+                self._items_on_floor.append(Item(posx, posy, name='Slightly less unknown item', color=(0, 192, 32)))
