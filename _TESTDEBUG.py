@@ -3,6 +3,7 @@ from Overworld_Routines.OverworldModel import OverworldModel
 #import Overworld_Routines.OverworldView as OV
 from Overworld_Routines import OverworldController as OW_Cont
 import Routines.SidavLOS as LOS
+from Minigames.Lockpick import Lockpick
 
 from Level_Routines import LevelController as LC, LevelView as LV
 from Level_Routines.LevelModel import LevelModel as LM
@@ -31,6 +32,14 @@ def makeSomeTestCrap():
 
     # print(MENU.single_select_menu("AHAHA MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
     # print(MENU.multi_select_menu("AHAHA MULTISELECT MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
+
+    a = Lockpick(3, 2)
+    solved = False
+    while not solved:
+        CW.clearConsole()
+        a.draw_puzzle(20, 5)
+        CW.flushConsole()
+        solved = a.do_turn()
 
     LC.initialize()
     LC.control()
