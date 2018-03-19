@@ -3,6 +3,8 @@ from .Inventory import Inventory
 
 # Represents (as superclass) the player, some character or enemy or what the heck you want to.
 class Unit:
+    _max_hitpoints = 100
+    _curr_hitpoints = _max_hitpoints
     _inventory = None
     _pos_x = _pos_y = 0
     _look_x = _look_y = 0

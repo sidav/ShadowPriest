@@ -33,13 +33,13 @@ def makeSomeTestCrap():
     # print(MENU.single_select_menu("AHAHA MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
     # print(MENU.multi_select_menu("AHAHA MULTISELECT MENU LOL", "Ahaha subheading lol", ['first', 'second', 'third']))
 
-    a = Lockpick(3, 2)
-    solved = False
-    while not solved:
-        CW.clearConsole()
-        a.draw_puzzle(20, 5)
-        CW.flushConsole()
-        solved = a.do_turn()
+    # a = Lockpick(3, 2)
+    # solved = False
+    # while not solved:
+    #     CW.clearConsole()
+    #     a.draw_puzzle(20, 5)
+    #     CW.flushConsole()
+    #     solved = a.do_turn()
 
     LC.initialize()
     LC.control()
