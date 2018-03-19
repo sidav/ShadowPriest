@@ -1,6 +1,5 @@
 from .. import LevelController as LC
-from ..Units import TurnCosts as TC
-from Routines import TdlConsoleWrapper as CW
+from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 import SidavMenu as MENU
 
