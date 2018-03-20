@@ -102,7 +102,7 @@ def control():
             else:
                 LevelView.draw_everything_in_LOS_from_position(currentLevel, player_x, player_y, player_looking_range)
             LOG.print_log()
-            Statusbar.print_statusbar(current_turn)
+            Statusbar.print_statusbar(player, current_turn)
             CW.flushConsole()
             redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 

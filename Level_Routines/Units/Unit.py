@@ -81,5 +81,11 @@ class Unit:
     def get_looking_range(self):
         return self._looking_range
 
+    def get_max_hitpoints(self):
+        return self._max_hitpoints
+
+    def get_current_hitpoints(self):
+        return self._curr_hitpoints
+
     def get_inventory(self):
         return self._inventory
