@@ -12,6 +12,7 @@ class Unit:
     _has_look_direction = True # <-- is the "looking thingy" neccessary to draw?
     _looking_range = 6
     _appearance = 'G'
+    _color = (32, 192, 32)
     _next_turn_to_act = 0
 
     def __init__(self, posx, posy, appearance = 'G'):
@@ -75,6 +76,9 @@ class Unit:
     def get_appearance(self):
         return self._appearance
 
+    def get_color(self):
+        return self._color
+
     def get_fov_angle(self):
         return self._fov_angle
 
@@ -89,3 +93,4 @@ class Unit:
 
     def get_inventory(self):
         return self._inventory
+1
