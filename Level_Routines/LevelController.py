@@ -1,3 +1,4 @@
+from .LevelInitializer import initialize_level
 from GLOBAL_DATA import Global_Constants as GC
 from .Player import PlayerController as P_C, Statusbar
 from .Units import ActorController as A_C
@@ -12,9 +13,11 @@ redraw_map_timeout = 10
 DEFAULT_REDRAW_MAP_TIMEOUT = 10
 currentLevel = None
 
+
 def initialize():
     global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
+    currentLevel = initialize_level(currentLevel)
 
 
 def try_open_door(x, y):

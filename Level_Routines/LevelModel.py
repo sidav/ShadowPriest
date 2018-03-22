@@ -47,10 +47,6 @@ class LevelModel:
             for y in range(0, mapH):
                 self._level_map[x][y] = self.pick_tile_class(tempMap[x][y])
 
-        self.place_random_units()
-        self.place_player()
-        self.place_random_items()
-
     def get_tile_was_seen(self, x, y):
         return self._level_map[x][y].get_was_seen()
 
@@ -82,6 +78,9 @@ class LevelModel:
                 self.set_tile_was_seen(x, y)
 
     # units
+    def spawn_unit(self, unit):
+        self._units.append(unit)
+
     def get_all_units(self):
         return self._units
 
@@ -135,47 +134,3 @@ class LevelModel:
 
     def get_player(self):
         return self._player
-
-    # Should the following be in the controller?
-    def place_player(self):
-        posx = posy = 0
-        while not (self.is_tile_passable(posx, posy)):
-            posx = rand.rand(self.MAP_WIDTH)
-            posy = rand.rand(self.MAP_HEIGHT)
-        self._player = Player(posx, posy)
-
-    def place_random_units(self): # <- FUCKING TEMPORARY # TODO: REMOVE
-        # rand.randomize()
-        for _ in range(10):
-            posx = posy = 0
-            while not (self.is_tile_passable(posx, posy)):
-                posx = rand.rand(self.MAP_WIDTH)
-                posy = rand.rand(self.MAP_HEIGHT)
-            self._units.append(Actor(posx, posy, 'G'))
-
-    def place_random_items(self): # <- FUCKING TEMPORARY # TODO: REMOVE
-        # rand.randomize()
-        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
-            posx = posy = 0
-            while not (self.is_tile_passable(posx, posy)):
-                posx = rand.rand(self.MAP_WIDTH)
-                posy = rand.rand(self.MAP_HEIGHT)
-            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
-            for _ in range(num_of_items):
-                self._items_on_floor.append(Item(posx, posy))
-        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
-            posx = posy = 0
-            while not (self.is_tile_passable(posx, posy)):
-                posx = rand.rand(self.MAP_WIDTH)
-                posy = rand.rand(self.MAP_HEIGHT)
-            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
-            for _ in range(num_of_items):
-                self._items_on_floor.append(Item(posx, posy, name='Another unknown item', color=(192, 0, 32)))
-        for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
-            posx = posy = 0
-            while not (self.is_tile_passable(posx, posy)):
-                posx = rand.rand(self.MAP_WIDTH)
-                posy = rand.rand(self.MAP_HEIGHT)
-            num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
-            for _ in range(num_of_items):
-                self._items_on_floor.append(Item(posx, posy, name='Slightly less unknown item', color=(0, 192, 32)))
