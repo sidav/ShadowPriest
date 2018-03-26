@@ -91,9 +91,16 @@ class LevelModel:
         if self._player is not None and (x, y) == self._player.get_position():
             return True
         return False
+
+    def remove_unit(self, unit):
+        self._units.remove(unit)
+
     # /units
 
     # items
+    def add_item_on_floor_without_cordinates(self, item):
+        self._items_on_floor.append(item)
+
     def add_item_on_floor_at_coordinates(self, item, x, y):
         item.set_position(x, y)
         self._items_on_floor.append(item)

@@ -6,6 +6,7 @@ from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 from . import LevelView
 from .LevelModel import LevelModel
+from .Creators import CorpseCreator
 
 player_x = player_y = 0
 last_tile = '.'
@@ -65,6 +66,18 @@ def get_items_at_coordinates(x, y):
     while try_stack_items_at_coordinates(x, y):
         pass
     return currentLevel.get_items_at_coordinates(x, y)
+
+
+def check_dead_units():
+    units = currentLevel.get_all_units()
+    for unit in units:
+        if unit.is_dead():
+            currentLevel.remove_unit(unit)
+            currentLevel.add_item_on_floor_at_coordinates()
+            corpse = CorpseCreator.create_corpse_from_unit(unit)
+            currentLevel.add_item_on_floor_without_cordinates(corpse)
+            # TODO: drop inventory of the dead unit
+
 
 
 def try_pick_up_item(unit, item):

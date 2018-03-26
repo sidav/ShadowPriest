@@ -3,6 +3,7 @@ from .Inventory import Inventory
 
 # Represents (as superclass) the player, some character or enemy or what the heck you want to.
 class Unit:
+    _name = 'Unidentified Unit'
     _max_hitpoints = 100
     _curr_hitpoints = _max_hitpoints
     _inventory = None
@@ -25,6 +26,9 @@ class Unit:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
         pass
+
+    def get_name(self):
+        return self._name
 
     def move_forward(self):
         self._pos_x += self._look_x
@@ -91,6 +95,12 @@ class Unit:
 
     def get_current_hitpoints(self):
         return self._curr_hitpoints
+
+    def decrease_hitpoints(self, dmg):
+        self._curr_hitpoints -= dmg
+
+    def is_dead(self):
+        return self._curr_hitpoints <= 0
 
     def get_inventory(self):
         return self._inventory
