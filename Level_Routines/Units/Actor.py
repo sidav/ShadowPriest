@@ -12,8 +12,8 @@ class Actor(Unit): # Not needed?
 
     was_rotated_previous_turn = False # For AI.
 
-    def __init__(self, x, y, appearance = '?', color=(32, 192, 32)):
-        super(Actor, self).__init__(x, y, appearance=appearance, color=color)
+    def __init__(self, x, y, appearance = '?', color=(32, 192, 32), name='Unidentified Actor'):
+        super(Actor, self).__init__(x, y, appearance=appearance, color=color, name=name)
         self.current_state = self.states.calm
 
     def get_current_state(self):

@@ -16,12 +16,13 @@ class Unit:
     _color = (32, 192, 32)
     _next_turn_to_act = 0
 
-    def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32)):
+    def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32), name='Unidentified Unit'):
         self._inventory = Inventory()
         self._appearance = appearance
         self._pos_x = posx
         self._pos_y = posy
         self._color = color
+        self._name = name
         while self._look_x == 0 and self._look_y == 0:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
