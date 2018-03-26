@@ -78,6 +78,11 @@ class LevelModel:
                 self.set_tile_was_seen(x, y)
 
     # units
+    def get_unit_at(self, x, y):
+        for unit in self._units:
+            if (x, y) == unit.get_position():
+                return unit
+
     def spawn_unit(self, unit):
         self._units.append(unit)
 

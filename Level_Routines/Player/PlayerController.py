@@ -3,9 +3,7 @@ from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 from . import PlayerController_Inventory as PC_I
-
-
-# from .LevelModel import LevelModel
+from ..LevelModel import LevelModel
 
 
 def do_key_action(lvl):
@@ -41,18 +39,24 @@ def do_key_action(lvl):
             PC_I.show_equipped_items(player)
 
 
-def do_move_keys_action(lvl, player, key):
+def do_move_keys_action(lvl:LevelModel, player, key):
     vector_x, vector_y = key_to_direction(key)
     if vector_x == vector_y == 0:
         return False
     px, py = player.get_position()
+    target_x, target_y = px + vector_x, py + vector_y
 
-    if (lvl.is_tile_passable(px + vector_x, py + vector_y)):
+    if lvl.is_unit_present(target_x, target_y):
+        target_unit = lvl.get_unit_at(target_x, target_y)
+        LC.melee_attack(player, target_unit)
+        player.spend_turns_for_action(TC.cost_for('melee attack'))
+        LOG.append_message('I attack him!')
+    elif (lvl.is_tile_passable(target_x, target_y)):
         player.move_by_vector(vector_x, vector_y)
         player.spend_turns_for_action(TC.cost_for('move'))
         notify_for_items_on_floor(player)
-    elif lvl.is_door_present(px + vector_x, py + vector_y):
-        LC.try_open_door(px + vector_x, py + vector_y)
+    elif lvl.is_door_present(target_x, target_y):
+        LC.try_open_door(target_x, target_y)
         LOG.append_message("I open the door. ")
         player.spend_turns_for_action(TC.cost_for('open door'))
     return True

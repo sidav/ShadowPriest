@@ -1,3 +1,4 @@
+from .Mechanics import MeleeAttack
 from .LevelInitializer import initialize_level
 from GLOBAL_DATA import Global_Constants as GC
 from .Player import PlayerController as P_C, Statusbar
@@ -19,6 +20,10 @@ def initialize():
     global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     currentLevel = initialize_level(currentLevel)
+
+
+def melee_attack(attacker, victim):
+    MeleeAttack.do_attack(attacker, victim)
 
 
 def try_open_door(x, y):
@@ -73,9 +78,9 @@ def check_dead_units():
     for unit in units:
         if unit.is_dead():
             currentLevel.remove_unit(unit)
-            currentLevel.add_item_on_floor_at_coordinates()
             corpse = CorpseCreator.create_corpse_from_unit(unit)
             currentLevel.add_item_on_floor_without_cordinates(corpse)
+            LOG.append_message('It drops dead!')
             # TODO: drop inventory of the dead unit
 
 
@@ -121,6 +126,8 @@ def control():
             Statusbar.print_statusbar(player, current_turn)
             CW.flushConsole()
             redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
+
+        check_dead_units()
 
         if is_time_to_act(player):
             P_C.do_key_action(currentLevel)
