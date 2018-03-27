@@ -8,18 +8,21 @@ from Routines import TdlConsoleWrapper as CW
 from . import LevelView
 from .LevelModel import LevelModel
 from .Creators import CorpseCreator
+from .EventsStack import EventsStack
 
 player_x = player_y = 0
 last_tile = '.'
 redraw_map_timeout = 10
 DEFAULT_REDRAW_MAP_TIMEOUT = 10
 currentLevel = None
+events_stack = None
 
 
 def initialize():
     global currentLevel
     currentLevel = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     currentLevel = initialize_level(currentLevel)
+    events_stack = EventsStack()
 
 
 def melee_attack(attacker, victim):
