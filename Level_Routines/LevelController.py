@@ -28,7 +28,7 @@ def initialize():
 
 def melee_attack(attacker, victim):
     MeleeAttack.do_attack(attacker, victim)
-    events_stack.push_event(EC.attack(attacker, victim, 'hits the'))
+    events_stack.push_event(EC.melee_attack_event(attacker, victim, 'hits the'))
 
 
 def try_open_door(x, y):

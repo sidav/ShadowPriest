@@ -50,7 +50,6 @@ def do_move_keys_action(lvl:LevelModel, player, key):
         target_unit = lvl.get_unit_at(target_x, target_y)
         LC.melee_attack(player, target_unit)
         player.spend_turns_for_action(TC.cost_for('melee attack'))
-        LOG.append_message('I attack him!')
     elif (lvl.is_tile_passable(target_x, target_y)):
         player.move_by_vector(vector_x, vector_y)
         player.spend_turns_for_action(TC.cost_for('move'))
