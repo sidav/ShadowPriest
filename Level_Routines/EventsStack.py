@@ -5,7 +5,7 @@ class EventsStack:
     def __init__(self):
         pass
 
-    def push_event(self, event, expiration_turn = 0):
+    def push_event(self, event, expiration_turn=0):
         if expiration_turn != 0:
             event.expiration_turn = expiration_turn
         self._events.append(event)

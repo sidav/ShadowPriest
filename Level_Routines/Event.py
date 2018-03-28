@@ -23,3 +23,6 @@ class Event:
 
     def get_expiration_turn(self):
         return self.expiration_turn
+
+    def get_text(self):
+        return self.text
