@@ -55,8 +55,7 @@ def do_move_keys_action(lvl:LevelModel, player, key):
         player.spend_turns_for_action(TC.cost_for('move'))
         notify_for_items_on_floor(player)
     elif lvl.is_door_present(target_x, target_y):
-        LC.try_open_door(target_x, target_y)
-        LOG.append_message("I open the door. ")
+        LC.try_open_door(player, target_x, target_y)
         player.spend_turns_for_action(TC.cost_for('open door'))
     return True
 
@@ -65,8 +64,8 @@ def try_close_door(lvl, player):
     px, py = player.get_position()
     to_x, to_y = ask_for_direction('Where to close a door?')
     if lvl.is_door_present(px+to_x, py+to_y):
-        if LC.try_close_door(px+to_x, py+to_y):
-            LOG.append_message("I close the door.")
+        if LC.try_close_door(player, px+to_x, py+to_y):
+            pass
         else:
             LOG.append_message("I can't close the door! ")
         player.spend_turns_for_action(TC.cost_for('close door'))

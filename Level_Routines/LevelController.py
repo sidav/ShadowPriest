@@ -8,7 +8,7 @@ from Routines import TdlConsoleWrapper as CW
 from . import LevelView
 from .LevelModel import LevelModel
 from .Creators import CorpseCreator
-from .EventsStack import EventsStack
+from .EventsStack import EventsStack as ESTCK
 from Level_Routines import EventCreator as EC
 
 player_x = player_y = 0
@@ -23,7 +23,7 @@ def initialize():
     global current_level, events_stack
     current_level = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     current_level = initialize_level(current_level)
-    events_stack = EventsStack()
+    events_stack = ESTCK()
 
 
 def melee_attack(attacker, victim):
@@ -31,15 +31,17 @@ def melee_attack(attacker, victim):
     events_stack.push_event(EC.melee_attack_event(attacker, victim, 'hits the'))
 
 
-def try_open_door(x, y):
+def try_open_door(unit, x, y):
     if current_level.is_door_present(x, y):
         current_level.set_door_closed(x, y, False)
+        events_stack.push_event(EC.action(unit, 'open', 'the door.'))
         return True
     return False
 
 
-def try_close_door(x, y):
+def try_close_door(unit, x, y):
     if current_level.is_door_present(x, y):
+        events_stack.push_event(EC.action(unit, 'close', 'the door.'))
         current_level.set_door_closed(x, y)
         return True
     return False

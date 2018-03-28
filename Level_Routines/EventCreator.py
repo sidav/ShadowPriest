@@ -14,7 +14,13 @@ def melee_attack_event(attacker, victim, other_text):
     event = Event(text, True, 0, LC.get_current_turn()+1)
     return event
 
-def action(acting_unit, text):
-    text = '{} {}.'.format(acting_unit.get_name(), text)
+def action(acting_unit, action, text=''):
+    if acting_unit.__class__.__name__ == 'Player':
+        name = 'I'
+        ending = ''
+    else:
+        name = acting_unit.get_name()
+        ending = 's'
+    text = '{} {}{} {}.'.format(name, action, ending, text)
     event = Event(text, True, 0, LC.get_current_turn() + 1)
     return event
