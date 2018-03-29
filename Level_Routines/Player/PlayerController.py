@@ -39,7 +39,7 @@ def do_key_action(lvl):
             PC_I.show_equipped_items(player)
 
 
-def do_move_keys_action(lvl:LevelModel, player, key):
+def do_move_keys_action(lvl, player, key):
     vector_x, vector_y = key_to_direction(key)
     if vector_x == vector_y == 0:
         return False

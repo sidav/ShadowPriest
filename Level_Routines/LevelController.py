@@ -1,15 +1,15 @@
-from .Mechanics import MeleeAttack
-from .LevelInitializer import initialize_level
 from GLOBAL_DATA import Global_Constants as GC
-from .Player import PlayerController as P_C, Statusbar
-from .Units import ActorController as A_C
+from .Events import EventCreator as EC
+from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 from . import LevelView
-from .LevelModel import LevelModel
 from .Creators import CorpseCreator
-from .EventsStack import EventsStack as ESTCK
-from Level_Routines import EventCreator as EC
+from .LevelInitializer import initialize_level
+from .LevelModel import LevelModel
+from .Mechanics import MeleeAttack
+from .Player import PlayerController as P_C, Statusbar
+from .Units import ActorController as A_C
 
 player_x = player_y = 0
 last_tile = '.'
@@ -28,20 +28,20 @@ def initialize():
 
 def melee_attack(attacker, victim):
     MeleeAttack.do_attack(attacker, victim)
-    events_stack.push_event(EC.melee_attack_event(attacker, victim, 'hits the'))
+    events_stack.push_event(EC.melee_attack_event(attacker, victim))
 
 
 def try_open_door(unit, x, y):
     if current_level.is_door_present(x, y):
         current_level.set_door_closed(x, y, False)
-        events_stack.push_event(EC.action(unit, 'open', 'the door.'))
+        events_stack.push_event(EC.action_event(unit, 'open', 'the door'))
         return True
     return False
 
 
 def try_close_door(unit, x, y):
     if current_level.is_door_present(x, y):
-        events_stack.push_event(EC.action(unit, 'close', 'the door.'))
+        events_stack.push_event(EC.action_event(unit, 'close', 'the door'))
         current_level.set_door_closed(x, y)
         return True
     return False
