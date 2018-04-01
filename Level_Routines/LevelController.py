@@ -2,7 +2,7 @@ from GLOBAL_DATA import Global_Constants as GC
 from .Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
-from Routines import TdlConsoleWrapper as CW
+from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
 from . import LevelView
 from .Creators import CorpseCreator
 from .LevelInitializer import initialize_level
@@ -34,14 +34,14 @@ def melee_attack(attacker, victim):
 def try_open_door(unit, x, y):
     if current_level.is_door_present(x, y):
         current_level.set_door_closed(x, y, False)
-        events_stack.push_event(EC.action_event(unit, 'open', 'the door'))
+        events_stack.push_event(EC.action_event(unit, 'open', 'the door', 5))
         return True
     return False
 
 
 def try_close_door(unit, x, y):
     if current_level.is_door_present(x, y):
-        events_stack.push_event(EC.action_event(unit, 'close', 'the door'))
+        events_stack.push_event(EC.action_event(unit, 'close', 'the door', 5))
         current_level.set_door_closed(x, y)
         return True
     return False
@@ -95,7 +95,6 @@ def check_dead_units():
             # TODO: drop inventory of the dead unit
 
 
-
 def try_pick_up_item(unit, item):
     x, y = unit.get_position()
     ix, iy = item.get_position()
@@ -112,6 +111,36 @@ def try_drop_item(unit, item):
     unit.get_inventory().remove_item(item)
     current_level.add_item_on_floor_at_coordinates(item, x, y)
     return True
+
+
+def is_event_visible_from(event, x, y, radius = 99):
+    ev_x, ev_y = event.get_position()
+    if (ev_x - x) ** 2 + (ev_y - y) ** 2 <= radius ** 2:
+        opacity_map = current_level.get_opacity_map()
+        vis_map = LOS.getVisibilityTableFromPosition(x, y, opacity_map, radius)
+        if vis_map[ev_x][ev_y]:
+            return True
+    return False
+
+
+def is_event_hearable_from(event, x, y):
+    ev_x, ev_y = event.get_position()
+    event_hear_radius = event.get_hear_radius()
+    if (ev_x - x) ** 2 + (ev_y - y) ** 2 <= event_hear_radius ** 2:
+        return True
+    return False
+
+
+def show_events_for_player(player):
+    px, py = player.get_position()
+    looking_range = player.get_looking_range()
+    events_for_player = events_stack.get_player_perceivable_events()
+    for event in events_for_player:
+        # TODO: make proper seeing of events when the player is peeking.
+        if is_event_visible_from(event, px, py, looking_range):
+            LOG.append_message(event.get_text_when_seen())
+        elif is_event_hearable_from(event, px, py):
+            LOG.append_message(event.get_text_when_heard())
 
 
 def control():
@@ -140,9 +169,7 @@ def control():
 
         check_dead_units()
 
-        events_for_player = events_stack.get_player_perceivable_events()
-        for event in events_for_player:
-            LOG.append_message(event.get_text())
+        show_events_for_player(player)
         events_stack.cleanup_events(current_turn)
 
         if is_time_to_act(player):
