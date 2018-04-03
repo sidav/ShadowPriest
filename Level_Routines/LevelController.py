@@ -133,6 +133,10 @@ def is_event_hearable_from(event, x, y):
 
 def show_events_for_player(player):
     px, py = player.get_position()
+    if player.is_peeking():
+        peekx, peeky = player.get_peeking_vector()
+        px += peekx
+        py += peeky
     looking_range = player.get_looking_range()
     events_for_player = events_stack.get_player_perceivable_events()
     for event in events_for_player:
