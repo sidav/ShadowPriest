@@ -1,11 +1,14 @@
 import Routines.SidavRandom as random
 from .Inventory import Inventory
+from ..Mechanics.Sneak import RpgStats
 
 # Represents (as superclass) the player, some character or enemy or what the heck you want to.
 class Unit:
     _name = 'Unidentified Unit'
     _max_hitpoints = 100
     _curr_hitpoints = _max_hitpoints
+    rpg_stats = RpgStats()
+
     _inventory = None
     _pos_x = _pos_y = 0
     _look_x = _look_y = 0
@@ -16,13 +19,15 @@ class Unit:
     _color = (32, 192, 32)
     _next_turn_to_act = 0
 
-    def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32), name='Unidentified Unit'):
+    def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32), name='Unidentified Unit', rpg_stats = None):
         self._inventory = Inventory()
         self._appearance = appearance
         self._pos_x = posx
         self._pos_y = posy
         self._color = color
         self._name = name
+        if rpg_stats != None:
+            self.rpg_stats = rpg_stats
         while self._look_x == 0 and self._look_y == 0:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
@@ -63,6 +68,9 @@ class Unit:
             self._look_x //= abs(self._look_x)
         if self._look_y != 0:
             self._look_y //= abs(self._look_y)
+
+    def get_rpg_stats(self):
+        return self.rpg_stats
 
     def spend_turns_for_action(self, turns):
         self._next_turn_to_act += turns
