@@ -12,7 +12,8 @@ class Event:
     text_when_heard = 'Empty heared text'
     hear_radius = 3
 
-    is_perceivable_by_player = True
+    _is_perceivable_by_player = True
+    _was_already_perceived = False
 
     # continious = False
     expiration_turn = 0
@@ -30,6 +31,15 @@ class Event:
 
     def get_expiration_turn(self):
         return self.expiration_turn
+
+    def was_already_perceived(self):
+        return self._was_already_perceived
+
+    def is_perceivable_by_player(self):
+        return self._is_perceivable_by_player
+
+    def set_already_perceived(self):
+        self._was_already_perceived = True
 
     def get_text_when_seen(self):
         return self.text_when_seen

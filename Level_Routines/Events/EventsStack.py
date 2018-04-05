@@ -16,7 +16,7 @@ class EventsStack:
     def get_player_perceivable_events(self):
         events = []
         for event in self._events:
-            if event.is_perceivable_by_player:
+            if event.is_perceivable_by_player() and not event.was_already_perceived():
                 events.append(event)
         return events
 

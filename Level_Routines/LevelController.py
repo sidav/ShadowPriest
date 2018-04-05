@@ -17,6 +17,7 @@ redraw_map_timeout = 10
 DEFAULT_REDRAW_MAP_TIMEOUT = 10
 current_level = None
 events_stack = None
+events_to_show_at_player_turn = []
 
 
 def initialize():
@@ -131,26 +132,33 @@ def is_event_hearable_from(event, x, y):
     return False
 
 
+def check_events_for_player():
+    evnts = events_stack.get_player_perceivable_events()
+    for e in evnts:
+        events_to_show_at_player_turn.append(e)
+        e.set_already_perceived()
+
+
 def show_events_for_player(player):
+    global events_to_show_at_player_turn
     px, py = player.get_position()
     if player.is_peeking():
         peekx, peeky = player.get_peeking_vector()
         px += peekx
         py += peeky
     looking_range = player.get_looking_range()
-    events_for_player = events_stack.get_player_perceivable_events()
-    curr_heared_event_num = 0 # for drawing the noises
-    for event in events_for_player:
+    heared_event_num = 0 # for drawing the noises
+    for event in events_to_show_at_player_turn:
+        event.set_already_perceived()
         if is_event_visible_from(event, px, py, looking_range):
             LOG.append_message(event.get_text_when_seen())
         elif is_event_hearable_from(event, px, py):
-            LOG.append_message(event.get_text_when_heard())
-            curr_heared_event_num += 1
+            heared_event_num += 1
+            LOG.append_message('{} at {}.'.format(event.get_text_when_heard(), str(heared_event_num)))
             event_x, event_y = event.get_position()
             CW.setForegroundColor(200, 0, 0)
-            CW.putChar(str(curr_heared_event_num), event_x, event_y)
-    if curr_heared_event_num > 0: # TODO: maybe flushing is not needed?
-        CW.flushConsole() # TODO: considering a possibility to move this method call to player-related part of control()
+            CW.putChar(str(heared_event_num), event_x, event_y)
+    events_to_show_at_player_turn = []
 
 
 def control():
@@ -172,14 +180,16 @@ def control():
                 LevelView.draw_everything_in_LOS_from_position(current_level, player_x + peek_x, player_y + peek_y, player_looking_range)
             else:
                 LevelView.draw_everything_in_LOS_from_position(current_level, player_x, player_y, player_looking_range)
+
+            show_events_for_player(player)
+
             LOG.print_log()
             Statusbar.print_statusbar(player, current_turn)
             CW.flushConsole()
             redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
         check_dead_units()
-        show_events_for_player(player) # TODO: Events appearing not before player turn will be showed only for a sec!
-                                       # TODO: FIX THAT ASAP
+        check_events_for_player()
         events_stack.cleanup_events(current_turn)
 
         if is_time_to_act(player):

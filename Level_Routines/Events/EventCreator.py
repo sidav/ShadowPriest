@@ -16,7 +16,7 @@ def melee_attack_event(attacker, victim):
 
     seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn()+10
+    expir_turn = LC.get_current_turn()+1
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -33,9 +33,9 @@ def action_event(acting_unit, action, text='', hear_radius = 0):
         name = acting_unit.get_name()
         ending = 's'
 
-    expir_turn = LC.get_current_turn() + 10
+    expir_turn = LC.get_current_turn() + 1
     seen_text = '{} {}{} {}.'.format(name, action, ending, text)
-    heard_text = 'I hear a sound of {} {}ing.'.format(text, action)
+    heard_text = 'I hear a sound of {} {}ing'.format(text, action)
 
     event = Event(x, y, seen_text, heard_text, hear_radius=hear_radius, expiration_turn=expir_turn)
     return event
