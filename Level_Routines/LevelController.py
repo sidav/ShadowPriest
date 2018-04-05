@@ -139,12 +139,18 @@ def show_events_for_player(player):
         py += peeky
     looking_range = player.get_looking_range()
     events_for_player = events_stack.get_player_perceivable_events()
+    curr_heared_event_num = 0 # for drawing the noises
     for event in events_for_player:
-        # TODO: make proper seeing of events when the player is peeking.
         if is_event_visible_from(event, px, py, looking_range):
             LOG.append_message(event.get_text_when_seen())
         elif is_event_hearable_from(event, px, py):
             LOG.append_message(event.get_text_when_heard())
+            curr_heared_event_num += 1
+            event_x, event_y = event.get_position()
+            CW.setForegroundColor(200, 0, 0)
+            CW.putChar(str(curr_heared_event_num), event_x, event_y)
+    if curr_heared_event_num > 0: # TODO: maybe flushing is not needed?
+        CW.flushConsole() # TODO: considering a possibility to move this method call to player-related part of control()
 
 
 def control():
@@ -172,8 +178,8 @@ def control():
             redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
         check_dead_units()
-
-        show_events_for_player(player)
+        show_events_for_player(player) # TODO: Events appearing not before player turn will be showed only for a sec!
+                                       # TODO: FIX THAT ASAP
         events_stack.cleanup_events(current_turn)
 
         if is_time_to_act(player):
