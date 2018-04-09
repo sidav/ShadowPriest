@@ -1,20 +1,41 @@
+from ..Units.Unit import Unit
 from Level_Routines import LevelController as LC
 from .Event import Event
 from Level_Routines.Units.Unit import Unit
 from Level_Routines.Player import Player
 
 
-def melee_attack_event(attacker, victim):
+
+def attack_with_bare_hands_event(attacker:Unit, victim:Unit):
+    att_name = attacker.get_name()
+    vic_name = victim.get_name()
+    vic_x, vic_y = victim.get_position()  # Not a mistake: the attack event has the victim coords.
+
+    if attacker.__class__.__name__ == 'Player':
+        att_name = 'I'
+        vis_attack_text = 'punch the'
+        heard_attack_text = 'hear a hit'
+
+    seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
+    heard_text = '{} {}!'.format(att_name, heard_attack_text)
+    expir_turn = LC.get_current_turn() + 1
+    event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
+    return event
+
+
+def attack_with_melee_weapon_event(attacker:Unit, victim:Unit):
     att_name = attacker.get_name()
     vic_name = victim.get_name()
     vic_x, vic_y = victim.get_position() # Not a mistake: the attack event has the victim coords.
+    weapon_name = attacker.get_inventory().get_equipped_weapon().get_name()
 
     if attacker.__class__.__name__ == 'Player':
         att_name = 'I'
         vis_attack_text = 'hit the'
         heard_attack_text = 'hear a hit'
+        weapon_name = 'my '+weapon_name
 
-    seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
+    seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
     expir_turn = LC.get_current_turn()+1
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)

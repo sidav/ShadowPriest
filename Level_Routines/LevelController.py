@@ -10,6 +10,7 @@ from .LevelModel import LevelModel
 from .Mechanics import MeleeAttack
 from .Player import PlayerController as P_C, Statusbar
 from .Units import ActorController as A_C
+from .Units.Unit import Unit
 
 player_x = player_y = 0
 last_tile = '.'
@@ -27,9 +28,14 @@ def initialize():
     events_stack = ESTCK()
 
 
-def melee_attack(attacker, victim):
-    MeleeAttack.try_to_attack(attacker, victim)
-    events_stack.push_event(EC.melee_attack_event(attacker, victim))
+def melee_attack(attacker:Unit, victim:Unit):
+    if attacker.get_inventory().get_equipped_weapon() is None:
+        if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
+            event = EC.attack_with_bare_hands_event(attacker, victim)
+    else:
+        if MeleeAttack.try_to_attack_with_weapon(attacker, victim):
+            event = EC.attack_with_melee_weapon_event(attacker, victim)
+    events_stack.push_event(event)
 
 
 def try_open_door(unit, x, y):
@@ -92,7 +98,8 @@ def check_dead_units():
             current_level.remove_unit(unit)
             corpse = CorpseCreator.create_corpse_from_unit(unit)
             current_level.add_item_on_floor_without_cordinates(corpse)
-            LOG.append_message('It drops dead!')
+            event = EC.action_event(unit, 'drop', 'dead', 3)
+            events_stack.push_event(event)
             # TODO: drop inventory of the dead unit
 
 

@@ -17,7 +17,7 @@ def place_player(lvl):
         posx = rand.rand(lvl.MAP_WIDTH)
         posy = rand.rand(lvl.MAP_HEIGHT)
     lvl._player = Player(posx, posy)
-    lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
+    # lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
 
 
 def place_random_units(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE

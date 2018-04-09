@@ -2,22 +2,26 @@ from ..Units.Unit import Unit
 from Message_Log import MessageLog as LOG
 
 
-def try_to_attack(attacker:Unit, victim:Unit):
+def try_to_attack_with_bare_hands(attacker:Unit, victim:Unit):
+    if attacker.get_inventory().get_equipped_weapon() is not None:
+        LOG.append_error_message('ERROR: bare-handed attack with weapon equipped')
+        return False
+    damage = calculate_barefist_damage(attacker.get_rpg_stats())
+    do_damage_to_victim(damage, victim)
+    return True
+
+
+def try_to_attack_with_weapon(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     attacker_stats = attacker.get_rpg_stats()
-
-    damage = 0
-
-    if attacker_weapon is None:
-        damage = 15
-    else:
-        damage = calculate_weapon_damage(attacker_weapon.get_base_damage(), attacker_stats)
-    do_damage(damage, victim)
-    LOG.append_message('DBG: {} damage'.format(damage))
+    damage = calculate_weapon_damage(attacker_weapon.get_base_damage(), attacker_stats)
+    do_damage_to_victim(damage, victim)
+    return True
 
 
-def do_damage(damage, victim):
+def do_damage_to_victim(damage, victim):
     victim.decrease_hitpoints(damage)
+    LOG.append_message('DBG: {} damage'.format(damage))
 
 
 def calculate_barefist_damage(stats):
