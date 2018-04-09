@@ -27,12 +27,12 @@ class Inventory:
             return
             pass
         else:
-            LOG.append_error_message('ERROR: attempt to equip the item of type "{}"'.format(item_type))
+            LOG.append_error_message('attempt to equip the item of type "{}"'.format(item_type))
             return
         if item in self.backpack:
             self.remove_item_from_backpack(item)
         else:
-            LOG.append_error_message('WARNING: equipping item not from backpack!')
+            LOG.append_warning_message('equipping item not from backpack!')
 
     def get_equipped_weapon(self):
         return self.equipped_weapon

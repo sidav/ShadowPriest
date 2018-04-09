@@ -4,7 +4,7 @@ from Message_Log import MessageLog as LOG
 
 def try_to_attack_with_bare_hands(attacker:Unit, victim:Unit):
     if attacker.get_inventory().get_equipped_weapon() is not None:
-        LOG.append_error_message('ERROR: bare-handed attack with weapon equipped')
+        LOG.append_error_message('bare-handed attack with weapon equipped')
         return False
     damage = calculate_barefist_damage(attacker.get_rpg_stats())
     do_damage_to_victim(damage, victim)

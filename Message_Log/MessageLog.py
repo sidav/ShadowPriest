@@ -1,5 +1,5 @@
 import Routines.TdlConsoleWrapper as CW
-from GLOBAL_DATA.Global_Constants import LOG_HEIGHT, CONSOLE_HEIGHT, CONSOLE_WIDTH, MAP_HEIGHT
+from GLOBAL_DATA.Global_Constants import LOG_HEIGHT, CONSOLE_HEIGHT, CONSOLE_WIDTH, MAP_HEIGHT, DEBUG_MESSAGES_ENABLED
 from .Message import LogMessage
 
 all_messages = []
@@ -29,8 +29,15 @@ def append_replaceable_message(text):
     print_log()
     CW.flushConsole()
 
+
 def append_error_message(text):
-    _add_message_object_to_list(LogMessage(text, color=(128, 32, 32)))
+    if DEBUG_MESSAGES_ENABLED:
+        _add_message_object_to_list(LogMessage('ERROR: '+text, color=(128, 32, 32)))
+
+
+def append_warning_message(text):
+    if DEBUG_MESSAGES_ENABLED:
+        _add_message_object_to_list(LogMessage('WARNING: '+text, color=(192, 192, 32)))
     # print_log()
     # CW.flushConsole()
 
