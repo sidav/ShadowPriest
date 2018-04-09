@@ -12,3 +12,21 @@ class RpgStats:
         self._advertence = a
         self._knowledge = k
 
+    # def get_all_stats(self):
+    def get_strength(self): 
+        return self._strength
+
+    def get_nimbleness(self):
+        return self._nimbleness
+
+    def get_endurance(self):
+        return self._endurance
+
+    def get_advertence(self):
+        return self._advertence
+
+    def get_knowledge(self):
+        return self._knowledge
+
+    def get_skill(self, skill):
+        return 0

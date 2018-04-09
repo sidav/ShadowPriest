@@ -11,4 +11,5 @@ class Weapon(Item):
     _two_handed = False
     _damage_type = 0  # fuck knows what that mean.
 
-    pass
+    def get_base_damage(self):
+        return self._base_damage

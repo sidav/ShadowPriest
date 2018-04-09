@@ -28,7 +28,7 @@ def initialize():
 
 
 def melee_attack(attacker, victim):
-    MeleeAttack.do_attack(attacker, victim)
+    MeleeAttack.try_to_attack(attacker, victim)
     events_stack.push_event(EC.melee_attack_event(attacker, victim))
 
 
