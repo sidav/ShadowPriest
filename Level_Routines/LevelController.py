@@ -100,7 +100,7 @@ def try_pick_up_item(unit, item):
     x, y = unit.get_position()
     ix, iy = item.get_position()
     if (x, y) == (ix, iy):
-        unit.get_inventory().add_item(item)
+        unit.get_inventory().add_item_to_backpack(item)
         current_level.remove_item_from_floor(item)
         return True
     else:
@@ -109,7 +109,7 @@ def try_pick_up_item(unit, item):
 
 def try_drop_item(unit, item):
     x, y = unit.get_position()
-    unit.get_inventory().remove_item(item)
+    unit.get_inventory().remove_item_from_backpack(item)
     current_level.add_item_on_floor_at_coordinates(item, x, y)
     return True
 
