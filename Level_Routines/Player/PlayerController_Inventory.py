@@ -11,7 +11,7 @@ def do_grabbing(player):
         if len(items_here) == 1:
             if LC.try_pick_up_item(player, items_here[0]):
                 player.spend_turns_for_action(TC.cost_for('pick up'))
-                LOG.append_message('I pick up {}.'.format(items_here[0].get_name()))
+                LOG.append_message('I pick up the {}.'.format(items_here[0].get_name()))
             else:
                 LOG.append_error_message("Can't pick up items here for unknown reason!")
         else:
@@ -36,25 +36,40 @@ def do_dropping(player):
     for item in items_to_drop:
         if LC.try_drop_item(player, item):
             player.spend_turns_for_action(TC.cost_for('drop item'))
-            LOG.append_message('I drop {}.'.format(item.get_name()))
+            LOG.append_message('I drop the {}.'.format(item.get_name()))
         else:
             LOG.append_error_message("Can't drop item for unknown reason!")
 
 
 def do_wielding(player):
     inv = player.get_inventory()
+    curr_weapon = inv.get_equipped_weapon()
     wpns = inv.get_weapons_from_backpack()
     if len(wpns) == 0:
-        inv.unequip_weapon()
-        return
-    names = get_names_from_list_of_items(wpns)
-    names.append('Nothing') # to unwield
-    selected_weapon_index = MENU.single_select_menu('WIELD WEAPON', 'Select weapon to wield',
-                                     names)
-    if selected_weapon_index == len(names) - 1:  # player HAS selected nothing:
-        inv.unequip_weapon()
+        if curr_weapon is not None:
+            LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
+            inv.unequip_weapon()
+        else:
+            LOG.append_message('I have nothing to wield!')
+
+    elif len(wpns) == 1 and curr_weapon is None:
+        LOG.append_message('I wield the {}.'.format(wpns[0].get_name()))
+        inv.equip_item(wpns[0])
+
     else:
-        inv.equip_item(wpns[selected_weapon_index])
+        names = get_names_from_list_of_items(wpns)
+        names.append('Nothing')  # for unwielding
+        selected_weapon_index = MENU.single_select_menu('WIELD WEAPON', 'Select weapon to wield',
+                                         names)
+        if selected_weapon_index == len(names) - 1:  # player HAS selected nothing:
+            if curr_weapon is not None:
+                LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
+                inv.unequip_weapon()
+            else:
+                LOG.append_message('I decided to remain barehanded.')
+        else:
+            LOG.append_message('I wield the {}.'.format(wpns[0].get_name()))
+            inv.equip_item(wpns[selected_weapon_index])
 
 
 def do_unwielding(player):
@@ -68,7 +83,7 @@ def pickup_with_pickup_menu(player, items):
     for ind in indices:
         if LC.try_pick_up_item(player, items[ind]):
             player.spend_turns_for_action(TC.cost_for('pick up'))
-            LOG.append_message('I pick up {}.'.format(items[ind].get_name()))
+            LOG.append_message('I pick up the {}.'.format(items[ind].get_name()))
         else:
             LOG.append_error_message("Can't pick up items here for unknown reason!")
 
