@@ -9,6 +9,9 @@ class Inventory:
     equipped_armor = None
     equipped_ammo = None
 
+    def __init__(self):
+        self.backpack = []
+
     def count_total_weight(self):
         wght = 0
         for item in self.backpack:
