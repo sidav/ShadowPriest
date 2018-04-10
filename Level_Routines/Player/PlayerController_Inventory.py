@@ -61,15 +61,18 @@ def do_wielding(player):
         names.append('Nothing')  # for unwielding
         selected_weapon_index = MENU.single_select_menu('WIELD WEAPON', 'Select weapon to wield',
                                          names)
-        if selected_weapon_index == len(names) - 1:  # player HAS selected nothing:
-            if curr_weapon is not None:
-                LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
-                inv.unequip_weapon()
-            else:
-                LOG.append_message('I decided to remain barehanded.')
+        if selected_weapon_index is None:
+            LOG.append_replaceable_message('Okay, then.')
         else:
-            LOG.append_message('I wield the {}.'.format(wpns[0].get_name()))
-            inv.equip_item(wpns[selected_weapon_index])
+            if selected_weapon_index == len(names) - 1:  # player HAS selected nothing:
+                if curr_weapon is not None:
+                    LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
+                    inv.unequip_weapon()
+                else:
+                    LOG.append_message('I decided to remain barehanded.')
+            else:
+                LOG.append_message('I wield the {}.'.format(wpns[0].get_name()))
+                inv.equip_item(wpns[selected_weapon_index])
 
 
 def do_unwielding(player):

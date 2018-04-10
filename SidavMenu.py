@@ -92,6 +92,8 @@ def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='
                 cursor_line = items_in_menu - 1
         elif key.keychar.__contains__('ENTER') or key.text == ' ':
             return cursor_line
+        elif key.keychar == 'ESCAPE':
+            return None
 
 
 def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
