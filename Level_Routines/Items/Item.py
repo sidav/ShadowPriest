@@ -31,7 +31,7 @@ class Item:
         return self._stackable
 
     def is_stackable_with(self, item):
-        return item.get_singular_name() == self._name and self != item
+        return self._stackable and item.get_singular_name() == self._name and self != item
 
     def get_quantity(self):
         return self._quantity

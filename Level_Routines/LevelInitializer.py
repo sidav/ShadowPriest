@@ -63,4 +63,5 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
             posy = rand.rand(lvl.MAP_HEIGHT)
         num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
         for _ in range(num_of_items):
-            lvl._items_on_floor.append(WC.create_dagger(posx, posy))
+            weapon = WC.create_dagger(posx, posy)
+            lvl._items_on_floor.append(weapon)

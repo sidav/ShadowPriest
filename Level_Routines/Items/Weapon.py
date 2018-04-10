@@ -11,5 +11,9 @@ class Weapon(Item):
     _two_handed = False
     _damage_type = 0  # fuck knows what that mean.
 
+    def __init__(self, *args):
+        super(Weapon, self).__init__(*args)
+        self._stackable = False
+
     def get_base_damage(self):
         return self._base_damage
