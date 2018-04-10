@@ -46,7 +46,8 @@ def name_value_menu(title='Name-value menu. Pick a title, dummy!', subheading='P
 
     CW.setForegroundColor(names_color)
     for i, name in enumerate(names):
-        CW.putString(name+':  ', 0, i+2)
+        if name != '':
+            CW.putString(name+':  ', 0, i+2)
 
     CW.setForegroundColor(values_color)
     for i, value in enumerate(values):

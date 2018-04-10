@@ -93,13 +93,28 @@ def pickup_with_pickup_menu(player, items):
 
 def show_equipped_items(player):
     inv = player.get_inventory()
+    backpack = inv.get_backpack()
 
     items_in_slots = [inv.get_equipped_weapon(), inv.get_equipped_armor(), inv.get_equipped_ammo()]
 
     item_slot_names = ['Weapon in hand', 'Equipped armor', 'Ammo in ready']
     items_in_slots_names = get_names_from_list_of_items(items_in_slots, 'Nothing')
 
-    MENU.name_value_menu('INVENTORY', 'Look at my fucking inventory. Look. ', item_slot_names, items_in_slots_names)
+    item_slot_names.append('')
+    items_in_slots_names.append('')
+
+    item_slot_names.append('-------- Backpack')
+    if len(backpack) > 0:
+        items_in_slots_names.append('')
+    else:
+        items_in_slots_names.append('empty')
+
+    for item in backpack:
+        item_slot_names.append('')
+        items_in_slots_names.append(item.get_name())
+
+    MENU.name_value_menu('INVENTORY', 'My items', item_slot_names, items_in_slots_names)
+
 
 def get_names_from_list_of_items(items, placeholder_for_empty='None_Item'):
     name_list = []
