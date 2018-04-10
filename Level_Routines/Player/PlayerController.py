@@ -35,6 +35,10 @@ def do_key_action(lvl):
             PC_I.do_grabbing(player)
         if keyPressed.text == 'd': # drop
             PC_I.do_dropping(player)
+        if keyPressed.text == 'w': # wield
+            PC_I.do_wielding(player)
+        if keyPressed.text == 'U': # unwield
+            PC_I.do_unwielding(player)
         if keyPressed.text == 'i': # list equipped items
             PC_I.show_equipped_items(player)
 

@@ -41,6 +41,27 @@ def do_dropping(player):
             LOG.append_error_message("Can't drop item for unknown reason!")
 
 
+
+def do_wielding(player):
+    inv = player.get_inventory()
+    wpns = inv.get_weapons_from_backpack()
+    if len(wpns) == 0:
+        # TODO: unwield here
+    names = get_names_from_list_of_items(wpns)
+    names.append('Nothing') # to unwield
+    selected_weapon_index = MENU.single_select_menu('WIELD WEAPON', 'Select weapon to wield',
+                                     names)
+    if selected_weapon_index == len(names) - 1:  # player HAS NOT selected nothing:
+        inv.equip_item(wpns[selected_weapon_index])
+        return
+    inv.unequip_weapon()
+
+
+def do_unwielding(player):
+    inv = player.get_inventory()
+    inv.get_equipped_weapon()
+
+
 def pickup_with_pickup_menu(player, items):
     names = get_names_from_list_of_items(items)
     indices = MENU.multi_select_menu('PICK UP', 'Select items to pick up', names) # indices - indices_of_items_selected_for_pickup
