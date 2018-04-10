@@ -11,6 +11,9 @@ class Inventory:
 
     def __init__(self):
         self.backpack = []
+        self.equipped_weapon = None
+        self.equipped_armor = None
+        self.equipped_ammo = None
 
     def count_total_weight(self):
         wght = 0
@@ -67,7 +70,7 @@ class Inventory:
         return self.equipped_armor
 
     def get_equipped_ammo(self):
-        return self.equipped_weapon
+        return self.equipped_ammo
 
     def get_backpack(self):
         return self.backpack
