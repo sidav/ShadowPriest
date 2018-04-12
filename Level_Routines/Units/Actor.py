@@ -27,6 +27,9 @@ class Actor(Unit): # Not needed?
     # def check_current_state_expired(self):
     #     return self.current_state_expiration_turn <
 
+    def can_be_stabbed(self):
+        return self._stabbable and self.current_state == self.states.calm
+
     def get_current_state_expiration_turn(self):
         return self.current_state_expiration_turn
 

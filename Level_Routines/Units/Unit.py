@@ -19,6 +19,8 @@ class Unit:
     _color = (32, 192, 32)
     _next_turn_to_act = 0
 
+    _stabbable = True
+
     def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32), name='Unidentified Unit', rpg_stats = None):
         self._inventory = Inventory()
         self._appearance = appearance
@@ -32,6 +34,9 @@ class Unit:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
         pass
+
+    def can_be_stabbed(self):
+        return self._stabbable
 
     def get_name(self):
         return self._name

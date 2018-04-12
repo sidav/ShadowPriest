@@ -17,3 +17,6 @@ class Weapon(Item):
 
     def get_base_damage(self):
         return self._base_damage
+
+    def get_base_stab_damage(self):
+        return self._base_stab_damage
