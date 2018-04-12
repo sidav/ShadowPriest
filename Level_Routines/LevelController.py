@@ -33,7 +33,10 @@ def melee_attack(attacker:Unit, victim:Unit):
         if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
             event = EC.attack_with_bare_hands_event(attacker, victim)
     else:
-        if MeleeAttack.try_to_attack_with_weapon(attacker, victim):
+        if victim.can_be_stabbed() and attacker.get_inventory().get_equipped_weapon().is_stabbing():
+            if MeleeAttack.try_to_stab(attacker, victim):
+                event = EC.stab_event(attacker, victim)
+        elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
             event = EC.attack_with_melee_weapon_event(attacker, victim)
     events_stack.push_event(event)
 

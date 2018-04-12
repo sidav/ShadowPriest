@@ -20,3 +20,6 @@ class Weapon(Item):
 
     def get_base_stab_damage(self):
         return self._base_stab_damage
+
+    def is_stabbing(self):
+        return self._base_stab_damage > 0
