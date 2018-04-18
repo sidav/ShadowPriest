@@ -4,10 +4,10 @@ from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
 from . import LevelView
-from .Creators import CorpseCreator
+from .Creators import BodyCreator
 from .LevelInitializer import initialize_level
 from .LevelModel import LevelModel
-from .Mechanics import MeleeAttack
+from .Mechanics import MeleeAttack, Knockout
 from .Player import PlayerController as P_C, Statusbar
 from .Units import ActorController as A_C
 from .Units.Unit import Unit
@@ -26,6 +26,16 @@ def initialize():
     current_level = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     current_level = initialize_level(current_level)
     events_stack = ESTCK()
+
+
+def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
+    if Knockout.try_to_knockout(attacker, victim):
+        KO_time = Knockout.calculate_knockout_time(attacker, victim)
+        current_level.remove_unit(victim)
+        body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
+        current_level.add_item_on_floor_without_cordinates(body)
+        event = EC.knockout_attack_event(attacker, victim)
+    events_stack.push_event(event)
 
 
 def melee_attack(attacker:Unit, victim:Unit):
@@ -99,11 +109,23 @@ def check_dead_units():
     for unit in units:
         if unit.is_dead():
             current_level.remove_unit(unit)
-            corpse = CorpseCreator.create_corpse_from_unit(unit)
+            corpse = BodyCreator.create_corpse_from_unit(unit)
             current_level.add_item_on_floor_without_cordinates(corpse)
             event = EC.action_event(unit, 'drop', 'dead', 3)
             events_stack.push_event(event)
             # TODO: drop inventory of the dead unit
+
+
+def check_unconscious_bodies():
+    items = current_level.get_all_items_on_floor()
+    for item in items:
+        if item.__class__.__name__ == 'UnconsciousBody':
+            if item.get_time_for_wake_up() <= get_current_turn():
+                current_level.remove_item_from_floor(item)
+                unit = item.get_original_unit()
+                current_level.spawn_unit(unit)
+                event = EC.action_event(unit, 'wake', 'up', 3)
+                events_stack.push_event(event)
 
 
 def try_pick_up_item(unit, item):
@@ -199,6 +221,7 @@ def control():
             redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
         check_dead_units()
+        check_unconscious_bodies()
         check_events_for_player()
         events_stack.cleanup_events(current_turn)
 

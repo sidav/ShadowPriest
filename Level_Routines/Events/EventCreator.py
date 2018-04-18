@@ -6,6 +6,23 @@ from Level_Routines.Player import Player
 from Routines import SidavRandom as RND
 
 
+def knockout_attack_event(attacker:Unit, victim:Unit):
+    att_name = attacker.get_name()
+    vic_name = victim.get_name()
+    vic_x, vic_y = victim.get_position()  # Not a mistake: the attack event has the victim coords.
+
+    if attacker.__class__.__name__ == 'Player':
+        att_name = 'I'
+        vis_attack_text = 'strangle the'
+        heard_attack_text = 'hear a strangle'
+
+    seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
+    heard_text = '{} {}!'.format(att_name, heard_attack_text)
+    expir_turn = LC.get_current_turn() + 1
+    event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
+    return event
+
+
 def attack_with_bare_hands_event(attacker:Unit, victim:Unit):
     att_name = attacker.get_name()
     vic_name = victim.get_name()

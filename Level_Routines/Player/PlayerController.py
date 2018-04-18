@@ -31,6 +31,8 @@ def do_key_action(lvl):
             try_close_door(lvl, player)
         if keyPressed.text == 'p': # peek
             do_peeking(lvl, player)
+        if keyPressed.text == 's': # strangle
+            do_ko_attack(lvl, player)
         if keyPressed.text == 'g': # grab
             PC_I.do_grabbing(player)
         if keyPressed.text == 'd': # drop
@@ -111,6 +113,21 @@ def notify_for_items_on_floor(player):
         item_message += '.'
         LOG.append_message(item_message)
 
+
+def do_ko_attack(lvl, player):
+    px, py = player.get_position()
+    grab_x, grab_y = ask_for_direction('Grab whom?')
+    if grab_x == 0 and grab_y == 0:
+        LOG.append_message("I don't find it funny.")
+        return 
+    target_x = px + grab_x
+    target_y = py + grab_y
+    if lvl.is_unit_present(target_x, target_y):
+        target_unit = lvl.get_unit_at(target_x, target_y)
+        LC.knockout_attack(player, target_unit)
+        player.spend_turns_for_action(TC.cost_for('knockout attack'))
+    else:
+        LOG.append_message('There is nobody here!')
 
 
 def ask_for_direction(log_text='Pick a direction...'):

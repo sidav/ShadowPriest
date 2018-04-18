@@ -118,4 +118,3 @@ class Unit:
 
     def get_inventory(self):
         return self._inventory
-1
