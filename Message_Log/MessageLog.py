@@ -41,8 +41,13 @@ def append_warning_message(text):
     # print_log()
     # CW.flushConsole()
 
+
 def print_log():
     last_msgs = all_messages[-LOG_HEIGHT:]
+
+    for i in range(len(last_msgs)):
+        CW.putString(str(' ' * CONSOLE_WIDTH), 0, MAP_HEIGHT + i)
+
     for i in range(len(last_msgs)):
         text = last_msgs[i].text
         stack = last_msgs[i].stack
