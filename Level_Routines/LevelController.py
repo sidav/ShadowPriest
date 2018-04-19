@@ -120,9 +120,12 @@ def check_unconscious_bodies():
     items = current_level.get_all_items_on_floor()
     for item in items:
         if item.__class__.__name__ == 'UnconsciousBody':
-            if item.get_time_for_wake_up() <= get_current_turn():
+            x, y = item.get_position()
+            if item.get_time_for_wake_up() <= get_current_turn() and not current_level.is_unit_present(x, y):
                 current_level.remove_item_from_floor(item)
                 unit = item.get_original_unit()
+                unit.set_coordinates(x, y)
+                unit.set_next_turn_to_act(get_current_turn() + 10)
                 current_level.spawn_unit(unit)
                 event = EC.action_event(unit, 'wake', 'up', 3)
                 events_stack.push_event(event)

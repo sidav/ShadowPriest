@@ -35,6 +35,13 @@ class Unit:
             self._look_y = random.rand(3) - 1
         pass
 
+    def set_coordinates(self, x, y):
+        self._pos_x = x
+        self._pos_y = y
+
+    def set_next_turn_to_act(self, tick):
+        self._next_turn_to_act = tick
+
     def can_be_stabbed(self):
         return self._stabbable
 
