@@ -8,12 +8,14 @@ class Inventory:
     equipped_weapon = None
     equipped_armor = None
     equipped_ammo = None
+    body_on_shoulder = None
 
     def __init__(self):
         self.backpack = []
         self.equipped_weapon = None
         self.equipped_armor = None
         self.equipped_ammo = None
+        self.body_on_shoulder = None
 
     def count_total_weight(self):
         wght = 0
@@ -62,7 +64,6 @@ class Inventory:
     #         LOG.append_error_message('attempt to unequip the item of type "{}"'.format(item_type))
     #         return
 
-
     def get_equipped_weapon(self):
         return self.equipped_weapon
 
@@ -71,6 +72,23 @@ class Inventory:
 
     def get_equipped_ammo(self):
         return self.equipped_ammo
+
+    def get_body_on_shoulder(self):
+        return self.body_on_shoulder
+
+    def pick_body_on_shoulder(self, item):
+        if self.body_on_shoulder is not None:
+            LOG.append_error_message('Shoulder is not empty!')
+            return
+        self.body_on_shoulder = item
+
+    def is_carrying_body_on_shoulder(self):
+        return self.body_on_shoulder is not None
+
+    def remove_body_from_shoulder(self):
+        item = self.body_on_shoulder
+        self.body_on_shoulder = None
+        return item
 
     def get_backpack(self):
         return self.backpack

@@ -7,6 +7,10 @@ def print_statusbar(player, current_turn):
     player_name = 'Priest of the Imperceptible'  # TODO: replace with actual name
     print_name_with_healthbar(player_name, player.get_current_hitpoints(), player.get_max_hitpoints())
 
+    if player.get_inventory().is_carrying_body_on_shoulder():
+        CW.setForegroundColor(192, 192, 32)
+        CW.putString('CARRYING BODY', len(player_name) + 3, CONST.CONSOLE_HEIGHT-1)
+
     # print current turn
     cur_turn_str = str(current_turn)[:-1]+'.'+str(current_turn)[-1:]  # Whoa, some more fucking magic! Why fucking not?
     cur_turn_str = 'TURN: ' + cur_turn_str

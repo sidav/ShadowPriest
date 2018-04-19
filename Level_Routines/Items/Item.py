@@ -53,3 +53,6 @@ class Item:
 
     def get_appearance(self):
         return self._appearance
+
+    def is_body(self):
+        return False

@@ -11,3 +11,6 @@ class Corpse(Item):
         self._pos_y = y
         self._color = color
         self._name = name
+
+    def is_body(self):
+        return True

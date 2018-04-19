@@ -24,3 +24,6 @@ class UnconsciousBody(Item):
 
     def get_original_unit(self):
         return self._unit
+
+    def is_body(self):
+        return True

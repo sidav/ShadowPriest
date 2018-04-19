@@ -5,13 +5,18 @@ import SidavMenu as MENU
 
 
 def do_grabbing(player):
+    inv = player.get_inventory()
+    if inv.is_carrying_body_on_shoulder():
+        LOG.append_message("I can't pick up with that burden on my shoulder.")
+        return
+
     (x, y) = player.get_position()
     if LC.is_item_present(x, y):
         items_here = LC.get_items_at_coordinates(x, y)
         if len(items_here) == 1:
             if LC.try_pick_up_item(player, items_here[0]):
                 player.spend_turns_for_action(TC.cost_for('pick up'))
-                LOG.append_message('I pick up the {}.'.format(items_here[0].get_name()))
+                LOG.append_message(pick_up_message_for_item(items_here[0]))
             else:
                 LOG.append_error_message("Can't pick up items here for unknown reason!")
         else:
@@ -23,6 +28,15 @@ def do_grabbing(player):
 def do_dropping(player):
     inv = player.get_inventory()
     backpack = inv.get_backpack()
+
+    if inv.is_carrying_body_on_shoulder():
+        body = inv.get_body_on_shoulder()
+        if LC.try_drop_item(player, body):
+            player.spend_turns_for_action(TC.cost_for('drop item'))
+            LOG.append_message('I throw off the {} from my shoulder.'.format(body.get_name()))
+            player.spend_turns_for_action(TC.cost_for('drop item'))
+            return
+
     if len(backpack) == 0:
         LOG.append_message('I have nothing to drop - my backpack is empty!')
         return
@@ -43,6 +57,11 @@ def do_dropping(player):
 
 def do_wielding(player):
     inv = player.get_inventory()
+
+    if inv.is_carrying_body_on_shoulder():
+        LOG.append_message("I can't change weapon with that burden on my shoulder.")
+        return
+
     curr_weapon = inv.get_equipped_weapon()
     wpns = inv.get_weapons_from_backpack()
     if len(wpns) == 0:
@@ -86,7 +105,7 @@ def pickup_with_pickup_menu(player, items):
     for ind in indices:
         if LC.try_pick_up_item(player, items[ind]):
             player.spend_turns_for_action(TC.cost_for('pick up'))
-            LOG.append_message('I pick up the {}.'.format(items[ind].get_name()))
+            LOG.append_message(pick_up_message_for_item(items[ind]))
         else:
             LOG.append_error_message("Can't pick up items here for unknown reason!")
 
@@ -99,6 +118,10 @@ def show_equipped_items(player):
 
     item_slot_names = ['Weapon in hand', 'Equipped armor', 'Ammo in ready']
     items_in_slots_names = get_names_from_list_of_items(items_in_slots, 'Nothing')
+
+    if inv.is_carrying_body_on_shoulder():
+        item_slot_names = ['Body on shoulder'] + item_slot_names
+        items_in_slots_names = [inv.get_body_on_shoulder().get_name()] + items_in_slots_names
 
     item_slot_names.append('')
     items_in_slots_names.append('')
@@ -124,3 +147,10 @@ def get_names_from_list_of_items(items, placeholder_for_empty='None_Item'):
         else:
             name_list.append(placeholder_for_empty)
     return name_list
+
+
+def pick_up_message_for_item(item):
+    if item.is_body():
+        return 'I shoulder the {}.'.format(item.get_name())
+    else:
+        return 'I pick up the {}.'.format(item.get_name())
