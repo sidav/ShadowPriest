@@ -70,6 +70,7 @@ def try_close_door(unit, x, y):
 def is_time_to_act(unit):
     current_turn = current_level.get_current_turn()
     if unit.get_next_turn_to_act() <= current_turn:
+        unit.set_next_turn_to_act(current_turn)
         return True
     return False
 
