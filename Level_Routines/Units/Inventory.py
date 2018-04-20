@@ -42,8 +42,12 @@ class Inventory:
         else:
             LOG.append_warning_message('equipping item not from backpack!')
 
+    def remove_equipped_weapon(self):  # dangerous
+        weapon = self.equipped_weapon
+        self.equipped_weapon = None
+        return weapon
 
-    def unequip_weapon(self):
+    def move_weapon_to_backpack(self):
         self.add_item_to_backpack(self.equipped_weapon)
         self.equipped_weapon = None
 

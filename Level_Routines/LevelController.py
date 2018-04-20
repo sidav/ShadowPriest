@@ -31,6 +31,7 @@ def initialize():
 def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
     if Knockout.try_to_knockout(attacker, victim):
         KO_time = Knockout.calculate_knockout_time(attacker, victim)
+        drop_equipped_items(victim)
         current_level.remove_unit(victim)
         body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
         current_level.add_item_on_floor_without_cordinates(body)
@@ -105,10 +106,18 @@ def get_current_turn():
     return current_level.get_current_turn()
 
 
+def drop_equipped_items(unit):
+    x, y = unit.get_position()
+    item = unit.get_inventory().remove_equipped_weapon()
+    if item is not None:
+        current_level.add_item_on_floor_at_coordinates(item, x, y)
+
+
 def check_dead_units():
     units = current_level.get_all_units()
     for unit in units:
         if unit.is_dead():
+            drop_equipped_items(unit)
             current_level.remove_unit(unit)
             corpse = BodyCreator.create_corpse_from_unit(unit)
             current_level.add_item_on_floor_without_cordinates(corpse)

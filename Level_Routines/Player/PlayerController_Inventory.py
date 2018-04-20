@@ -67,7 +67,7 @@ def do_wielding(player):
     if len(wpns) == 0:
         if curr_weapon is not None:
             LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
-            inv.unequip_weapon()
+            inv.move_weapon_to_backpack()
         else:
             LOG.append_message('I have nothing to wield!')
 
@@ -86,7 +86,7 @@ def do_wielding(player):
             if selected_weapon_index == len(names) - 1:  # player HAS selected nothing:
                 if curr_weapon is not None:
                     LOG.append_message('I unwield my {}.'.format(inv.get_equipped_weapon().get_name()))
-                    inv.unequip_weapon()
+                    inv.move_weapon_to_backpack()
                 else:
                     LOG.append_message('I decided to remain barehanded.')
             else:
