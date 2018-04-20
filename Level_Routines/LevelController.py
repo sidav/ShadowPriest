@@ -111,12 +111,7 @@ def get_items_at_coordinates(x, y):
 
 
 def get_bodies_at_coordinates(x, y):
-    items = get_items_at_coordinates(x, y)
-    bodies = []
-    for item in items:
-        if item.is_body():
-            bodies.append(item)
-    return bodies
+    current_level.get_bodies_at_coordinates(x, y)
 
 
 def get_current_turn():
@@ -193,8 +188,6 @@ def try_lay_out_items_from_body(acting:Unit):
                 drop_all_items_from_body(body)
                 return True
     return False
-
-
 
 
 def drop_all_items_from_body(body):

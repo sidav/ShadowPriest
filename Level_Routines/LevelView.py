@@ -7,6 +7,8 @@ import tdl
 SINGLE_ARROW_MODE = False
 NON_VISIBLE_TILE_COLOR = (32, 32, 64)
 
+map_of_already_drawn_items = []
+
 def draw_whole_level_map(lvl): # seen tiles only
     CW.clearConsole()
     for i in range(lvl.MAP_WIDTH):
@@ -17,7 +19,7 @@ def draw_whole_level_map(lvl): # seen tiles only
             CW.putChar(currentChar, i, j)
 
 
-def draw_level_map_in_LOS(lvl, vis_table):
+def draw_only_level_map_in_LOS(lvl, vis_table):
     for i in range(lvl.MAP_WIDTH):
         for j in range(lvl.MAP_HEIGHT):
             currentChar = lvl.get_tile_char(i, j)
@@ -58,12 +60,18 @@ def draw_absolutely_everything(lvl):
 
 
 def draw_everything_in_LOS_from_position(lvl, px, py, looking_range=1):
+    global map_of_already_drawn_items
+    map_w = lvl.MAP_WIDTH  # bad?
+    map_h = lvl.MAP_HEIGHT  # bad?
+    map_of_already_drawn_items = [[False] * map_h for _ in range(map_w)]  # bad?
+
     CW.clearConsole()
     opacity_map = lvl.get_opacity_map()
     vis_map = LOS.getVisibilityTableFromPosition(px, py, opacity_map, looking_range)
     # print(opacity_map)
-    draw_level_map_in_LOS(lvl, vis_map)
+    draw_only_level_map_in_LOS(lvl, vis_map)
     draw_items_in_visibility_map(lvl, vis_map)
+    draw_bodies_in_visibility_map(lvl, vis_map)
     draw_units_in_visibility_map(lvl, vis_map)
     draw_player(lvl)
 
@@ -78,21 +86,41 @@ def draw_units_in_visibility_map(lvl, vis_map):
                 draw_unit_look_direction_only(lvl, curr_unit)
 
 
-def draw_items_in_visibility_map(lvl, vis_map):
+def draw_items_in_visibility_map(lvl, vis_map):  # skips bodies!
+    global map_of_already_drawn_items
     item_list = lvl.get_all_items_on_floor()
     for curr_item in item_list:
+        if curr_item.is_body():
+            continue
         ix, iy = curr_item.get_position()
         if vis_map[ix][iy]:
-            draw_item(curr_item)
+            inverse = map_of_already_drawn_items[ix][iy]
+            draw_item(curr_item, inverse)
+            map_of_already_drawn_items[ix][iy] = True
+
+
+def draw_bodies_in_visibility_map(lvl, vis_map):
+    body_list = lvl.get_all_bodies_on_floor()
+    for body in body_list:
+        ix, iy = body.get_position()
+        if vis_map[ix][iy]:
+            inverse = map_of_already_drawn_items[ix][iy]
+            draw_item(body, inverse)
+            map_of_already_drawn_items[ix][iy] = True
 
 # ---------------------------------------------------------------------------------------------------------- #
 
 
-def draw_item(item):
+def draw_item(item, inverse=False):
     CW.setForegroundColor(item.get_color())
+    if inverse:
+        CW.setForegroundColor(0, 0, 0)
+        CW.setBackgroundColor(item.get_color())
     curr_appearance = item.get_appearance()
     curr_position = item.get_position()
     CW.putChar(curr_appearance, curr_position[0], curr_position[1])
+    if inverse:
+        CW.setBackgroundColor(0, 0, 0)
 
 
 def get_looking_thingy_char(look_dir):

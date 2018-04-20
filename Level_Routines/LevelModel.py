@@ -126,6 +126,23 @@ class LevelModel:
                 list_items.append(item)
         return list_items
 
+    def get_all_bodies_on_floor(self):
+        items = self._items_on_floor
+        bodies = []
+        for item in items:
+            if item.is_body():
+                bodies.append(item)
+        return bodies
+
+    def get_bodies_at_coordinates(self, x, y):
+        items = self._items_on_floor
+        bodies = []
+        for item in items:
+            if item.is_body():
+                if (x, y) == item.get_position():
+                    bodies.append(item)
+        return bodies
+
     def remove_item_from_floor(self, item):
         self._items_on_floor.remove(item)
     # /items
