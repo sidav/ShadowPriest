@@ -111,7 +111,7 @@ def get_items_at_coordinates(x, y):
 
 
 def get_bodies_at_coordinates(x, y):
-    current_level.get_bodies_at_coordinates(x, y)
+    return current_level.get_bodies_at_coordinates(x, y)
 
 
 def get_current_turn():
