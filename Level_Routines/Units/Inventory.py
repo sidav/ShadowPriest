@@ -97,6 +97,9 @@ class Inventory:
     def get_backpack(self):
         return self.backpack
 
+    def is_backpack_empty(self):
+        return len(self.backpack) == 0
+
     def get_weapons_from_backpack(self):
         wpns = []
         for item in self.backpack:

@@ -7,6 +7,7 @@ class Corpse(Item):
     _stackable = False
     _weight = 25
     _inventory = None
+    _searched = False
 
     def __init__(self, x, y, color, name='Unidentified Corpse', inventory = None):
         self._pos_x = x
@@ -20,3 +21,18 @@ class Corpse(Item):
 
     def is_body(self):
         return True
+
+    def get_inventory(self):
+        return self._inventory
+
+    def empty_backpack(self):
+        self._inventory.backpack = []
+
+    def set_searched(self, set=True):
+        self._searched = set
+
+    def get_name(self):
+        name = self._name
+        if self._searched:
+            name += ' (searched)'
+        return name

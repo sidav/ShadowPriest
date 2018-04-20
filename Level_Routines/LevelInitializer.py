@@ -27,7 +27,9 @@ def place_random_units(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
         while not (lvl.is_tile_passable(posx, posy)):
             posx = rand.rand(lvl.MAP_WIDTH)
             posy = rand.rand(lvl.MAP_HEIGHT)
-        lvl.spawn_unit(AC.create_guard(posx, posy, rand.rand(2)))
+        unit = AC.create_guard(posx, posy, rand.rand(2))
+        unit.get_inventory().add_item_to_backpack(Item(posx, posy, name='Some debug item', color=(192, 0, 32)))
+        lvl.spawn_unit(unit)
 
 
 def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE

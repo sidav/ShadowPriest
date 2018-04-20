@@ -8,6 +8,7 @@ class UnconsciousBody(Item):
     _weight = 25
     _time_for_wake_up = 0
     _unit = None  # needed for waking up
+    _searched = False
 
     def __init__(self, x, y, color, unit, name='Unidentified KOed Body', time_for_wake_up = -1):
         self._pos_x = x
@@ -25,5 +26,20 @@ class UnconsciousBody(Item):
     def get_original_unit(self):
         return self._unit
 
+    def get_inventory(self):
+        return self._unit.get_inventory()
+
+    def empty_backpack(self):
+        self._unit.get_inventory().backpack = []
+
     def is_body(self):
         return True
+
+    def set_searched(self, set=True):
+        self._searched = set
+
+    def get_name(self):
+        name = self._name
+        if self._searched:
+            name += ' (searched)'
+        return name

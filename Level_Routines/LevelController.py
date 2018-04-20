@@ -80,6 +80,14 @@ def is_item_present(x, y):
     return current_level.is_item_present(x, y)
 
 
+def is_body_present_at(x, y):
+    items = current_level.get_items_at_coordinates(x, y)
+    for item in items:
+        if item.is_body():
+            return True
+    return False
+
+
 def try_stack_items_at_coordinates(x, y):
     items = current_level.get_items_at_coordinates(x, y)
     items_count = len(items)
@@ -100,6 +108,15 @@ def get_items_at_coordinates(x, y):
     while try_stack_items_at_coordinates(x, y):
         pass
     return current_level.get_items_at_coordinates(x, y)
+
+
+def get_bodies_at_coordinates(x, y):
+    items = get_items_at_coordinates(x, y)
+    bodies = []
+    for item in items:
+        if item.is_body():
+            bodies.append(item)
+    return bodies
 
 
 def get_current_turn():
@@ -163,6 +180,31 @@ def try_drop_item(unit, item):
         unit.get_inventory().remove_item_from_backpack(item)
     current_level.add_item_on_floor_at_coordinates(item, x, y)
     return True
+
+
+def try_lay_out_items_from_body(acting:Unit):
+    x, y = acting.get_position()
+    bodies = get_bodies_at_coordinates(x, y)
+    if len(bodies) == 0:
+        return False
+    else:
+        for body in bodies:
+            if not body.get_inventory().is_backpack_empty():
+                drop_all_items_from_body(body)
+                return True
+    return False
+
+
+
+
+def drop_all_items_from_body(body):
+    x, y = body.get_position()
+    inv = body.get_inventory()
+    backpack = inv.get_backpack()
+    for item in backpack:
+        current_level.add_item_on_floor_at_coordinates(item, x, y)
+    body.empty_backpack()
+    body.set_searched()
 
 
 def is_event_visible_from(event, x, y, radius = 99):

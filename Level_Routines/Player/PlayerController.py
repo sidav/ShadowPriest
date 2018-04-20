@@ -35,6 +35,8 @@ def do_key_action(lvl):
             do_ko_attack(lvl, player)
         if keyPressed.text == 'g': # grab
             PC_I.do_grabbing(player)
+        if keyPressed.text == 'G': # lay out items from body
+            do_body_searching(player)
         if keyPressed.text == 'd': # drop
             PC_I.do_dropping(player)
         if keyPressed.text == 'w': # wield
@@ -130,6 +132,18 @@ def do_ko_attack(lvl, player):
         LOG.append_message('There is nobody here!')
 
 
+def do_body_searching(player):
+    x, y = player.get_position()
+    if LC.is_body_present_at(x, y):
+        if LC.try_lay_out_items_from_body(player):
+            LOG.append_message("I've laid out items from the body on floor.")
+        else:
+            LOG.append_message("I've already searched everything here.")
+    else:
+        LOG.append_message('There are no bodies here!')
+
+
+##########################################################
 def ask_for_direction(log_text='Pick a direction...'):
     LOG.append_replaceable_message(log_text)
     keyPressed = CW.readKey()
