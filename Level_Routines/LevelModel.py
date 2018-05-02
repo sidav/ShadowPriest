@@ -45,7 +45,7 @@ class LevelModel:
         # tempMap = BSP.generateMapWithRandomParams(mapW, mapH)
         for x in range(0, mapW):
             for y in range(0, mapH):
-                self._level_map[x][y] = self.pick_tile_class(tempMap[x][y])
+                self._level_map[x][y] = self.pick_tile_class(tempMap[x][y].tile_code)
 
     def get_tile_was_seen(self, x, y):
         return self._level_map[x][y].get_was_seen()
