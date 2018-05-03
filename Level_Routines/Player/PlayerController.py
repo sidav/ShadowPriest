@@ -61,7 +61,7 @@ def do_move_keys_action(lvl, player, key):
     elif (lvl.is_tile_passable(target_x, target_y)):
         player.move_by_vector(vector_x, vector_y)
         player.spend_turns_for_action(TC.cost_for('move'))
-        notify_for_items_on_floor(player)
+        notify_for_anything_on_floor(lvl, player)
     elif lvl.is_door_present(target_x, target_y):
         LC.try_open_door(player, target_x, target_y)
         player.spend_turns_for_action(TC.cost_for('open door'))
@@ -104,8 +104,10 @@ def continue_peeking(player):
         player.spend_turns_for_action(TC.cost_for('peek'))
 
 
-def notify_for_items_on_floor(player):
+def notify_for_anything_on_floor(lvl, player):
     px, py = player.get_position()
+    if lvl.is_stairs_present(px, py):
+        LOG.append_message('I am standing at the {}.'.format(lvl.get_stairs_name(px, py)))
     if LC.is_item_present(px, py):
         item_message = 'I see here: '
         items_here = LC.get_items_at_coordinates(px, py)

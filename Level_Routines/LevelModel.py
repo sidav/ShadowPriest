@@ -1,4 +1,5 @@
 import Routines.SidavRandom as rand
+from Message_Log import MessageLog as LOG
 from GLOBAL_DATA import Level_Tile_Data as LTD
 from .Level_Features.LevelTile import LevelTile as LTile
 from .Player.Player import Player
@@ -69,6 +70,13 @@ class LevelModel:
         if self.is_stairs_present(x, y):
             return self._level_map[x][y].is_upstairs()
         return False
+
+    def get_stairs_name(self, stairs_x, stairs_y):
+        if self.is_stairs_present(stairs_x, stairs_y):
+            return self._level_map[stairs_x][stairs_y].get_stairs_name()
+        else:
+            LOG.append_error_message('the name of unexistent stairs requested!')
+            return 'stairs error'
 
     def is_door_closed(self, x, y):
         if self._level_map[x][y].__class__.__name__ == 'DoorTile':
