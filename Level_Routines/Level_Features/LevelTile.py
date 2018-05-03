@@ -13,14 +13,8 @@ class LevelTile:
     def __init__(self, appearance):
         self._opaque = LTD.get_tile_opaque(appearance)
         self._appearance = appearance
-        # if appearance == LTD._WALL_CODE:
-        #     self._color = LTD._WALL_COLOR
-        #
         if appearance == LTD._FLOOR_CODE:
             self._passable = True
-        #
-        # elif appearance == LTD._DOOR_CODE:
-        #     self._color = LTD._DOOR_COLOR # TODO: fucking doors.
 
     def get_tile_char(self):
         return self._appearance
@@ -36,3 +30,6 @@ class LevelTile:
 
     def set_was_seen(self, seen=True):
         self._was_seen = seen
+
+    def is_stairs(self):
+        return False

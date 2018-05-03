@@ -7,6 +7,7 @@ from .Items.Item import Item
 from Procedurals import BSPDungeonGenerator as BSP
 from Procedurals import RBRDungeonGenerator as RBR
 from .Level_Features.DoorTile import DoorTile
+from .Level_Features.StairsTile import StairsTile
 
 
 #represents the game level (dungeon floor, etc)
@@ -26,6 +27,8 @@ class LevelModel:
         appearance = LTD.tile_name_to_code(tile_name)
         if appearance == LTD._CLDOOR_CODE or appearance == LTD._OPDOOR_CODE:
             return DoorTile(appearance)
+        elif appearance == LTD._DOWN_STAIR_CODE or appearance == LTD._UP_STAIR_CODE:
+            return StairsTile(appearance)
         else:
             return LTile(appearance)
 
@@ -58,6 +61,14 @@ class LevelModel:
 
     def set_tile_was_seen(self, x, y):
         self._level_map[x][y].set_was_seen()
+
+    def is_stairs_present(self, x, y):
+        return self._level_map[x][y].is_stairs()
+
+    def is_upstairs_present(self, x, y):
+        if self.is_stairs_present(x, y):
+            return self._level_map[x][y].is_upstairs()
+        return False
 
     def is_door_closed(self, x, y):
         if self._level_map[x][y].__class__.__name__ == 'DoorTile':
