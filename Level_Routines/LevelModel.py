@@ -24,10 +24,10 @@ class LevelModel:
     def __init__(self, mapW, mapH):
         self.generate_level(mapW, mapH)
 
-    def pick_tile_class(self, tile_name):
+    def pick_tile_class(self, tile_name, lock_level=0):
         appearance = LTD.tile_name_to_code(tile_name)
         if appearance == LTD._CLDOOR_CODE or appearance == LTD._OPDOOR_CODE:
-            return DoorTile(appearance)
+            return DoorTile(appearance, lock_level)
         elif appearance == LTD._DOWN_STAIR_CODE or appearance == LTD._UP_STAIR_CODE:
             return StairsTile(appearance)
         else:
@@ -49,13 +49,17 @@ class LevelModel:
         # tempMap = BSP.generateMapWithRandomParams(mapW, mapH)
         for x in range(0, mapW):
             for y in range(0, mapH):
-                self._level_map[x][y] = self.pick_tile_class(tempMap[x][y].tile_code)
+                curr_tile = tempMap[x][y]
+                self._level_map[x][y] = self.pick_tile_class(curr_tile.tile_code, curr_tile.key_level)
 
     def get_tile_was_seen(self, x, y):
         return self._level_map[x][y].get_was_seen()
 
     def get_tile_char(self, x, y):
         return self._level_map[x][y].get_tile_char()
+
+    def get_tile_color(self, x, y):
+        return self._level_map[x][y].get_color()
 
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable() and not self.is_unit_present(x, y)

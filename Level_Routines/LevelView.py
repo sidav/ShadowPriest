@@ -9,14 +9,14 @@ NON_VISIBLE_TILE_COLOR = (32, 32, 64)
 
 map_of_already_drawn_items = []
 
-def draw_whole_level_map(lvl): # seen tiles only
-    CW.clearConsole()
-    for i in range(lvl.MAP_WIDTH):
-        for j in range(lvl.MAP_HEIGHT):
-            currentChar = lvl.get_tile_char(i, j)
-            color = DATA.get_tile_color(currentChar)
-            CW.setForegroundColor(color)
-            CW.putChar(currentChar, i, j)
+# def draw_whole_level_map(lvl): # seen tiles only
+#     CW.clearConsole()
+#     for i in range(lvl.MAP_WIDTH):
+#         for j in range(lvl.MAP_HEIGHT):
+#             currentChar = lvl.get_tile_char(i, j)
+#             color = DATA.get_tile_color(currentChar)
+#             CW.setForegroundColor(color)
+#             CW.putChar(currentChar, i, j)
 
 
 def draw_only_level_map_in_LOS(lvl, vis_table):
@@ -25,7 +25,7 @@ def draw_only_level_map_in_LOS(lvl, vis_table):
             currentChar = lvl.get_tile_char(i, j)
             draw_this_tile = False
             if vis_table[i][j]:
-                color = DATA.get_tile_color(currentChar)
+                color = lvl.get_tile_color(i, j)
                 lvl.set_tile_was_seen(i, j)
                 draw_this_tile = True
             elif lvl.get_tile_was_seen(i, j):

@@ -19,6 +19,9 @@ class LevelTile:
     def get_tile_char(self):
         return self._appearance
 
+    def get_color(self):
+        return LTD.tile_colors[self._appearance]
+
     def get_passable(self):
         return self._passable
     
