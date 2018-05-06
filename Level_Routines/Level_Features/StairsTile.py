@@ -4,8 +4,8 @@ from GLOBAL_DATA import Level_Tile_Data as LTD
 
 class StairsTile(LevelTile):
 
-    def __init__(self, appearance):
-        super().__init__(appearance)
+    def __init__(self, appearance, lock_level):
+        super().__init__(appearance, lock_level)
 
     def get_passable(self):
         return True

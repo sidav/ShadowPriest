@@ -29,9 +29,9 @@ class LevelModel:
         if appearance == LTD._CLDOOR_CODE or appearance == LTD._OPDOOR_CODE:
             return DoorTile(appearance, lock_level)
         elif appearance == LTD._DOWN_STAIR_CODE or appearance == LTD._UP_STAIR_CODE:
-            return StairsTile(appearance)
+            return StairsTile(appearance, lock_level)
         else:
-            return LTile(appearance)
+            return LTile(appearance, lock_level)
 
     # generates the overworld map from the world generation routine:
     def generate_level(self, mapW, mapH):
@@ -60,6 +60,9 @@ class LevelModel:
 
     def get_tile_color(self, x, y):
         return self._level_map[x][y].get_color()
+
+    def get_tile_lock_level(self, x, y):
+        return self._level_map[x][y].get_lock_level()
 
     def is_tile_passable(self, x, y):
         return self._level_map[x][y].get_passable() and not self.is_unit_present(x, y)

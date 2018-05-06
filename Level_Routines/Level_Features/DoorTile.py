@@ -23,9 +23,6 @@ class DoorTile(LevelTile):
     def get_color(self):
         return LTD.door_lock_level_colors[self._lock_level]
 
-    def get_lock_level(self):
-        return self._lock_level
-
     def set_closed(self, closed=True):
         self._closed = closed
 
