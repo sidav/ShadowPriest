@@ -549,7 +549,7 @@ def place_stairs():
     while (current_map[x][y].tile_code != _FLOOR_CODE or current_map[x][y].key_level != 0 or count_walls_around(x, y) > 3):
         x = _random(2, _MAP_WIDTH - 2)
         y = _random(2, _MAP_HEIGHT - 2)
-    put_single_tile(x, y, _DOWN_STAIRS_CODE, 0)
+    put_single_tile(x, y, _UP_STAIRS_CODE, 0)
 
     attempt = 0
     key_level_to_place_downstair = max_key_level
@@ -560,7 +560,7 @@ def place_stairs():
         if attempt > 250:
             key_level_to_place_downstair -= 1
             attempt = 0
-    put_single_tile(x, y, _UP_STAIRS_CODE, 2)
+    put_single_tile(x, y, _DOWN_STAIRS_CODE, 2)
 
 
 def update_doors_key_levels():  # shitty workaround
@@ -611,6 +611,7 @@ def purge_bad_doors():
 
 ### MAIN ROUTINE: ###
 def generateDungeon(mapw, maph, max_key_levels=2):
+    print('SEED IS {}'.format(_LCG_X))
     global _MAP_WIDTH, _MAP_HEIGHT, curr_key_level, max_key_level, current_map
     _MAP_WIDTH = mapw
     _MAP_HEIGHT = maph
