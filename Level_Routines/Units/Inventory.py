@@ -15,6 +15,7 @@ class Inventory:
         self.equipped_weapon = None
         self.equipped_armor = None
         self.equipped_ammo = None
+        # self.key_ring = []  <--- maybe later
         self.body_on_shoulder = None
 
     def count_total_weight(self):
@@ -99,6 +100,13 @@ class Inventory:
 
     def is_backpack_empty(self):
         return len(self.backpack) == 0
+
+    def has_key_of_lock_level(self, lock_level):
+        for item in self.backpack:
+            if item.is_of_type('Key'):
+                if item.is_of_key_level(lock_level):
+                    return True
+        return False
 
     def get_weapons_from_backpack(self):
         wpns = []

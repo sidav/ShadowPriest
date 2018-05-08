@@ -48,6 +48,9 @@ class Item:
         else:
             return self._name
 
+    def is_of_type(self, type):
+        return self.__class__.__name__ == type
+
     def get_color(self):
         return self._color
 
