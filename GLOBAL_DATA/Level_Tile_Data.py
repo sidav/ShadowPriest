@@ -24,6 +24,10 @@ tile_colors = {
 
 door_lock_level_colors = [(128, 128, 128), (32, 196, 32), (196, 32, 32)]
 
+
+door_lock_level_names = ['NULL', 'green', 'red']
+
+
 tile_opaque = {
     _WALL_CODE: True,
     _FLOOR_CODE: False,

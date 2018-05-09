@@ -1,5 +1,5 @@
 from .Item import Item
-from GLOBAL_DATA.Level_Tile_Data import door_lock_level_colors
+from GLOBAL_DATA.Level_Tile_Data import door_lock_level_colors, door_lock_level_names
 
 
 class Key(Item):
@@ -10,7 +10,7 @@ class Key(Item):
         self._pos_x = posx
         self._pos_y = posy
         self._appearance = chr(251)
-        self._name = 'key of lock level {}'.format(lock_level)
+        self._name = '{} key'.format(door_lock_level_names[lock_level])
         self._weight = 1
         self._stackable = False
         self._lock_level = lock_level

@@ -52,11 +52,20 @@ def melee_attack(attacker:Unit, victim:Unit):
     events_stack.push_event(event)
 
 
+def get_tile_lock_level(x, y):
+    return current_level.get_tile_lock_level(x, y)
+
+
 def try_open_door(unit, x, y):
     if current_level.is_door_present(x, y):
-        current_level.set_door_closed(x, y, False)
-        events_stack.push_event(EC.action_event(unit, 'open', 'the door', 5))
-        return True
+        lock_level = current_level.get_tile_lock_level(x, y)
+        if lock_level == 0 or unit.get_inventory().has_key_of_lock_level(lock_level):
+            current_level.set_door_closed(x, y, False)
+            events_stack.push_event(EC.action_event(unit, 'open', 'the door', 5))
+            return True
+        else:
+            # LOG.append_warning_message('Attempt to open a door with no appropriate key!')
+            pass
     return False
 
 

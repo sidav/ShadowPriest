@@ -3,6 +3,7 @@ from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
 from . import PlayerController_Inventory as PC_I
+from GLOBAL_DATA import Level_Tile_Data as LTD
 from ..LevelModel import LevelModel
 
 
@@ -63,6 +64,12 @@ def do_move_keys_action(lvl, player, key):
         player.spend_turns_for_action(TC.cost_for('move'))
         notify_for_anything_on_floor(lvl, player)
     elif lvl.is_door_present(target_x, target_y):
+        lock_level = LC.get_tile_lock_level(target_x, target_y)
+        if lock_level > 0:
+            if player.get_inventory().has_key_of_lock_level(lock_level):
+                LOG.append_message('I unlock the door with my key.')
+            else:
+                LOG.append_message("I need a {} key to open that door.".format(LTD.door_lock_level_names[lock_level]))
         LC.try_open_door(player, target_x, target_y)
         player.spend_turns_for_action(TC.cost_for('open door'))
     return True
