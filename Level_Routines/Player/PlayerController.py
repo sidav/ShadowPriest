@@ -7,45 +7,63 @@ from GLOBAL_DATA import Level_Tile_Data as LTD
 from ..LevelModel import LevelModel
 
 
+player_has_spent_time = False
+
+
 def do_key_action(lvl):
+    global player_has_spent_time
+
+    player_has_spent_time = False
 
     player = lvl.get_player()
 
     if player.is_peeking():
         continue_peeking(player)
-        return
 
-    keyPressed = CW.readKey()
-    key_text = keyPressed.text
+    while not player_has_spent_time:
+        LOG.print_log()
+        CW.flushConsole()
+        keyPressed = CW.readKey()
+        key_text = keyPressed.text
 
-    if not do_move_keys_action(lvl, player, key_text):
-        if keyPressed.text == '5' or keyPressed.text == ' ':
-            player.spend_turns_for_action(TC.cost_for('wait'))
-            LOG.append_message('I wait for a sec. ')
-        if key_text == '-':
-            LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
-            LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
-        if keyPressed.key == 'F1': # debug: magic mapping
-            lvl.set_all_tiles_seen()
-            LOG.append_replaceable_message('Set all tiles as seen. ')
-        if keyPressed.text == 'c': # close door
-            try_close_door(lvl, player)
-        if keyPressed.text == 'p': # peek
-            do_peeking(lvl, player)
-        if keyPressed.text == 's': # strangle
-            do_ko_attack(lvl, player)
-        if keyPressed.text == 'g': # grab
-            PC_I.do_grabbing(player)
-        if keyPressed.text == 'G': # lay out items from body
-            do_body_searching(player)
-        if keyPressed.text == 'd': # drop
-            PC_I.do_dropping(player)
-        if keyPressed.text == 'w': # wield
-            PC_I.do_wielding(player)
-        if keyPressed.text == 'U': # unwield
-            PC_I.do_unwielding(player)
-        if keyPressed.text == 'i': # list equipped items
-            PC_I.show_equipped_items(player)
+        if not do_move_keys_action(lvl, player, key_text):
+            if keyPressed.text == '5' or keyPressed.text == ' ':
+                spend_time(player, 'wait')
+                LOG.append_message('I wait for a sec. ')
+            if key_text == '-':
+                LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
+                LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
+            if keyPressed.key == 'F1': # debug: magic mapping
+                lvl.set_all_tiles_seen()
+                LOG.append_replaceable_message('Set all tiles as seen. ')
+            if keyPressed.text == 'c': # close door
+                try_close_door(lvl, player)
+            if keyPressed.text == 'p': # peek
+                do_peeking(lvl, player)
+            if keyPressed.text == 's': # strangle
+                do_ko_attack(lvl, player)
+            if keyPressed.text == 'g': # grab
+                PC_I.do_grabbing(player)
+                LC.force_redraw_screen()
+            if keyPressed.text == 'G': # lay out items from body
+                do_body_searching(player)
+            if keyPressed.text == 'd': # drop
+                PC_I.do_dropping(player)
+                LC.force_redraw_screen()
+            if keyPressed.text == 'w': # wield
+                PC_I.do_wielding(player)
+                LC.force_redraw_screen()
+            # if keyPressed.text == 'U': # unwield
+            #     PC_I.do_unwielding(player)
+            if keyPressed.text == 'i': # list equipped items
+                PC_I.show_equipped_items(player)
+                LC.force_redraw_screen()
+
+
+def spend_time(player, action_name):
+    global player_has_spent_time
+    player.spend_turns_for_action(TC.cost_for(action_name))
+    player_has_spent_time = True
 
 
 def do_move_keys_action(lvl, player, key):
@@ -58,10 +76,10 @@ def do_move_keys_action(lvl, player, key):
     if lvl.is_unit_present(target_x, target_y):
         target_unit = lvl.get_unit_at(target_x, target_y)
         LC.melee_attack(player, target_unit)
-        player.spend_turns_for_action(TC.cost_for('melee attack'))
+        spend_time(player, 'melee attack')
     elif (lvl.is_tile_passable(target_x, target_y)):
         player.move_by_vector(vector_x, vector_y)
-        player.spend_turns_for_action(TC.cost_for('move'))
+        spend_time(player, 'move')
         notify_for_anything_on_floor(lvl, player)
     elif lvl.is_door_present(target_x, target_y):
         lock_level = LC.get_tile_lock_level(target_x, target_y)
@@ -71,7 +89,7 @@ def do_move_keys_action(lvl, player, key):
             else:
                 LOG.append_message("I need a {} key to open that door.".format(LTD.door_lock_level_names[lock_level]))
         LC.try_open_door(player, target_x, target_y)
-        player.spend_turns_for_action(TC.cost_for('open door'))
+        spend_time(player, 'open door')
     return True
 
 
@@ -83,7 +101,7 @@ def try_close_door(lvl, player):
             pass
         else:
             LOG.append_message("I can't close the door! ")
-        player.spend_turns_for_action(TC.cost_for('close door'))
+        spend_time(player, 'close door')
     else:
         LOG.append_message('There is no door here!')
 
@@ -98,7 +116,7 @@ def do_peeking(lvl, player):
     player.set_peeking_vector(peek_x, peek_y)
     LOG.append_message('I carefully peek there... ')
     LOG.append_replaceable_message('I can pass turns with space or 5 to continue peeking.')
-    player.spend_turns_for_action(TC.cost_for('peek'))
+    spend_time(player, 'peek')
 
 
 def continue_peeking(player):
@@ -108,7 +126,7 @@ def continue_peeking(player):
         player.set_peeking(False)
         LOG.append_message('I recoil and look around. ')
     else:
-        player.spend_turns_for_action(TC.cost_for('peek'))
+        spend_time(player, 'peek')
 
 
 def notify_for_anything_on_floor(lvl, player):
@@ -136,7 +154,7 @@ def do_ko_attack(lvl, player):
     if lvl.is_unit_present(target_x, target_y):
         target_unit = lvl.get_unit_at(target_x, target_y)
         LC.knockout_attack(player, target_unit)
-        player.spend_turns_for_action(TC.cost_for('knockout attack'))
+        spend_time(player, 'knockout attack')
     else:
         LOG.append_message('There is nobody here!')
 

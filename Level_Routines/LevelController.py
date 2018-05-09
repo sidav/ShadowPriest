@@ -256,32 +256,53 @@ def show_events_for_player(player):
     events_to_show_at_player_turn = []
 
 
+def force_redraw_screen(): # deprecated to use outside of control()
+    global redraw_map_timeout
+    player = current_level.get_player()
+    current_turn = current_level.get_current_turn()
+    player_looking_range = player.get_looking_range()
+    player_x, player_y = player.get_position()
+    peek_x, peek_y = player.get_peeking_vector()
+    if player.is_peeking():
+        LevelView.draw_everything_in_LOS_from_position(current_level, player_x + peek_x, player_y + peek_y,
+                                                       player_looking_range)
+    else:
+        LevelView.draw_everything_in_LOS_from_position(current_level, player_x, player_y, player_looking_range)
+    show_events_for_player(player)
+    LOG.print_log()
+    Statusbar.print_statusbar(player, current_turn)
+    CW.flushConsole()
+    redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
+
+
 def control():
     global current_level, redraw_map_timeout
     player = current_level.get_player()
 
     while not CW.isWindowClosed():
-        player_looking_range = player.get_looking_range()
-        player_x, player_y = player.get_position()
-        peek_x, peek_y = player.get_peeking_vector()
+        # player_looking_range = player.get_looking_range()
+        # player_x, player_y = player.get_position()
+        # peek_x, peek_y = player.get_peeking_vector()
 
         all_units = current_level.get_all_units()
 
         current_turn = current_level.get_current_turn()
         # do we need to redraw the map?
         if redraw_map_timeout == 0 or is_time_to_act(player):
-            # LevelView.draw_absolutely_everything(currentLevel)
-            if player.is_peeking():
-                LevelView.draw_everything_in_LOS_from_position(current_level, player_x + peek_x, player_y + peek_y, player_looking_range)
-            else:
-                LevelView.draw_everything_in_LOS_from_position(current_level, player_x, player_y, player_looking_range)
+            force_redraw_screen()
 
-            show_events_for_player(player)
-
-            LOG.print_log()
-            Statusbar.print_statusbar(player, current_turn)
-            CW.flushConsole()
-            redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
+            # # LevelView.draw_absolutely_everything(currentLevel)
+            # if player.is_peeking():
+            #     LevelView.draw_everything_in_LOS_from_position(current_level, player_x + peek_x, player_y + peek_y, player_looking_range)
+            # else:
+            #     LevelView.draw_everything_in_LOS_from_position(current_level, player_x, player_y, player_looking_range)
+            #
+            # show_events_for_player(player)
+            #
+            # LOG.print_log()
+            # Statusbar.print_statusbar(player, current_turn)
+            # CW.flushConsole()
+            # redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
         check_dead_units()
         check_unconscious_bodies()

@@ -94,9 +94,9 @@ def do_wielding(player):
                 inv.equip_item(wpns[selected_weapon_index])
 
 
-def do_unwielding(player):
-    inv = player.get_inventory()
-    inv.get_equipped_weapon()
+# def do_unwielding(player):
+#     inv = player.get_inventory()
+#     inv.get_equipped_weapon()
 
 
 def pickup_with_pickup_menu(player, items):
