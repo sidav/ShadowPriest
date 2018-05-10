@@ -40,13 +40,13 @@ def place_random_units(lvl, restriction_map):
 
 def place_key_holders(lvl, restriction_map):
     for lock in range(2): # <-- PLACEHOLDER! TODO: deal with it B-/
-        for _ in range(get_number_of_keys_for_lock_level(lock)):
+        for _ in range(get_number_of_keys_for_lock_level(lock+1)):
             posx = posy = 0
             while not (lvl.is_tile_passable(posx, posy)) or lvl.get_tile_lock_level(posx, posy) > lock \
                     or restriction_map[posx][posy]:
                 posx = rand.rand(lvl.MAP_WIDTH)
                 posy = rand.rand(lvl.MAP_HEIGHT)
-            print("Keyholder added at {}, {}".format(posx, posy))
+            print("Keyholder added at {}, {}, key is {}".format(posx, posy, lock+1))
             unit = AC.create_key_holder(posx, posy, lock+1)
             lvl.spawn_unit(unit)
 
