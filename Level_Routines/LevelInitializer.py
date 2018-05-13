@@ -66,10 +66,15 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
         while not (lvl.is_tile_passable(posx, posy)):
             posx = rand.rand(lvl.MAP_WIDTH)
             posy = rand.rand(lvl.MAP_HEIGHT)
-        num_of_items = rand.rand(3)+2  # <-- PLACEHOLDER! TODO: deal with it B-/
-        for _ in range(num_of_items):
-            weapon = WC.create_dagger(posx, posy)
-            lvl._items_on_floor.append(weapon)
+        weapon = WC.create_dagger(posx, posy)
+        lvl._items_on_floor.append(weapon)
+    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
+        posx = posy = 0
+        while not (lvl.is_tile_passable(posx, posy)):
+            posx = rand.rand(lvl.MAP_WIDTH)
+            posy = rand.rand(lvl.MAP_HEIGHT)
+        weapon = WC.create_revolver(posx, posy)
+        lvl._items_on_floor.append(weapon)
     for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
         posx = posy = 0
         while not (lvl.is_tile_passable(posx, posy)):

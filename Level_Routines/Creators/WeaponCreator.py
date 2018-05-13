@@ -1,4 +1,5 @@
 from ..Items.MeleeWeapon import MeleeWeapon
+from ..Items.RangedWeapon import RangedWeapon
 
 
 def create_dagger(x, y, usual=True):
@@ -11,4 +12,10 @@ def create_dagger(x, y, usual=True):
     weapon._base_time = 1
     weapon._base_tohit = 65  # in percent
     weapon._min_str_to_use = 2
+    return weapon
+
+
+def create_revolver(x, y, usual=True):
+    weapon = RangedWeapon(x, y)
+    weapon._name = 'revolver'
     return weapon

@@ -1,10 +1,11 @@
 from .Item import Item
+from .MeleeWeapon import MeleeWeapon
 
 
-class RangedWeapon(Item):
+class RangedWeapon(MeleeWeapon):
     _stackable = False
-    _base_damage = 1
-    _base_time = 1
+    _base_damage = 5
+    _base_time = 10
     _base_tohit = 50  # in percent
     _min_str_to_use = 3
     _two_handed = False
@@ -17,6 +18,7 @@ class RangedWeapon(Item):
 
     def __init__(self, *args):
         super(RangedWeapon, self).__init__(*args)
+        self._base_stab_damage = 0
         self._stackable = False
         self._current_ammunition = self._max_ammunition
         self._appearance = chr(169)
