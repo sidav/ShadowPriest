@@ -2,6 +2,7 @@ from Routines import SidavRandom as rand
 from .Player.Player import Player
 from .Items.Item import Item
 from .Items.Key import Key
+from .Items.Ammunition import Ammunition
 from .Creators import ActorCreator as AC, WeaponCreator as WC
 from Routines import SidavLOS as LOS
 
@@ -60,7 +61,7 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
     #         posy = rand.rand(lvl.MAP_HEIGHT)
     #     print("Key added at {}, {}".format(posx, posy))
     #     lvl._items_on_floor.append(Key(posx, posy, lock+1))
-    for _ in range(20): # <-- PLACEHOLDER! TODO: deal with it B-/
+    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
         posx = posy = 0
         while not (lvl.is_tile_passable(posx, posy)):
             posx = rand.rand(lvl.MAP_WIDTH)
@@ -69,6 +70,15 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
         for _ in range(num_of_items):
             weapon = WC.create_dagger(posx, posy)
             lvl._items_on_floor.append(weapon)
+    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
+        posx = posy = 0
+        while not (lvl.is_tile_passable(posx, posy)):
+            posx = rand.rand(lvl.MAP_WIDTH)
+            posy = rand.rand(lvl.MAP_HEIGHT)
+        num_of_items = rand.rand(3)+2
+        for _ in range(num_of_items):
+            ammo = Ammunition(posx, posy, '/', (192, 192, 0), 'Fuck')
+            lvl._items_on_floor.append(ammo)
 
 
 def get_number_of_keys_for_lock_level(lock_level):

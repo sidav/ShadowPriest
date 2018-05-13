@@ -25,18 +25,17 @@ class Inventory:
         return wght
 
     def equip_item(self, item):  # TODO: consider working with items through Unit methods?
-        item_type = item.__class__.__name__
-        if item_type == 'Weapon':
+        if item.is_of_type('Weapon'):
             self.add_item_to_backpack(self.equipped_weapon)
             self.equipped_weapon = item
-        elif item_type == 'Armor':
+        elif item.is_of_type('Armor'):
             return
             pass
-        elif item_type == 'Ammo':
+        elif item.is_of_type('Ammunition'):
             return
             pass
         else:
-            LOG.append_error_message('attempt to equip the item of type "{}"'.format(item_type))
+            LOG.append_error_message('attempt to equip the item of type "{}"'.format(item.__class__.__name__))
             return
         if item in self.backpack:
             self.remove_item_from_backpack(item)
@@ -111,7 +110,7 @@ class Inventory:
     def get_weapons_from_backpack(self):
         wpns = []
         for item in self.backpack:
-            if item.__class__.__name__ == 'Weapon':
+            if item.is_of_type('Weapon'):
                 wpns.append(item)
         return wpns
 

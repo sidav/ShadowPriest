@@ -1,8 +1,8 @@
-from ..Items.Weapon import Weapon
+from ..Items.MeleeWeapon import MeleeWeapon
 
 
 def create_dagger(x, y, usual=True):
-    weapon = Weapon(x, y)
+    weapon = MeleeWeapon(x, y)
     weapon._appearance = ')'
     weapon._color = (32, 64, 192)
     weapon._name = 'dagger'

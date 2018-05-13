@@ -1,7 +1,7 @@
 from .Item import Item
 
 
-class Weapon(Item):
+class MeleeWeapon(Item):
     _stackable = False
     _base_damage = 1
     _base_stab_damage = 25
@@ -12,7 +12,7 @@ class Weapon(Item):
     _damage_type = 0  # fuck knows what that mean.
 
     def __init__(self, *args):
-        super(Weapon, self).__init__(*args)
+        super(MeleeWeapon, self).__init__(*args)
         self._stackable = False
 
     def get_base_damage(self):
@@ -23,3 +23,9 @@ class Weapon(Item):
 
     def is_stabbing(self):
         return self._base_stab_damage > 0
+
+    def is_of_type(self, type):
+        if type == 'Weapon':
+            return True
+        else:
+            return self.__class__.__name__ == type
