@@ -10,6 +10,10 @@ class RangedWeapon(MeleeWeapon):
     _min_str_to_use = 3
     _two_handed = False
     _damage_type = 0  # fuck knows what that mean.
+
+    # only ranged weapon stuff below this comment
+
+    _base_ranged_damage = 10
     _bullets_per_shot = 1
     # _uses_clips = False
     _ammunition_type = '9x19 ammo' # fuck knows what that mean.
@@ -22,6 +26,9 @@ class RangedWeapon(MeleeWeapon):
         self._stackable = False
         self._current_ammunition = self._max_ammunition
         self._appearance = chr(169)
+
+    def get_base_ranged_damage(self):
+        return self._base_ranged_damage
 
     def get_current_ammunition(self):
         return self._current_ammunition

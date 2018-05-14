@@ -3,7 +3,7 @@ from .Item import Item
 
 class Ammunition(Item):
     _stackable = True
-    _base_damage_modifier = 0
+    _base_ranged_damage_modifier = 0
     _damage_type = 0  # fuck knows what that mean.
     _ammunition_type = '9x19'  # fuck knows what that mean.
 
@@ -20,8 +20,8 @@ class Ammunition(Item):
         else:
             return self._name
 
-    def get_damage_modifier(self):
-        return self._base_damage_modifier
+    def get_ranged_damage_modifier(self):
+        return self._base_ranged_damage_modifier
 
     def is_of_type(self, type):
         if type == 'Ammo':

@@ -12,6 +12,7 @@ def try_to_stab(attacker:Unit, victim:Unit):
     do_damage_to_victim(damage, victim)
     return True
 
+
 def try_to_attack_with_bare_hands(attacker:Unit, victim:Unit):
     if attacker.get_inventory().get_equipped_weapon() is not None:
         LOG.append_error_message('bare-handed attack with weapon equipped')
