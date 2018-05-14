@@ -195,7 +195,6 @@ def do_reloading(player):
         LOG.append_message("I don't have ammo for my {} in ready!".format(weapon.get_name(False)))
         return
     if LC.try_reload_unit_weapon(player):
-        LOG.append_message("I reload my {}.".format(weapon.get_name(False)))
         spend_time(player)
     else:
         LOG.append_error_message("can't reload {} for unknown reason".format(weapon.get_name()))
