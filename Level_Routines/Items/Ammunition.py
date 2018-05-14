@@ -22,6 +22,14 @@ class Ammunition(Item):
         else:
             return self._name
 
+    def is_stackable_with(self, item):
+        if self._stackable:
+            if item.is_of_type('Ammunition'):
+                if item.get_singular_name() == self._name:
+                    if self != item:
+                        return True
+        return False
+
     def get_ranged_damage_modifier(self):
         return self._base_ranged_damage_modifier
 

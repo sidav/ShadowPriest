@@ -171,6 +171,7 @@ def try_pick_up_item(unit, item):
         else:
             unit.get_inventory().add_item_to_backpack(item)
         current_level.remove_item_from_floor(item)
+        unit.get_inventory().try_stack_items_in_backpack()
         return True
     else:
         return False

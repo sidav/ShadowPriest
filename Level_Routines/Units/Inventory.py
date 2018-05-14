@@ -127,3 +127,18 @@ class Inventory:
 
     def remove_item_from_backpack(self, item):
         self.backpack.remove(item)
+
+    def try_stack_items_in_backpack(self):
+        items = self.backpack
+        items_count = len(items)
+        stack_successful = False
+        if items_count > 1:  # then attempt to stack those items
+            for i in range(items_count):
+                for j in range(i, items_count):
+                    if items[i].is_stackable_with(items[j]):
+                        items[i].change_quantity_by(items[j].get_quantity())
+                        self.remove_item_from_backpack(items[j])
+                        stack_successful = True
+                items = self.backpack
+                items_count = len(items)
+        return stack_successful
