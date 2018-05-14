@@ -126,6 +126,13 @@ class Inventory:
 
     def add_item_to_backpack(self, item):
         if item is not None:
+            if item.is_of_type('Ammunition'):
+                if self.equipped_ammo is None:
+                    self.equip_item(item)
+                    return
+                elif self.equipped_ammo.is_stackable_with(item):
+                    self.equipped_ammo.change_quantity_by(item.get_quantity())
+                    return
             self.backpack.append(item)
             if item.is_stackable():
                 self.try_stack_items_in_backpack()

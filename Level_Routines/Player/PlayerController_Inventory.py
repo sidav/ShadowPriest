@@ -16,7 +16,7 @@ def do_grabbing(player):
         if len(items_here) == 1:
             if LC.try_pick_up_item(player, items_here[0]):
                 player.spend_turns_for_action(TC.cost_for('pick up'))
-                LOG.append_message(pick_up_message_for_item(items_here[0]))
+                LOG.append_message(pick_up_message_for_item(items_here[0], player))
             else:
                 LOG.append_error_message("Can't pick up items here for unknown reason!")
         else:
@@ -132,7 +132,7 @@ def pickup_with_pickup_menu(player, items):
     for ind in indices:
         if LC.try_pick_up_item(player, items[ind]):
             player.spend_turns_for_action(TC.cost_for('pick up'))
-            LOG.append_message(pick_up_message_for_item(items[ind]))
+            LOG.append_message(pick_up_message_for_item(items[ind]), player)
         else:
             LOG.append_error_message("Can't pick up items here for unknown reason!")
 
@@ -176,8 +176,13 @@ def get_names_from_list_of_items(items, placeholder_for_empty='None_Item'):
     return name_list
 
 
-def pick_up_message_for_item(item):
+def pick_up_message_for_item(item, player):
     if item.is_body():
         return 'I shoulder the {}.'.format(item.get_name())
+    elif item.is_of_type('Ammunition'):
+        equipped_ammo = player.get_inventory().get_equipped_ammo()
+        if equipped_ammo is not None and equipped_ammo.is_stackable_with(item):
+            return 'I add the {} to ready.'.format(item.get_name())
+        return 'I grab {} pieces of {}.'.format(item.get_quantity(), item.get_singular_name())
     else:
         return 'I pick up the {}.'.format(item.get_name())
