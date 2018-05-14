@@ -18,14 +18,17 @@ class RangedWeapon(MeleeWeapon):
     # _uses_clips = False
     _ammunition_type = '9x19 ammo' # fuck knows what that mean.
     _max_ammunition = 6
-    _current_ammunition = 6
+    _current_ammunition = 0
 
     def __init__(self, *args):
         super(RangedWeapon, self).__init__(*args)
         self._base_stab_damage = 0
         self._stackable = False
-        self._current_ammunition = self._max_ammunition
+        self._current_ammunition = 0
         self._appearance = chr(169)
+
+    def get_name(self):
+        return "{}({}/{})".format(self._name, self._current_ammunition, self._max_ammunition)
 
     def get_base_ranged_damage(self):
         return self._base_ranged_damage
