@@ -24,7 +24,7 @@ def try_to_attack_with_bare_hands(attacker:Unit, victim:Unit):
 def try_to_attack_with_weapon(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     attacker_stats = attacker.get_rpg_stats()
-    damage = calculate_weapon_damage(attacker_weapon.get_base_damage(), attacker_stats)
+    damage = calculate_weapon_damage(attacker_weapon.get_base_melee_damage(), attacker_stats)
     do_damage_to_victim(damage, victim)
     return True
 

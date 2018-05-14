@@ -4,7 +4,7 @@ from .MeleeWeapon import MeleeWeapon
 
 class RangedWeapon(MeleeWeapon):
     _stackable = False
-    _base_damage = 5
+    _base_melee_damage = 5
     _base_time = 10
     _base_tohit = 50  # in percent
     _min_str_to_use = 3
@@ -32,8 +32,8 @@ class RangedWeapon(MeleeWeapon):
     def get_max_ammunition(self):
         return self._max_ammunition
 
-    def get_base_damage(self):
-        return self._base_damage
+    def get_base_melee_damage(self):
+        return self._base_melee_damage
 
     def is_of_type(self, type):
         if type == 'Weapon':

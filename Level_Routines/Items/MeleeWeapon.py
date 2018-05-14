@@ -3,7 +3,7 @@ from .Item import Item
 
 class MeleeWeapon(Item):
     _stackable = False
-    _base_damage = 1
+    _base_melee_damage = 1
     _base_stab_damage = 25
     _base_time = 1
     _base_tohit = 50  # in percent
@@ -15,8 +15,8 @@ class MeleeWeapon(Item):
         super(MeleeWeapon, self).__init__(*args)
         self._stackable = False
 
-    def get_base_damage(self):
-        return self._base_damage
+    def get_base_melee_damage(self):
+        return self._base_melee_damage
 
     def get_base_stab_damage(self):
         return self._base_stab_damage
