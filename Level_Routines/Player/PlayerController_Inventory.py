@@ -94,6 +94,33 @@ def do_wielding(player):
                 inv.equip_item(wpns[selected_weapon_index])
 
 
+def do_quivering(player):
+    inv = player.get_inventory()
+
+    if inv.is_carrying_body_on_shoulder():
+        LOG.append_message("I can't ready ammo with that burden on my shoulder.")
+        return
+
+    # curr_ammo = inv.get_equipped_ammo()
+    ammo = inv.get_ammunition_from_backpack()
+    if len(ammo) == 0:
+        LOG.append_message('I have nothing to ready!')
+
+    elif len(ammo) == 1:
+        LOG.append_message('I ready the {}.'.format(ammo[0].get_name()))
+        inv.equip_item(ammo[0])
+
+    else:
+        names = get_names_from_list_of_items(ammo)
+        selected_ammo_index = MENU.single_select_menu('READY AMMO', 'Select  ammunition to ready',
+                                         names)
+        if selected_ammo_index is None:
+            LOG.append_replaceable_message('Okay, then.')
+        else:
+            LOG.append_message('I ready the {}.'.format(ammo[0].get_name()))
+            inv.equip_item(ammo[selected_ammo_index])
+
+
 # def do_unwielding(player):
 #     inv = player.get_inventory()
 #     inv.get_equipped_weapon()

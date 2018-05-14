@@ -32,8 +32,8 @@ class Inventory:
             return
             pass
         elif item.is_of_type('Ammunition'):
-            return
-            pass
+            self.add_item_to_backpack(self.equipped_ammo)
+            self.equipped_ammo = item
         else:
             LOG.append_error_message('attempt to equip the item of type "{}"'.format(item.__class__.__name__))
             return
@@ -113,6 +113,13 @@ class Inventory:
             if item.is_of_type('Weapon'):
                 wpns.append(item)
         return wpns
+
+    def get_ammunition_from_backpack(self):
+        ammo = []
+        for item in self.backpack:
+            if item.is_of_type('Ammunition'):
+                ammo.append(item)
+        return ammo
 
     def add_item_to_backpack(self, item):
         if item is not None:

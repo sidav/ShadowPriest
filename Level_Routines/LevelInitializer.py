@@ -5,6 +5,7 @@ from .Items.Key import Key
 from .Items.Ammunition import Ammunition
 from .Creators import ActorCreator as AC, WeaponCreator as WC
 from Routines import SidavLOS as LOS
+from Level_Routines import LevelController as LC
 
 
 def initialize_level(lvl):
@@ -61,29 +62,28 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
     #         posy = rand.rand(lvl.MAP_HEIGHT)
     #     print("Key added at {}, {}".format(posx, posy))
     #     lvl._items_on_floor.append(Key(posx, posy, lock+1))
-    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
-        posx = posy = 0
-        while not (lvl.is_tile_passable(posx, posy)):
-            posx = rand.rand(lvl.MAP_WIDTH)
-            posy = rand.rand(lvl.MAP_HEIGHT)
-        weapon = WC.create_dagger(posx, posy)
-        lvl._items_on_floor.append(weapon)
-    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
-        posx = posy = 0
-        while not (lvl.is_tile_passable(posx, posy)):
-            posx = rand.rand(lvl.MAP_WIDTH)
-            posy = rand.rand(lvl.MAP_HEIGHT)
-        weapon = WC.create_revolver(posx, posy)
-        lvl._items_on_floor.append(weapon)
-    for _ in range(15): # <-- PLACEHOLDER! TODO: deal with it B-/
-        posx = posy = 0
-        while not (lvl.is_tile_passable(posx, posy)):
-            posx = rand.rand(lvl.MAP_WIDTH)
-            posy = rand.rand(lvl.MAP_HEIGHT)
-        num_of_items = rand.rand(3)+2
-        for _ in range(num_of_items):
-            ammo = Ammunition(posx, posy, '/', (192, 192, 0), 'Fuck')
-            lvl._items_on_floor.append(ammo)
+    for _ in range(15):
+        weapon = WC.create_dagger(0, 0)
+        place_item_at_random_coordinates(lvl, weapon)
+    for _ in range(15):
+        weapon = WC.create_revolver(0, 0)
+        place_item_at_random_coordinates(lvl, weapon)
+
+    for _ in range(15):
+        ammo = Ammunition(0, 0, '9x19 ammo', '9x19', (64, 128, 64), 6)
+        place_item_at_random_coordinates(lvl, ammo)
+    for _ in range(15):
+        ammo = Ammunition(0, 0, 'poison dart', 'dart', (64, 128, 64), 5)
+        place_item_at_random_coordinates(lvl, ammo)
+
+
+def place_item_at_random_coordinates(lvl, item):
+    posx = posy = 0
+    while not (lvl.is_tile_passable(posx, posy)):
+        posx = rand.rand(lvl.MAP_WIDTH)
+        posy = rand.rand(lvl.MAP_HEIGHT)
+    item.set_position(posx, posy)
+    lvl._items_on_floor.append(item)
 
 
 def get_number_of_keys_for_lock_level(lock_level):

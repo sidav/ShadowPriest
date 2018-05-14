@@ -53,6 +53,9 @@ def do_key_action(lvl):
             if keyPressed.text == 'w': # wield
                 PC_I.do_wielding(player)
                 LC.force_redraw_screen()
+            if keyPressed.text == 'q': # quiver / ready ammo
+                PC_I.do_quivering(player)
+                LC.force_redraw_screen()
             # if keyPressed.text == 'U': # unwield
             #     PC_I.do_unwielding(player)
             if keyPressed.text == 'i': # list equipped items
