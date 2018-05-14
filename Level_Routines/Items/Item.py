@@ -1,4 +1,4 @@
-
+import copy
 
 class Item:
     _stackable = True
@@ -32,6 +32,17 @@ class Item:
 
     def is_stackable_with(self, item):
         return self._stackable and item.get_singular_name() == self._name and self != item
+
+    def pick_amount_from_stack(self, amount):
+        to_return = None
+        if self._stackable and self._quantity >= amount:
+            to_return = copy.deepcopy(self)
+            self.change_quantity_by(-amount)
+            to_return.set_quantity(amount)
+        return to_return
+
+    def set_quantity(self, qty):
+        self._quantity = qty
 
     def get_quantity(self):
         return self._quantity

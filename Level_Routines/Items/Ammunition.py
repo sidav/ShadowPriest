@@ -33,6 +33,9 @@ class Ammunition(Item):
     def get_ranged_damage_modifier(self):
         return self._base_ranged_damage_modifier
 
+    def get_ammunition_type(self):
+        return self._ammunition_type
+
     def is_of_type(self, type):
         if type == 'Ammo':
             return True

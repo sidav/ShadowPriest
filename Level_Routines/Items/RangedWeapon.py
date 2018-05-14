@@ -16,9 +16,9 @@ class RangedWeapon(MeleeWeapon):
     _base_ranged_damage = 10
     _bullets_per_shot = 1
     # _uses_clips = False
-    _ammunition_type = '9x19 ammo' # fuck knows what that mean.
+    allowed_ammunition_type = '9x19'  # fuck knows what that mean.
+    _loaded_ammunition = None
     _max_ammunition = 6
-    _current_ammunition = 0
 
     def __init__(self, *args):
         super(RangedWeapon, self).__init__(*args)
@@ -27,17 +27,33 @@ class RangedWeapon(MeleeWeapon):
         self._current_ammunition = 0
         self._appearance = chr(169)
 
-    def get_name(self):
-        return "{}({}/{})".format(self._name, self._current_ammunition, self._max_ammunition)
+    def get_remaining_ammunition_count(self):
+        if self._loaded_ammunition is not None:
+            return self._loaded_ammunition.get_quantity()
+        else:
+            return 0
+
+    def get_name(self, show_remaining_ammo=True):
+        if show_remaining_ammo:
+            return "{}({}/{})".format(self._name, self.get_remaining_ammunition_count(), self._max_ammunition)
+        else:
+            return self._name
 
     def get_base_ranged_damage(self):
         return self._base_ranged_damage
 
-    def get_current_ammunition(self):
-        return self._current_ammunition
+    def get_loaded_ammunition(self):
+        return self._loaded_ammunition
 
-    def set_current_ammunition(self, ammo):
-        self._current_ammunition = ammo
+    def load_ammunition(self, ammo):
+        self._loaded_ammunition = ammo
+
+    def can_be_refilled_with(self, ammo):
+        return self._loaded_ammunition is not None and \
+               self.can_be_loaded_with(ammo) and self._loaded_ammunition.is_stackable_with(ammo)
+
+    def can_be_loaded_with(self, ammo):
+        return self.allowed_ammunition_type == ammo.get_ammunition_type()
 
     def get_max_ammunition(self):
         return self._max_ammunition

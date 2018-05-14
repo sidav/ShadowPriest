@@ -77,6 +77,9 @@ class Inventory:
     def get_equipped_ammo(self):
         return self.equipped_ammo
 
+    def empty_equipped_ammo(self):
+        self.equipped_ammo = None
+
     def get_body_on_shoulder(self):
         return self.body_on_shoulder
 
@@ -124,6 +127,8 @@ class Inventory:
     def add_item_to_backpack(self, item):
         if item is not None:
             self.backpack.append(item)
+            if item.is_stackable():
+                self.try_stack_items_in_backpack()
 
     def remove_item_from_backpack(self, item):
         self.backpack.remove(item)

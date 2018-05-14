@@ -210,6 +210,44 @@ def drop_all_items_from_body(body):
     body.set_searched()
 
 
+def try_reload_unit_weapon(unit):
+    from Message_Log import MessageLog as LOG
+    inv = unit.get_inventory()
+    weapon = inv.get_equipped_weapon()
+    ammo_in_ready = inv.get_equipped_ammo()
+
+    if weapon is not None and weapon.is_of_type('RangedWeapon') and ammo_in_ready is not None:
+        ammo_in_weapon = weapon.get_loaded_ammunition()
+        # if the weapon is already loaded with same ammo that is quivered...
+        if ammo_in_weapon is not None and weapon.can_be_refilled_with(ammo_in_ready):
+            LOG.append_warning_message('path 1')
+            remaining_ammo_to_full = weapon.get_max_ammunition() - ammo_in_weapon.get_quantity()
+            if ammo_in_ready.get_quantity() > remaining_ammo_to_full:
+                LOG.append_warning_message('Quivered is enough')
+                ammo_in_weapon.change_quantity_by(remaining_ammo_to_full)
+                ammo_in_ready.change_quantity_by(-remaining_ammo_to_full)
+            else:
+                LOG.append_warning_message('Spending all quiver')
+                ammo_in_weapon.change_quantity_by(ammo_in_ready.get_quantity())
+                ammo_in_ready.set_quantity(0)
+            return True
+        # else: weapon is not loaded or loaded ammo type is mismatched.
+        elif weapon.can_be_loaded_with(ammo_in_ready):
+            LOG.append_warning_message('path 2')
+            inv.add_item_to_backpack(ammo_in_weapon)
+            remaining_ammo_to_full = weapon.get_max_ammunition()
+            if ammo_in_ready.get_quantity() > remaining_ammo_to_full:
+                LOG.append_warning_message('Quivered is enough')
+                ammo_to_load = ammo_in_ready.pick_amount_from_stack(remaining_ammo_to_full)
+                weapon.load_ammunition(ammo_to_load)
+            else:
+                LOG.append_warning_message('Spending all quiver')
+                weapon.load_ammunition(ammo_in_ready)
+                inv.empty_equipped_ammo()
+            return True
+    return False
+
+
 def is_event_visible_from(event, x, y, radius = 99):
     ev_x, ev_y = event.get_position()
     if (ev_x - x) ** 2 + (ev_y - y) ** 2 <= radius ** 2:

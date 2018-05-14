@@ -70,7 +70,10 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
         place_item_at_random_coordinates(lvl, weapon)
 
     for _ in range(15):
-        ammo = Ammunition(0, 0, '9x19 ammo', '9x19', (196, 128, 64), 6)
+        ammo = Ammunition(0, 0, '9x19 ammo', '9x19', (196, 160, 64), 5)
+        place_item_at_random_coordinates(lvl, ammo)
+    for _ in range(15):
+        ammo = Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 5)
         place_item_at_random_coordinates(lvl, ammo)
     for _ in range(15):
         ammo = Ammunition(0, 0, 'poison dart', 'dart', (64, 128, 64), 5)

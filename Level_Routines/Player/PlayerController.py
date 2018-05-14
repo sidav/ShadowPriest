@@ -56,6 +56,8 @@ def do_key_action(lvl):
             if keyPressed.text == 'q': # quiver / ready ammo
                 PC_I.do_quivering(player)
                 LC.force_redraw_screen()
+            if keyPressed.text == 'r': # reload weapon
+                do_reloading(player)
             # if keyPressed.text == 'U': # unwield
             #     PC_I.do_unwielding(player)
             if keyPressed.text == 'i': # list equipped items
@@ -63,9 +65,10 @@ def do_key_action(lvl):
                 LC.force_redraw_screen()
 
 
-def spend_time(player, action_name):
+def spend_time(player, action_name=''):
     global player_has_spent_time
-    player.spend_turns_for_action(TC.cost_for(action_name))
+    if action_name != '':
+        player.spend_turns_for_action(TC.cost_for(action_name))
     player_has_spent_time = True
 
 
@@ -172,8 +175,32 @@ def do_body_searching(player):
     else:
         LOG.append_message('There are no bodies here!')
 
+def do_reloading(player):
+    inv = player.get_inventory()
+    weapon = inv.get_equipped_weapon()
+    if weapon is None:
+        LOG.append_message('I have nothing to reload!')
+        return
+    if not weapon.is_of_type('RangedWeapon'):
+        LOG.append_message("The {} can't be reloaded!".format(weapon.get_name()))
+        return
+    ammo_in_ready = inv.get_equipped_ammo()
+    ammo_in_weapon = weapon.get_loaded_ammunition()
+    rem_ammo = weapon.get_remaining_ammunition_count()
+    max_ammo = weapon.get_max_ammunition()
+    if rem_ammo == max_ammo and ammo_in_ready.is_stackable_with(ammo_in_weapon):
+        LOG.append_message("My {} is already loaded.".format(weapon.get_name(False)))
+        return
+    if ammo_in_ready is None:
+        LOG.append_message("I don't have ammo for my {} in ready!".format(weapon.get_name(False)))
+        return
+    if LC.try_reload_unit_weapon(player):
+        LOG.append_message("I reload my {}.".format(weapon.get_name(False)))
+        spend_time(player)
+    else:
+        LOG.append_error_message("can't reload {} for unknown reason".format(weapon.get_name()))
 
-##########################################################
+        ##########################################################
 def ask_for_direction(log_text='Pick a direction...'):
     LOG.append_replaceable_message(log_text)
     keyPressed = CW.readKey()

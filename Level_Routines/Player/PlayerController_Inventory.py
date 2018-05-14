@@ -117,7 +117,7 @@ def do_quivering(player):
         if selected_ammo_index is None:
             LOG.append_replaceable_message('Okay, then.')
         else:
-            LOG.append_message('I ready the {}.'.format(ammo[0].get_name()))
+            LOG.append_message('I ready the {}.'.format(ammo[selected_ammo_index].get_name()))
             inv.equip_item(ammo[selected_ammo_index])
 
 
