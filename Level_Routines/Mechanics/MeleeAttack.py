@@ -1,5 +1,6 @@
 from ..Units.Unit import Unit
 from Message_Log import MessageLog as LOG
+from . import Damage as DMG
 
 
 def try_to_stab(attacker:Unit, victim:Unit):
@@ -9,7 +10,7 @@ def try_to_stab(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     attacker_stats = attacker.get_rpg_stats()
     damage = calculate_stab_damage(attacker_weapon.get_base_stab_damage(), attacker_stats)
-    do_damage_to_victim(damage, victim)
+    DMG.do_damage_to_victim(damage, victim)
     return True
 
 
@@ -18,7 +19,7 @@ def try_to_attack_with_bare_hands(attacker:Unit, victim:Unit):
         LOG.append_error_message('bare-handed attack with weapon equipped')
         return False
     damage = calculate_barefist_damage(attacker.get_rpg_stats())
-    do_damage_to_victim(damage, victim)
+    DMG.do_damage_to_victim(damage, victim)
     return True
 
 
@@ -26,13 +27,8 @@ def try_to_attack_with_weapon(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     attacker_stats = attacker.get_rpg_stats()
     damage = calculate_weapon_damage(attacker_weapon.get_base_melee_damage(), attacker_stats)
-    do_damage_to_victim(damage, victim)
+    DMG.do_damage_to_victim(damage, victim)
     return True
-
-
-def do_damage_to_victim(damage, victim):
-    victim.decrease_hitpoints(damage)
-    LOG.append_message('DBG: {} damage'.format(damage))
 
 
 def calculate_barefist_damage(stats):
