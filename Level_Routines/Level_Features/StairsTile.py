@@ -11,7 +11,7 @@ class StairsTile(LevelTile):
         return True
 
     def get_opaque(self):
-        return True
+        return False
 
     def is_stairs(self):
         return True
