@@ -46,11 +46,14 @@ def get_line(fromx, fromy, tox, toy):
 #two-stage LOS check
 #returns the visibility map from the view from fromx, fromy coords. True means that the cell is visible, False - not visible.
 
+
 _visionObstructingMap = [[]] #True if the cell blocks line of sight, False otherwise.
+
 
 def setvisionObstructingMap(visionObstructingMap):
     global _visionObstructingMap
     _visionObstructingMap = visionObstructingMap
+
 
 def _straightLOSCheck(fromx, fromy, tox, toy):
     #Checks visible Line of Sight between two tiles
@@ -70,7 +73,8 @@ def _straightLOSCheck(fromx, fromy, tox, toy):
             return False
     return True
 
-def fullLOSLineCheck(fromx, fromy, viewRange = -1):
+
+def _second_stage_check(fromx, fromy, viewRange = -1):
     #Very experimental alternate first stage
     #The difference is that this first-stage variant is MUCH faster (approx 20 times faster!)
     #it also has the vision range check.
@@ -103,6 +107,7 @@ def fullLOSLineCheck(fromx, fromy, viewRange = -1):
                     break
     return fullView
 
+
 def _checkNeighbouringTiles(x, y, firstStageTable): #checks if the tile has some first-stage-visible neighbours
     mapW = len(firstStageTable)
     mapH = len(firstStageTable[0])
@@ -117,7 +122,6 @@ def _checkNeighbouringTiles(x, y, firstStageTable): #checks if the tile has some
     return False
 
 
-
 def getVisibilityTableFromPosition(fromx, fromy, table=None, vision_range=-1):
     if table is not None:
         setvisionObstructingMap(table)
@@ -129,7 +133,7 @@ def getVisibilityTableFromPosition(fromx, fromy, table=None, vision_range=-1):
     # for i in range(mapW):
     #     for j in range(mapH):
     #         firstStage[i][j] = _straightLOSCheck(fromx, fromy, i, j)
-    firstStage = fullLOSLineCheck(fromx, fromy, viewRange=vision_range)
+    firstStage = _second_stage_check(fromx, fromy, viewRange=vision_range)
     #second stage
     secondStage = [[False] * (mapH) for _ in range(mapW)]
     for i in range(mapW):

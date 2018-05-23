@@ -12,9 +12,12 @@ def try_to_shoot(attacker:Unit, victim:Unit):
         LOG.append_warning_message('trying to shoot with no ranged weapon')
         return False
 
-    if not LOS._straightLOSCheck(a_x, a_y, v_x, v_y): # TODO: maybe use fullLOSLineCheck()?
-        LOG.append_error_message('trying to shoot with no line of fire')
-        return False
+    if not LOS._straightLOSCheck(a_x, a_y, v_x, v_y): # We use simpler method first to save calculation time...
+        print('Using heavy LOS calculations!')
+        vis_table = LOS.getVisibilityTableFromPosition(a_x, a_y) # ...and if that does not help, use heavy calculations.
+        if not vis_table[v_x][v_y]:
+            LOG.append_error_message('trying to shoot with no line of fire')
+            return False
 
     # TODO: check for enough ammo in clip
     # TODO: implement auto-firing guns
