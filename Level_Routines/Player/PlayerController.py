@@ -5,6 +5,7 @@ from Routines import TdlConsoleWrapper as CW
 from . import PlayerController_Inventory as PC_I
 from GLOBAL_DATA import Level_Tile_Data as LTD
 from ..LevelModel import LevelModel
+import SidavMenu as MENU
 
 
 player_has_spent_time = False
@@ -33,8 +34,11 @@ def do_key_action(lvl):
             if key_text == '-':
                 LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
                 LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
-            if keyPressed.key == 'F1': # debug: magic mapping
+            if keyPressed.key == 'F2': # debug: magic mapping
                 lvl.set_all_tiles_seen()
+                LOG.append_replaceable_message('Set all tiles as seen. ')
+            if keyPressed.key == 'F1': # show help
+                show_help()
                 LOG.append_replaceable_message('Set all tiles as seen. ')
             if keyPressed.text == 'c': # close door
                 try_close_door(lvl, player)
@@ -66,6 +70,34 @@ def do_key_action(lvl):
             if keyPressed.text == 'i': # list equipped items
                 PC_I.show_equipped_items(player)
                 LC.force_redraw_screen()
+
+
+def show_help():
+    names = []
+    values = []
+    names.append('c')
+    values.append('(c)lose a door')
+    names.append('d')
+    values.append('(d)rop an item')
+    names.append('f')
+    values.append('(f)ire wielded weapon')
+    names.append('g')
+    values.append('(g)rab items from floor')
+    names.append('G')
+    values.append('Search body on floor for items')
+    names.append('i')
+    values.append('Show (i)nventory')
+    # names.append('p')
+    # values.append('')
+    names.append('r')
+    values.append('(r)eload wielded weapon')
+    names.append('s')
+    values.append('(s)trangle an enemy')
+    names.append('q')
+    values.append('ready an ammo')
+    names.append('w')
+    values.append('(w)ield or unwield a weapon')
+    MENU.name_value_menu('COMMANDS LIST', 'You can move with numpad or vi-keys (hjkl + yu+bn). Other keys:', names, values)
 
 
 def spend_time(player, action_name=''):

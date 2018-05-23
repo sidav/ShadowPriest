@@ -27,7 +27,7 @@ def try_to_shoot(attacker:Unit, victim:Unit):
 
 
 def calculate_shooting_damage(weapon, stats):
-    return 10
+    return 35
 
 
 def spend_ammo(weapon):
