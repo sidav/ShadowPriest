@@ -26,6 +26,8 @@ def place_player(lvl):
             if lvl.is_upstairs_present(posx, posy):
                 lvl._player = Player(posx, posy)
                 lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
+                lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
+                lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
                 return posx, posy
 
 
