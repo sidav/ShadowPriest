@@ -130,6 +130,9 @@ def pickup_with_pickup_menu(player, items):
     names = get_names_from_list_of_items(items)
     indices = MENU.multi_select_menu('PICK UP', 'Select items to pick up', names) # indices - indices_of_items_selected_for_pickup
     for ind in indices:
+        if items[ind].is_of_type('Body') and player.get_inventory().get_body_on_shoulder() is not None:
+            LOG.append_message("I am already carrying a body!")
+            continue
         if LC.try_pick_up_item(player, items[ind]):
             player.spend_turns_for_action(TC.cost_for('pick up'))
             LOG.append_message(pick_up_message_for_item(items[ind], player))

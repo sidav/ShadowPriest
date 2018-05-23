@@ -199,9 +199,13 @@ def try_pick_up_item(unit, item):
     ix, iy = item.get_position()
     if (x, y) == (ix, iy):
         if item.is_body():
-            unit.get_inventory().pick_body_on_shoulder(item)
+            if unit.get_inventory().get_body_on_shoulder() is None:
+                unit.get_inventory().pick_body_on_shoulder(item)
+            else:
+                return False
         else:
             unit.get_inventory().add_item_to_backpack(item)
+
         current_level.remove_item_from_floor(item)
         unit.get_inventory().try_stack_items_in_backpack()
         return True

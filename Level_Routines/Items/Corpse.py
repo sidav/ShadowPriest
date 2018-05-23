@@ -31,6 +31,11 @@ class Corpse(Item):
     def set_searched(self, set=True):
         self._searched = set
 
+    def is_of_type(self, type):
+        if type == 'Body' or type == 'Corpse':
+            return True
+        return False
+
     def get_name(self):
         name = self._name
         if self._searched:
