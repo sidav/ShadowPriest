@@ -8,7 +8,7 @@ from . import LevelView
 from .Creators import BodyCreator
 from .LevelInitializer import initialize_level
 from .LevelModel import LevelModel
-from .Mechanics import MeleeAttack, Knockout
+from .Mechanics import MeleeAttack, Knockout, RangedAttack
 from .Player import PlayerController as P_C, Statusbar
 from .Units import ActorController as A_C
 from .Units.Unit import Unit
@@ -41,15 +41,41 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
 
 
 def melee_attack(attacker:Unit, victim:Unit):
-    if attacker.get_inventory().get_equipped_weapon() is None:
+    attacker_weapon = attacker.get_inventory().get_equipped_weapon()
+    if attacker_weapon is None:
         if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
             event = EC.attack_with_bare_hands_event(attacker, victim)
     else:
-        if victim.can_be_stabbed() and attacker.get_inventory().get_equipped_weapon().is_stabbing():
+        if victim.can_be_stabbed() and attacker_weapon.is_stabbing():
             if MeleeAttack.try_to_stab(attacker, victim):
                 event = EC.stab_event(attacker, victim)
         elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
             event = EC.attack_with_melee_weapon_event(attacker, victim)
+    events_stack.push_event(event)
+
+
+def ranged_attack(attacker:Unit, target_x, target_y):
+    attacker_weapon = attacker.get_inventory().get_equipped_weapon()
+
+    if attacker_weapon.get_loaded_ammunition() is None or attacker_weapon.get_loaded_ammunition().get_quantity() == 0:
+        event = EC.empty_ammo_shooting_event(attacker, '*Click!*')
+        attacker.spend_turns_for_action(TC.cost_for('firing'))
+        events_stack.push_event(event)
+        return
+
+    if is_unit_present_at(target_x, target_y):
+        victim = current_level.get_unit_at(target_x, target_y)
+
+        if RangedAttack.try_to_shoot(attacker, victim):
+            event = EC.ranged_attack_event(attacker, victim)
+        else:
+            event = EC.missed_ranged_attack_event(attacker, victim)
+    else:
+        # TODO: "shooting at things" code here
+        attacker_weapon.get_loaded_ammunition().change_quantity_by(-1)
+        attacker.spend_turns_for_action(TC.cost_for('firing'))
+        return
+    attacker.spend_turns_for_action(TC.cost_for('firing'))
     events_stack.push_event(event)
 
 
@@ -96,6 +122,11 @@ def is_body_present_at(x, y):
         if item.is_body():
             return True
     return False
+
+
+def is_unit_present_at(x, y):
+    return current_level.is_unit_present(x, y)
+
 
 
 def try_stack_items_at_coordinates(x, y):
@@ -300,7 +331,7 @@ def show_events_for_player(player):
     events_to_show_at_player_turn = []
 
 
-def force_redraw_screen(): # deprecated to use outside of control()
+def force_redraw_screen(flush=True):  # deprecated to use outside of control() or UI-only modules
     global redraw_map_timeout
     player = current_level.get_player()
     current_turn = current_level.get_current_turn()
@@ -315,7 +346,8 @@ def force_redraw_screen(): # deprecated to use outside of control()
     show_events_for_player(player)
     LOG.print_log()
     Statusbar.print_statusbar(player, current_turn)
-    CW.flushConsole()
+    if flush:
+        CW.flushConsole()
     redraw_map_timeout = DEFAULT_REDRAW_MAP_TIMEOUT
 
 

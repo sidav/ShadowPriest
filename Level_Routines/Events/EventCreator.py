@@ -59,6 +59,53 @@ def attack_with_melee_weapon_event(attacker:Unit, victim:Unit):
     return event
 
 
+def ranged_attack_event(attacker:Unit, victim:Unit):
+    att_name = attacker.get_name()
+    vic_name = victim.get_name()
+    vic_x, vic_y = victim.get_position() # Not a mistake: the attack event has the victim coords.
+    weapon_name = attacker.get_inventory().get_equipped_weapon().get_name()
+
+    if attacker.__class__.__name__ == 'Player':
+        att_name = 'I'
+        vis_attack_text = 'shoot at the'
+        heard_attack_text = 'hear a hit'
+        weapon_name = 'my '+weapon_name
+
+    seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
+    heard_text = '{} {}!'.format(att_name, heard_attack_text)
+    expir_turn = LC.get_current_turn()+1
+    event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
+    return event
+
+
+def missed_ranged_attack_event(attacker:Unit, victim:Unit):
+    att_name = attacker.get_name()
+    vic_name = victim.get_name()
+    vic_x, vic_y = victim.get_position() # Not a mistake: the attack event has the victim coords.
+    weapon_name = attacker.get_inventory().get_equipped_weapon().get_name()
+
+    if attacker.__class__.__name__ == 'Player':
+        att_name = 'I'
+        vis_attack_text = 'miss the'
+        heard_attack_text = 'shoot'
+        weapon_name = 'my '+weapon_name
+
+    seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
+    heard_text = '{} {}!'.format(att_name, heard_attack_text)
+    expir_turn = LC.get_current_turn()+1
+    event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
+    return event
+
+
+def empty_ammo_shooting_event(attacker, sound):
+    att_x, att_y = attacker.get_position()
+    seen_text = sound
+    heard_text = sound
+    expir_turn = LC.get_current_turn()+1
+    event = Event(att_x, att_y, seen_text, heard_text, expiration_turn=expir_turn)
+    return event
+
+
 def stab_event(attacker:Unit, victim:Unit):
     att_name = attacker.get_name()
     vic_name = victim.get_name()

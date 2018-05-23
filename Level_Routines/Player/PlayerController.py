@@ -56,6 +56,9 @@ def do_key_action(lvl):
             if keyPressed.text == 'q': # quiver / ready ammo
                 PC_I.do_quivering(player)
                 LC.force_redraw_screen()
+            if keyPressed.text == 'f': # fire ranged weapon in hands
+                do_firing(lvl, player)
+                LC.force_redraw_screen()
             if keyPressed.text == 'r': # reload weapon
                 do_reloading(player)
             # if keyPressed.text == 'U': # unwield
@@ -199,7 +202,60 @@ def do_reloading(player):
     else:
         LOG.append_error_message("can't reload {} for unknown reason".format(weapon.get_name()))
 
-        ##########################################################
+
+def do_firing(lvl, player):
+    px, py = player.get_position()
+    inv = player.get_inventory()
+    weapon = inv.get_equipped_weapon()
+    # Firstly, check if we can fire at all.
+    if weapon is None:
+        LOG.append_message('I have nothing to fire with!')
+        return
+    if not weapon.is_of_type('RangedWeapon'):
+        LOG.append_message("I can't shoot with the {}!".format(weapon.get_name()))
+        return
+    # if weapon.get_loaded_ammunition() is None or weapon.get_loaded_ammunition().get_quantity() == 0:
+    #     LOG.append_message("I am out of my ammo!".format(weapon.get_name()))
+    #     return
+
+    # Secondly, pick the target.
+    tx, ty = ask_for_target(player)
+    # Aaaaand... shoot or not. 
+    if tx == px and ty == py:
+        LOG.append_message("Wanna end it all huh?")
+        return
+    elif tx == ty == -1:
+        LOG.append_message("Okely-dokely.")
+        return
+    else:
+        LC.ranged_attack(player, tx, ty)
+        spend_time(player)
+
+
+################ Technical code below ################################
+
+
+def ask_for_target(player, log_text='Pick a target...'):
+    LOG.append_message(log_text)
+    tx, ty = player.get_position()
+    while True:
+        LC.force_redraw_screen(flush=False)
+        if LC.is_unit_present_at(tx, ty):
+            CW.setForegroundColor(196, 0, 0)
+        else:
+            CW.setForegroundColor(196, 196, 0)
+        CW.putChar('X', tx, ty)
+        CW.flushConsole()
+        key = CW.readKey()
+        if key.keychar == 'ESCAPE':
+            return -1, -1
+        elif key.keychar == 'ENTER' or key.keychar == 'SPACE' or key.text == 'f':
+            return tx, ty
+        direction = key_to_direction(key.text)
+        tx += direction[0]
+        ty += direction[1]
+
+
 def ask_for_direction(log_text='Pick a direction...'):
     LOG.append_replaceable_message(log_text)
     keyPressed = CW.readKey()

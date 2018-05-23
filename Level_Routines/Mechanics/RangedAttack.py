@@ -13,6 +13,7 @@ def try_to_shoot(attacker:Unit, victim:Unit):
         return False
 
     if not LOS._straightLOSCheck(a_x, a_y, v_x, v_y): # TODO: maybe use fullLOSLineCheck()?
+        LOG.append_error_message('trying to shoot with no line of fire')
         return False
 
     # TODO: check for enough ammo in clip
@@ -30,4 +31,8 @@ def calculate_shooting_damage(weapon, stats):
 
 
 def spend_ammo(weapon):
-    return 10
+    # TODO: properly spend ammo for auto-firing guns
+    if weapon.get_loaded_ammunition() is None:
+        LOG.append_error_message('NoneType ammunition to spend!')
+        return
+    weapon.get_loaded_ammunition().change_quantity_by(-1)
