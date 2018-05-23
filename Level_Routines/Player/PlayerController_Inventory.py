@@ -132,7 +132,7 @@ def pickup_with_pickup_menu(player, items):
     for ind in indices:
         if LC.try_pick_up_item(player, items[ind]):
             player.spend_turns_for_action(TC.cost_for('pick up'))
-            LOG.append_message(pick_up_message_for_item(items[ind]), player)
+            LOG.append_message(pick_up_message_for_item(items[ind], player))
         else:
             LOG.append_error_message("Can't pick up items here for unknown reason!")
 
