@@ -27,6 +27,10 @@ def do_key_action(lvl):
         keyPressed = CW.readKey()
         key_text = keyPressed.text
 
+        if keyPressed.text != '':
+            if 1040 <= ord(list(keyPressed.text)[0]) <= 1103:
+                LOG.append_message('I feel like I should change my keyboard layout to EN.')
+
         if not do_move_keys_action(lvl, player, key_text):
             if keyPressed.text == '5' or keyPressed.text == ' ':
                 spend_time(player, 'wait')
@@ -39,7 +43,7 @@ def do_key_action(lvl):
                 LOG.append_replaceable_message('Set all tiles as seen. ')
             if keyPressed.key == 'F1': # show help
                 show_help()
-                LOG.append_replaceable_message('Set all tiles as seen. ')
+                LC.force_redraw_screen()
             if keyPressed.text == 'c': # close door
                 try_close_door(lvl, player)
             if keyPressed.text == 'p': # peek
@@ -73,6 +77,7 @@ def do_key_action(lvl):
 
 
 def show_help():
+    general_info = 'Move with numpad or vi-keys (hjkl + yu+bn), use 5 to wait a turn. Other keys:'
     names = []
     values = []
     names.append('c')
@@ -97,7 +102,9 @@ def show_help():
     values.append('ready an ammo')
     names.append('w')
     values.append('(w)ield or unwield a weapon')
-    MENU.name_value_menu('COMMANDS LIST', 'You can move with numpad or vi-keys (hjkl + yu+bn). Other keys:', names, values)
+    names.append('-')
+    values.append('Toggle the single-arrow-only mode for displayed enemies.')
+    MENU.name_value_menu('COMMANDS LIST', general_info, names, values)
 
 
 def spend_time(player, action_name=''):
