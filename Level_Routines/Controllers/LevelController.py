@@ -1,17 +1,17 @@
 from GLOBAL_DATA import Global_Constants as GC
 from Level_Routines.Mechanics import TurnCosts as TC
-from .Events import EventCreator as EC
+from Level_Routines.Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
-from . import LevelView
-from .Creators import BodyCreator
-from .LevelInitializer import initialize_level
-from .LevelModel import LevelModel
-from .Mechanics import MeleeAttack, Knockout, RangedAttack
-from .Player import PlayerController as P_C, Statusbar
-from .Units import ActorController as A_C
-from .Units.Unit import Unit
+from Level_Routines import LevelView
+from Level_Routines.Creators import BodyCreator
+from Level_Routines.LevelInitializer import initialize_level
+from Level_Routines.LevelModel import LevelModel
+from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
+from Level_Routines.Player import Statusbar
+from Level_Routines.Controllers import PlayerController as P_C, ActorController as A_C
+from Level_Routines.Units.Unit import Unit
 
 player_x = player_y = 0
 last_tile = '.'
@@ -247,7 +247,6 @@ def drop_all_items_from_body(body):
 
 
 def try_reload_unit_weapon(unit):
-    from Message_Log import MessageLog as LOG
     inv = unit.get_inventory()
     weapon = inv.get_equipped_weapon()
     ammo_in_ready = inv.get_equipped_ammo()

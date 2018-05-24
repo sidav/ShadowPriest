@@ -1,5 +1,4 @@
-from Level_Routines import LevelController as LC
-from ..Units import ActorController_Detection as AC_D
+from Level_Routines.Controllers import LevelController as LC, ActorController_Detection as AC_D
 from Level_Routines.Mechanics import TurnCosts as TC
 from Routines import SidavRandom as RND
 

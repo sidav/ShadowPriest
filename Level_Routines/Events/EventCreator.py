@@ -1,8 +1,6 @@
-from ..Units.Unit import Unit
-from Level_Routines import LevelController as LC
+from Level_Routines.Controllers import LevelController as LC
 from .Event import Event
 from Level_Routines.Units.Unit import Unit
-from Level_Routines.Player import Player
 from Routines import SidavRandom as RND
 
 

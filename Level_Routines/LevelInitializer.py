@@ -1,11 +1,9 @@
 from Routines import SidavRandom as rand
 from .Player.Player import Player
 from .Items.Item import Item
-from .Items.Key import Key
 from .Items.Ammunition import Ammunition
 from .Creators import ActorCreator as AC, WeaponCreator as WC
 from Routines import SidavLOS as LOS
-from Level_Routines import LevelController as LC
 
 
 def initialize_level(lvl):

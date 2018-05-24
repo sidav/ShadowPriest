@@ -1,10 +1,9 @@
-from Level_Routines import LevelView, LevelController as LC
+from Level_Routines import LevelView
+from Level_Routines.Controllers import LevelController as LC, PlayerController_Inventory as PC_I
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
-from . import PlayerController_Inventory as PC_I
 from GLOBAL_DATA import Level_Tile_Data as LTD
-from ..LevelModel import LevelModel
 import SidavMenu as MENU
 
 
