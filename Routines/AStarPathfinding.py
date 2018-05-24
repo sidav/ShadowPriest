@@ -1,4 +1,6 @@
 #A* pathfinding algorithm
+
+
 class cell:
 
     def getF(self):
@@ -15,6 +17,7 @@ class cell:
     def setG(self, inc):
         if self.parent is not None:
             self.g = self.parent.g + inc
+
 
 class AStarPathfinding:
 
@@ -121,6 +124,7 @@ class AStarPathfinding:
         self.target = self.cellmap[tox][toy]
         self.origin = self.cellmap[fromx][fromy]
         #self.currentCell = self.origin
+
 
 #АЛГОРИТМ А*:
         #Замечание: F = G+H, где G - цена пути ИЗ стартовой точки, H - эвристическая оценка пути ДО цели.

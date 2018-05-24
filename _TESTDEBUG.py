@@ -35,5 +35,32 @@ def makeSomeTestCrap():
     #     CW.flushConsole()
     #     solved = a.do_turn()
 
-    LC.initialize()
-    LC.control()
+    # A* TEST:
+    map = [
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1]
+    ]
+    def map_to_boolmap(somemap):
+        boolmap = []
+        for i in range(len(somemap)):
+            column = []
+            for j in range(len(somemap[0])):
+                column.append(bool(somemap[i][j]))
+            boolmap.append(column)
+        return boolmap
+
+    from Routines import AStarPathfinding
+    asp = AStarPathfinding.AStarPathfinding(map, 1, 2, 4, 2)
+    res = asp.findPath()
+    for i in range(len(map)):
+        print(map[i])
+
+    for i in res:
+        print(i.x, i.y)
+    # /A* TEST
+
+    # LC.initialize()
+    # LC.control()

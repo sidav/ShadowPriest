@@ -335,6 +335,13 @@ def show_events_for_player(player):
     events_to_show_at_player_turn = []
 
 
+def get_passability_map_for(unit):
+    for i in range(GC.MAP_WIDTH):
+        for j in range(GC.MAP_HEIGHT):
+            pass
+
+
+
 def force_redraw_screen(flush=True):  # deprecated to use outside of control() or UI-only modules
     global redraw_map_timeout
     player = current_level.get_player()
