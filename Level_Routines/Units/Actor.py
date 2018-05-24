@@ -5,12 +5,15 @@ from ..Units.Unit import Unit
 
 class Actor(Unit): # Not needed?
 
+    ### AI data ###
     states = Enum('states', 'calm distracted alerted engaging')
     current_state = None
     current_state_expiration_turn = 0
+    target_unit = None  # for engaging or whatever
+    target_x = target_y = 0 # for "i must go here" behaviour
     prefers_clockwise_rotation = True
-
     was_rotated_previous_turn = False # For AI.
+    ### /AI DATA ###
 
     def __init__(self, x, y, appearance = '?', color=(32, 192, 32), name='Unidentified Actor'):
         super(Actor, self).__init__(x, y, appearance=appearance, color=color, name=name)

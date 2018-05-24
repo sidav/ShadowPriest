@@ -10,7 +10,7 @@ from Level_Routines.LevelInitializer import initialize_level
 from Level_Routines.LevelModel import LevelModel
 from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
 from Level_Routines.Player import Statusbar
-from Level_Routines.Controllers import PlayerController as P_C, ActorController as A_C
+from Level_Routines.Controllers import PlayerController as P_C, AiController as AI, UnitController as U_C
 from Level_Routines.Units.Unit import Unit
 
 player_x = player_y = 0
@@ -26,6 +26,7 @@ def initialize():
     global current_level, events_stack
     current_level = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     current_level = initialize_level(current_level)
+    U_C.set_current_level(current_level)
     events_stack = ESTCK()
 
 
@@ -392,6 +393,6 @@ def control():
             P_C.do_key_action(current_level)
         for unit in all_units:
             if is_time_to_act(unit):
-                A_C.control(current_level, unit)
+                AI.control(current_level, unit)
         current_level.next_turn()
         redraw_map_timeout -= 1
