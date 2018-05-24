@@ -336,10 +336,16 @@ def show_events_for_player(player):
 
 
 def get_passability_map_for(unit):
-    for i in range(GC.MAP_WIDTH):
-        for j in range(GC.MAP_HEIGHT):
-            pass
-
+    map = [[False] * GC.MAP_HEIGHT for _ in range(GC.MAP_WIDTH)]
+    for x in range(GC.MAP_WIDTH):
+        for y in range(GC.MAP_HEIGHT):
+            if current_level.is_tile_passable(x, y):
+                map[x][y] = True
+            elif current_level.is_door_present(x, y):
+                lock_level = current_level.get_tile_lock_level(x, y)
+                if lock_level == 0 or unit.get_inventory().has_key_of_lock_level(lock_level):
+                    map[x][y] = True
+    return map
 
 
 def force_redraw_screen(flush=True):  # deprecated to use outside of control() or UI-only modules
