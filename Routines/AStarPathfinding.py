@@ -62,7 +62,7 @@ def _consider_neighbours(curcell):
                 else:
                     cost = STRAIGHT_COST
                 curneighbour = cellmap[x + i][y + j]
-                if curneighbour.passable and curneighbour not in closedlist:
+                if (curneighbour.passable or curneighbour.x == target.x and curneighbour.y == target.y) and curneighbour not in closedlist:
                     if curneighbour not in openlist:
                         openlist.append(curneighbour)
                         curneighbour.parent = curcell
@@ -95,9 +95,9 @@ def _reverse_path_list(path):
 def _do_pathfinding():
     global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
     #some pre-checks:
-    if not target.passable:
-        print("Target square is non-passable!")
-        return []  # finalReversedPath
+    # if not target.passable:
+    #     print("Target square is non-passable!")
+        # return []  # finalReversedPath
     #step 1:
     targetReached = False
     openlist.append(origin)
