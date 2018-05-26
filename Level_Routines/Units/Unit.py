@@ -1,3 +1,4 @@
+import math
 import Routines.SidavRandom as random
 from .Inventory import Inventory
 from ..Mechanics.Sneak import RpgStats
@@ -8,6 +9,7 @@ class Unit:
     _max_hitpoints = 100
     _curr_hitpoints = _max_hitpoints
     rpg_stats = RpgStats()
+    _faction = 1  # 0 is player's faction.
 
     _inventory = None
     _pos_x = _pos_y = 0
@@ -58,6 +60,9 @@ class Unit:
         self._pos_y += y
         pass
 
+    def set_look_direction(self, x, y):
+        self._look_x, self._look_y = x, y
+
     def rotate_90_degrees(self, clockwise=True):
         temp_x = self._look_x
         if clockwise:
@@ -80,6 +85,25 @@ class Unit:
             self._look_x //= abs(self._look_x)
         if self._look_y != 0:
             self._look_y //= abs(self._look_y)
+
+    def look_at_coordinates(self, x, y):
+        target_look_x = x - self._pos_x
+        target_look_y = y - self._pos_y
+        length = math.sqrt(target_look_x ** 2 + target_look_y ** 2)
+        target_look_x /= length
+        target_look_y /= length
+        if abs(target_look_x) >= 0.5:
+            target_look_x /= abs(target_look_x)
+        else:
+            target_look_x = 0
+        if abs(target_look_y) >= 0.5:
+            target_look_y /= abs(target_look_y)
+        else:
+            target_look_y = 0
+        self.set_look_direction(target_look_x, target_look_y)
+
+    def get_faction(self):
+        return self._faction
 
     def get_rpg_stats(self):
         return self.rpg_stats
@@ -119,6 +143,9 @@ class Unit:
 
     def decrease_hitpoints(self, dmg):
         self._curr_hitpoints -= dmg
+
+    def is_player(self):
+        return False
 
     def is_dead(self):
         return self._curr_hitpoints <= 0

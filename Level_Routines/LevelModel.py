@@ -105,6 +105,8 @@ class LevelModel:
 
     # units
     def get_unit_at(self, x, y):
+        if (x, y) == self._player.get_position():
+            return self._player
         for unit in self._units:
             if (x, y) == unit.get_position():
                 return unit

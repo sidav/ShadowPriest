@@ -129,6 +129,9 @@ def is_unit_present_at(x, y):
     return current_level.is_unit_present(x, y)
 
 
+def get_unit_at(x, y):
+    return current_level.get_unit_at(x, y)
+
 
 def try_stack_items_at_coordinates(x, y):
     items = current_level.get_items_at_coordinates(x, y)
