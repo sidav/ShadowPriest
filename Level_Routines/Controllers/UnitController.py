@@ -41,3 +41,44 @@ def try_move_by_vector(unit, x, y):
         unit.spend_turns_for_action(TC.cost_for('move'))
         return True
     return False
+
+
+def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or open door or attack
+    posx, posy = unit.get_position()
+    lookx, looky = unit.get_look_direction()
+    if unit.has_look_direction() and (lookx, looky) != (vect_x, vect_y):
+        # unit.rotate_45_degrees(unit.prefers_clockwise_rotation)
+        unit.set_look_direction(vect_x, vect_y)
+        unit.spend_turns_for_action(TC.cost_for('turn'))
+        return True
+    else:
+        x, y = posx + vect_x, posy + vect_y
+        if lvl.is_tile_passable(x, y):
+            try_move_by_vector(unit, vect_x, vect_y)
+            return True
+        elif LC.is_unit_present_at(x, y):
+            potential_victim = LC.get_unit_at(x, y)
+            if unit.get_faction() != potential_victim.get_faction():
+                melee_attack(unit, potential_victim)
+            return True
+        else:
+            success = LC.try_open_door(unit, x, y)
+            return success
+    return False
+
+
+def melee_attack(attacker:Unit, victim:Unit):
+    attacker_weapon = attacker.get_inventory().get_equipped_weapon()
+    if attacker_weapon is None:
+        attacker.spend_turns_for_action(TC.cost_for('Barehanded attack'))
+        if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
+            event = EC.attack_with_bare_hands_event(attacker, victim)
+    else:
+        if victim.can_be_stabbed() and attacker_weapon.is_stabbing():
+            attacker.spend_turns_for_action(TC.cost_for('stab'))
+            if MeleeAttack.try_to_stab(attacker, victim):
+                event = EC.stab_event(attacker, victim)
+        elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
+            attacker.spend_turns_for_action(TC.cost_for('melee attack'))
+            event = EC.attack_with_melee_weapon_event(attacker, victim)
+    LC.add_event_to_stack(event)

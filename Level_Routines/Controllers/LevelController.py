@@ -30,6 +30,10 @@ def initialize():
     events_stack = ESTCK()
 
 
+def add_event_to_stack(event):
+    events_stack.push_event(event)
+
+
 def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
     if Knockout.try_to_knockout(attacker, victim):
         KO_time = Knockout.calculate_knockout_time(attacker, victim)
@@ -38,20 +42,6 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
         current_level.add_item_on_floor_without_cordinates(body)
         event = EC.knockout_attack_event(attacker, victim)
-    events_stack.push_event(event)
-
-
-def melee_attack(attacker:Unit, victim:Unit):
-    attacker_weapon = attacker.get_inventory().get_equipped_weapon()
-    if attacker_weapon is None:
-        if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
-            event = EC.attack_with_bare_hands_event(attacker, victim)
-    else:
-        if victim.can_be_stabbed() and attacker_weapon.is_stabbing():
-            if MeleeAttack.try_to_stab(attacker, victim):
-                event = EC.stab_event(attacker, victim)
-        elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
-            event = EC.attack_with_melee_weapon_event(attacker, victim)
     events_stack.push_event(event)
 
 

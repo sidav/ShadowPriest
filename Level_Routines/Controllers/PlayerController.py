@@ -1,5 +1,5 @@
 from Level_Routines import LevelView
-from Level_Routines.Controllers import LevelController as LC, PlayerController_Inventory as PC_I
+from Level_Routines.Controllers import LevelController as LC, UnitController as UC, PlayerController_Inventory as PC_I
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW
@@ -119,24 +119,18 @@ def do_move_keys_action(lvl, player, key):
         return False
     px, py = player.get_position()
     target_x, target_y = px + vector_x, py + vector_y
-
-    if lvl.is_unit_present(target_x, target_y):
-        target_unit = lvl.get_unit_at(target_x, target_y)
-        LC.melee_attack(player, target_unit)
-        spend_time(player, 'melee attack')
-    elif (lvl.is_tile_passable(target_x, target_y)):
-        player.move_by_vector(vector_x, vector_y)
-        spend_time(player, 'move')
-        notify_for_anything_on_floor(lvl, player)
-    elif lvl.is_door_present(target_x, target_y):
+    if lvl.is_door_present(target_x, target_y):
         lock_level = LC.get_tile_lock_level(target_x, target_y)
         if lock_level > 0:
             if player.get_inventory().has_key_of_lock_level(lock_level):
                 LOG.append_message('I unlock the door with my key.')
             else:
                 LOG.append_message("I need a {} key to open that door.".format(LTD.door_lock_level_names[lock_level]))
-        LC.try_open_door(player, target_x, target_y)
-        spend_time(player, 'open door')
+    time_spent = UC.try_make_directional_action(lvl, player, vector_x, vector_y)
+    if time_spent:
+        spend_time(player)
+    if (px, py) != player.get_position(): # i.e. player has moved this turn 
+        notify_for_anything_on_floor(lvl, player)
     return True
 
 
@@ -188,6 +182,7 @@ def notify_for_anything_on_floor(lvl, player):
             item_message += ' and {} more items'.format(len(items_here)-1)
         item_message += '.'
         LOG.append_message(item_message)
+        # LC.force_redraw_screen()
 
 
 def do_ko_attack(lvl, player):

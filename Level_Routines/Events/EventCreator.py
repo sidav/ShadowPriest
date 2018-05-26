@@ -52,7 +52,6 @@ def attack_with_melee_weapon_event(attacker:Unit, victim:Unit):
         seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
         heard_text = 'I {}!'.format(heard_attack_text)
     else:
-        att_name = attacker.get_name()
         if victim.is_player():
             vis_attack_text = 'hits me'
             heard_attack_text = 'feel a blade in my guts!'

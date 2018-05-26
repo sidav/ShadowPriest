@@ -1,6 +1,6 @@
 from Level_Routines.Controllers import LevelController as LC, ActorController_Detection as AC_D
 from Level_Routines.Mechanics import TurnCosts as TC
-from Routines import SidavRandom as RND
+from Routines import SidavRandom as RND, AStarPathfinding as ASP
 from . import UnitController as UC
 
 
@@ -9,6 +9,17 @@ from . import UnitController as UC
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
     posx, posy = actor.get_position()
     lookx, looky = actor.get_look_direction()
+
+    # Pathfinding debug code (delete it)
+    tx, ty = lvl.get_player().get_position()
+    # print("target coords {},{}".format(tx, ty))
+    nextx, nexty = ASP.get_next_step_to_target(LC.get_passability_map_for(actor), posx, posy, tx, ty)
+    # print("moving towards {},{}".format(nextx, nexty))
+    UC.try_make_directional_action(lvl, actor, nextx, nexty)
+    return
+    # /end of pthf debug
+
+
     # everything after "and" is an experimental behaviour. TODO: decide whether to remove or not that.
 
     if lvl.is_door_present(posx - lookx, posy - looky) and not lvl.is_door_closed(posx - lookx, posy - looky):

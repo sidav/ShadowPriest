@@ -8,7 +8,7 @@ from . import ActorController as AC, ActorController_Detection as ACD
 ALERTED_STATE_DURATION = 150
 
 def control(lvl, current_actor):
-    decide_state(lvl, current_actor)
+    # decide_state(lvl, current_actor)
     if current_actor.current_state == current_actor.states.calm:
         AC.do_roam(lvl, current_actor)
     else:
