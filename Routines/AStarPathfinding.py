@@ -1,5 +1,7 @@
 #A* pathfinding algorithm
-class cell:
+
+
+class Cell:
 
     def getF(self):
         return self.g + self.h
@@ -16,115 +18,167 @@ class cell:
         if self.parent is not None:
             self.g = self.parent.g + inc
 
-class AStarPathfinding:
 
-    STRAIGHT_COST = 10
-    DIAGONAL_COST = 14
+STRAIGHT_COST = 10
+DIAGONAL_COST = 14
+diagonalsAllowed = True
+openlist = []
+closedlist = []
+finalReversedPath = []
+cellmap = []
+target = None
+origin = None
 
-    def abs(self, t):
-        if t < 0:
-            return -t
-        return t
 
-    def coordsValid(self, x, y):
-        if 0 <= x < len(self.cellmap) and 0 <= y < len(self.cellmap[0]):
-            return True
-        return False
+def _abs(t):
+    if t < 0:
+        return -t
+    return t
 
-    def manhattanHeuristic(self, fromx, fromy, tox, toy):
-        return 10*(self.abs(tox - fromx) + self.abs(toy - fromy))
 
-    def doNeighbours(self, curcell):
-        cost = 0
-        x = curcell.x
-        y = curcell.y
-        for i in (-1, 0, 1):
-            for j in (-1, 0, 1):
-                if self.coordsValid(x+i, y+j) and (i != 0 or j != 0):
-                    if i*j != 0: #if that neighbour lays diagonally...
-                        if not self.diagonalsAllowed:
-                            continue
-                        else:
-                            cost = self.DIAGONAL_COST
+def _are_coords_valid(x, y):
+    if 0 <= x < len(cellmap) and 0 <= y < len(cellmap[0]):
+        return True
+    return False
+
+
+def _manhattans_heuristic(fromx, fromy, tox, toy):
+    return 10*(_abs(tox - fromx) + _abs(toy - fromy))
+
+
+def _consider_neighbours(curcell):
+    global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
+    cost = 0
+    x = curcell.x
+    y = curcell.y
+    for i in (-1, 0, 1):
+        for j in (-1, 0, 1):
+            if _are_coords_valid(x+i, y+j) and (i != 0 or j != 0):
+                if i*j != 0: #if that neighbour lays diagonally...
+                    if not diagonalsAllowed:
+                        continue
                     else:
-                        cost = self.STRAIGHT_COST
-                    curneighbour = self.cellmap[x + i][y + j]
-                    if curneighbour.passable and curneighbour not in self.closedlist:
-                        if curneighbour not in self.openlist:
-                            self.openlist.append(curneighbour)
+                        cost = DIAGONAL_COST
+                else:
+                    cost = STRAIGHT_COST
+                curneighbour = cellmap[x + i][y + j]
+                if (curneighbour.passable or curneighbour.x == target.x and curneighbour.y == target.y) and curneighbour not in closedlist:
+                    if curneighbour not in openlist:
+                        openlist.append(curneighbour)
+                        curneighbour.parent = curcell
+                        curneighbour.setG(cost)
+                    else: #Here be dragons. I didn't understand that part completely.
+                        if curneighbour.g > curcell.g + cost:
                             curneighbour.parent = curcell
                             curneighbour.setG(cost)
-                        else: #Here be dragons. I didn't understand that part completely.
-                            if curneighbour.g > curcell.g + cost:
-                                curneighbour.parent = curcell
-                                curneighbour.setG(cost)
-
-    def getLowestFCell(self):
-        cheapestcell = self.openlist[0]
-        for i in self.openlist:
-            if i.getF() < cheapestcell.getF():
-                cheapestcell = i
-        return cheapestcell
-
-    def makePath(self):
-        curcell = self.target
-        while curcell != self.origin:
-            self.finalReversedPath.append(curcell)
-            curcell = curcell.parent
-        pass
 
 
-    def findPath(self):
-        #some pre-checks:
-        if not self.target.passable:
-            print("Target square is non-passable!")
-            return self.finalReversedPath
-        #step 1:
-        targetReached = False
-        self.openlist.append(self.origin)
-        #step 2:
-        while not targetReached:
-            #substep 2a:
-            currentCell = self.getLowestFCell()
-            #substep 2b:
-            self.closedlist.append(currentCell)
-            self.openlist.remove(currentCell)
-            #substep 2c:
-            self.doNeighbours(currentCell)
-            # substep 2d:
-            if len(self.openlist) == 0:
-                print("No path exists!")
-                break
-            if self.target in self.openlist:
-                #step 3:
-                self.makePath()
-        return self.finalReversedPath
-
-    def getPathCost(self):
-        if len(self.finalReversedPath) > 0:
-            return self.finalReversedPath[0].g
-        else:
-            return -1  # error or something
+def _get_cell_with_lowest_F():
+    global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
+    cheapestcell = openlist[0]
+    for i in openlist:
+        if i.getF() < cheapestcell.getF():
+            cheapestcell = i
+    return cheapestcell
 
 
-    def __init__(self, inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
-        self.diagonalsAllowed = allowDiags
-        x = len(inpboolmap)
-        y = len(inpboolmap[0])
-        self.openlist = []
-        self.closedlist = []
-        self.finalReversedPath = []
-        self.cellmap = [[0] * y for _ in range(x)]
-        for i in range(x):
-            for j in range(y):
-                self.cellmap[i][j] = cell(i, j, inpboolmap[i][j], h=self.manhattanHeuristic(i, j, tox, toy))
-        self.target = self.cellmap[tox][toy]
-        self.origin = self.cellmap[fromx][fromy]
-        #self.currentCell = self.origin
+def _reverse_path_list(path):
+    global target, origin
+    final_path = []
+    curcell = target
+    while curcell != origin:
+        final_path.append(curcell)
+        curcell = curcell.parent
+    return final_path
+
+
+def _do_pathfinding():
+    global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
+    #some pre-checks:
+    # if not target.passable:
+    #     print("Target square is non-passable!")
+        # return []  # finalReversedPath
+    #step 1:
+    targetReached = False
+    openlist.append(origin)
+    #step 2:
+    while not targetReached:
+        #substep 2a:
+        currentCell = _get_cell_with_lowest_F()
+        #substep 2b:
+        closedlist.append(currentCell)
+        openlist.remove(currentCell)
+        #substep 2c:
+        _consider_neighbours(currentCell)
+        # substep 2d:
+        if target in openlist:
+            #step 3:
+            targetReached = True
+            finalReversedPath = _reverse_path_list(finalReversedPath)
+        if len(openlist) == 0 and not targetReached:
+            print("No path exists!")
+            break
+    return finalReversedPath
+
+
+def get_path_cost():
+    global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
+    if len(finalReversedPath) > 0:
+        return finalReversedPath[0].g
+    else:
+        return -1  # error or something
+
+
+def get_path(inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+    _init_values(inpboolmap, fromx, fromy, tox, toy, allowDiags)
+    return _do_pathfinding()
+
+
+def get_next_step_to_target(inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+    _init_values(inpboolmap, fromx, fromy, tox, toy, allowDiags)
+    path = _do_pathfinding()
+    if len(path) == 0:
+        return 0, 0
+    next_cell_in_path = path[-1]
+    next_x = next_cell_in_path.x - origin.x
+    next_y = next_cell_in_path.y - origin.y
+    return next_x, next_y
+
+
+def _init_values(inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+    global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
+    diagonalsAllowed = allowDiags
+    x = len(inpboolmap)
+    y = len(inpboolmap[0])
+    openlist = []
+    closedlist = []
+    finalReversedPath = []
+    cellmap = [[0] * y for _ in range(x)]
+    for i in range(x):
+        for j in range(y):
+            cellmap[i][j] = Cell(i, j, inpboolmap[i][j], h=_manhattans_heuristic(i, j, tox, toy))
+    target = cellmap[tox][toy]
+    origin = cellmap[fromx][fromy]
+
+# def __init__(self, inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+#     self.diagonalsAllowed = allowDiags
+#     x = len(inpboolmap)
+#     y = len(inpboolmap[0])
+#     self.openlist = []
+#     self.closedlist = []
+#     self.finalReversedPath = []
+#     self.cellmap = [[0] * y for _ in range(x)]
+#     for i in range(x):
+#         for j in range(y):
+#             self.cellmap[i][j] = cell(i, j, inpboolmap[i][j], h=self._manhattans_heuristic(i, j, tox, toy))
+#     self.target = self.cellmap[tox][toy]
+#     self.origin = self.cellmap[fromx][fromy]
+    #self.currentCell = self.origin
+
 
 #АЛГОРИТМ А*:
         #Замечание: F = G+H, где G - цена пути ИЗ стартовой точки, H - эвристическая оценка пути ДО цели.
-        #По "методу Манхэттена": H = 10 * (abs(targetX - startX) + abs(targetY-startY))
+        #По "методу Манхэттена": H = 10 * (_abs(targetX - startX) + _abs(targetY-startY))
 # 1) Добавляем стартовую клетку в открытый список.
 # 2) Повторяем следующее:
     # a) Ищем в открытом списке клетку с наименьшей стоимостью F. Делаем ее текущей клеткой.

@@ -1,17 +1,17 @@
 from GLOBAL_DATA import Global_Constants as GC
 from Level_Routines.Mechanics import TurnCosts as TC
-from .Events import EventCreator as EC
+from Level_Routines.Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
-from . import LevelView
-from .Creators import BodyCreator
-from .LevelInitializer import initialize_level
-from .LevelModel import LevelModel
-from .Mechanics import MeleeAttack, Knockout, RangedAttack
-from .Player import PlayerController as P_C, Statusbar
-from .Units import ActorController as A_C
-from .Units.Unit import Unit
+from Level_Routines import LevelView
+from Level_Routines.Creators import BodyCreator
+from Level_Routines.LevelInitializer import initialize_level
+from Level_Routines.LevelModel import LevelModel
+from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
+from Level_Routines.Player import Statusbar
+from Level_Routines.Controllers import PlayerController as P_C, AiController as AI, UnitController as U_C
+from Level_Routines.Units.Unit import Unit
 
 player_x = player_y = 0
 last_tile = '.'
@@ -26,7 +26,12 @@ def initialize():
     global current_level, events_stack
     current_level = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
     current_level = initialize_level(current_level)
+    U_C.set_current_level(current_level)
     events_stack = ESTCK()
+
+
+def add_event_to_stack(event):
+    events_stack.push_event(event)
 
 
 def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
@@ -37,20 +42,6 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
         current_level.add_item_on_floor_without_cordinates(body)
         event = EC.knockout_attack_event(attacker, victim)
-    events_stack.push_event(event)
-
-
-def melee_attack(attacker:Unit, victim:Unit):
-    attacker_weapon = attacker.get_inventory().get_equipped_weapon()
-    if attacker_weapon is None:
-        if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
-            event = EC.attack_with_bare_hands_event(attacker, victim)
-    else:
-        if victim.can_be_stabbed() and attacker_weapon.is_stabbing():
-            if MeleeAttack.try_to_stab(attacker, victim):
-                event = EC.stab_event(attacker, victim)
-        elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
-            event = EC.attack_with_melee_weapon_event(attacker, victim)
     events_stack.push_event(event)
 
 
@@ -127,6 +118,9 @@ def is_body_present_at(x, y):
 def is_unit_present_at(x, y):
     return current_level.is_unit_present(x, y)
 
+
+def get_unit_at(x, y):
+    return current_level.get_unit_at(x, y)
 
 
 def try_stack_items_at_coordinates(x, y):
@@ -247,7 +241,6 @@ def drop_all_items_from_body(body):
 
 
 def try_reload_unit_weapon(unit):
-    from Message_Log import MessageLog as LOG
     inv = unit.get_inventory()
     weapon = inv.get_equipped_weapon()
     ammo_in_ready = inv.get_equipped_ammo()
@@ -335,6 +328,19 @@ def show_events_for_player(player):
     events_to_show_at_player_turn = []
 
 
+def get_passability_map_for(unit):
+    map = [[False] * GC.MAP_HEIGHT for _ in range(GC.MAP_WIDTH)]
+    for x in range(GC.MAP_WIDTH):
+        for y in range(GC.MAP_HEIGHT):
+            if current_level.is_tile_passable(x, y):
+                map[x][y] = True
+            elif current_level.is_door_present(x, y):
+                lock_level = current_level.get_tile_lock_level(x, y)
+                if lock_level == 0 or unit.get_inventory().has_key_of_lock_level(lock_level):
+                    map[x][y] = True
+    return map
+
+
 def force_redraw_screen(flush=True):  # deprecated to use outside of control() or UI-only modules
     global redraw_map_timeout
     player = current_level.get_player()
@@ -393,6 +399,6 @@ def control():
             P_C.do_key_action(current_level)
         for unit in all_units:
             if is_time_to_act(unit):
-                A_C.control(current_level, unit)
+                AI.control(current_level, unit)
         current_level.next_turn()
         redraw_map_timeout -= 1

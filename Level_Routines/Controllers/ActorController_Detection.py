@@ -3,6 +3,7 @@ from Routines import SidavLOS as LOS
 
 # routine for checking NPC behaviour and something
 
+
 def is_unit_seeing_position(lvl, actor, px, py):
     # vis_map = lvl.get_opacity_map()
     from_x, from_y = actor.get_position()
@@ -15,3 +16,20 @@ def is_unit_seeing_position(lvl, actor, px, py):
     if not LOS._straightLOSCheck(from_x, from_y, px, py):  #TODO: WARNING: can cause seeing through closed doors or opposite behaviour. TODO: check that!
         return False
     return True
+
+
+def is_actor_seeing_an_enemy(lvl, actor):
+    # TODO: make detection of other enemies (using factions), not the player only.
+    player = lvl.get_player()
+    px, py = player.get_position()
+    return is_unit_seeing_position(lvl, actor, px, py)
+
+
+def get_list_of_seen_enemies(lvl, actor):
+    # TODO: make detection of other enemies (using factions), not the player only.
+    player = lvl.get_player()
+    px, py = player.get_position()
+    if is_unit_seeing_position(lvl, actor, px, py):
+        return [player]
+    else:
+        return []

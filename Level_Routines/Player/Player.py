@@ -3,6 +3,8 @@ from ..Units.Unit import Unit
 
 class Player(Unit):
 
+    _faction = 0
+    _stabbable = False
     _is_peeking = False
     _peek_x = _peek_y = 0
 
@@ -23,3 +25,6 @@ class Player(Unit):
 
     def get_peeking_vector(self):
         return self._peek_x, self._peek_y
+
+    def is_player(self):
+        return True

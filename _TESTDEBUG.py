@@ -1,13 +1,7 @@
-import Routines.TdlConsoleWrapper as CW
-from Overworld_Routines.OverworldModel import OverworldModel
 #import Overworld_Routines.OverworldView as OV
-from Overworld_Routines import OverworldController as OW_Cont
-import Routines.SidavLOS as LOS
-from Minigames.Lockpick import Lockpick
 
-from Level_Routines import LevelController as LC, LevelView as LV
-from Level_Routines.LevelModel import LevelModel as LM
-import SidavMenu as MENU
+from Level_Routines.Controllers import LevelController as LC
+
 
 #Following file is just a testing ground for any shit possible. It should not interfere with any other logic and should cause no problems when deleted.
 
@@ -40,6 +34,34 @@ def makeSomeTestCrap():
     #     a.draw_puzzle(20, 5)
     #     CW.flushConsole()
     #     solved = a.do_turn()
+
+    # A* TEST:
+    # map = [
+    #     [1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1]
+    # ]
+    # def map_to_boolmap(somemap):
+    #     boolmap = []
+    #     for i in range(len(somemap)):
+    #         column = []
+    #         for j in range(len(somemap[0])):
+    #             column.append(bool(somemap[i][j]))
+    #         boolmap.append(column)
+    #     return boolmap
+    #
+    # from Routines import AStarPathfinding
+    # res = AStarPathfinding.get_path(map, 1, 2, 3, 2)
+    #
+    # for i in range(len(map)):
+    #     print(map[i])
+    # for i in res:
+    #     print(i.x, i.y)
+    #
+    # print(AStarPathfinding.get_next_step_to_target(map, 1, 2, 3, 2))
+    # /A* TEST
 
     LC.initialize()
     LC.control()
