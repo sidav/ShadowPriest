@@ -43,13 +43,18 @@ def try_move_by_vector(unit, x, y):
     return False
 
 
+def rotate_to_coords(unit, x, y):
+    if not (x == y == 0):
+        unit.set_look_direction(x, y)
+        unit.spend_turns_for_action(TC.cost_for('turn', unit))
+
+
 def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or open door or attack
     posx, posy = unit.get_position()
     lookx, looky = unit.get_look_direction()
     if unit.has_look_direction() and (lookx, looky) != (vect_x, vect_y):
         # unit.rotate_45_degrees(unit.prefers_clockwise_rotation)
-        unit.set_look_direction(vect_x, vect_y)
-        unit.spend_turns_for_action(TC.cost_for('turn'))
+        rotate_to_coords(unit, vect_x, vect_y)
         return True
     else:
         x, y = posx + vect_x, posy + vect_y

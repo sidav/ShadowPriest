@@ -11,12 +11,12 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
     lookx, looky = actor.get_look_direction()
 
     # Pathfinding debug code (delete it)
-    tx, ty = lvl.get_player().get_position()
-    # print("target coords {},{}".format(tx, ty))
-    nextx, nexty = ASP.get_next_step_to_target(LC.get_passability_map_for(actor), posx, posy, tx, ty)
-    # print("moving towards {},{}".format(nextx, nexty))
-    UC.try_make_directional_action(lvl, actor, nextx, nexty)
-    return
+    # tx, ty = lvl.get_player().get_position()
+    # # print("target coords {},{}".format(tx, ty))
+    # nextx, nexty = ASP.get_next_step_to_target(LC.get_passability_map_for(actor), posx, posy, tx, ty)
+    # # print("moving towards {},{}".format(nextx, nexty))
+    # UC.try_make_directional_action(lvl, actor, nextx, nexty)
+    # return
     # /end of pthf debug
 
 
@@ -39,3 +39,25 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
         actor.rotate_45_degrees(actor.prefers_clockwise_rotation)
         actor.spend_turns_for_action(TC.cost_for('turn'))
         actor.was_rotated_previous_turn = True
+
+
+def do_engage(lvl, actor): # engage with enemy. Enemy is in "target_unit" field.
+    ax, ay = actor.get_position()
+    enemy = actor.get_target_unit()
+    ex, ey = enemy.get_position()
+    nextx, nexty = ASP.get_next_step_to_target(LC.get_passability_map_for(actor), ax, ay, ex, ey)
+    UC.try_make_directional_action(lvl, actor, nextx, nexty)
+
+
+def do_pursue(lvl, actor): # pursue an enemy which have disappeared from actor's FOV.
+    ax, ay = actor.get_position()
+    tx, ty = actor.get_target_coords()
+    if (ax, ay) == (tx, ty):
+        lookx = RND.rand(3) - 1
+        looky = RND.rand(3) - 1
+        UC.rotate_to_coords(actor, lookx, looky)
+        return
+    nextx, nexty = ASP.get_next_step_to_target(LC.get_passability_map_for(actor), ax, ay, tx, ty)
+    UC.try_make_directional_action(lvl, actor, nextx, nexty)
+
+# TODO: make do_investigate

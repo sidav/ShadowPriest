@@ -19,6 +19,18 @@ class Actor(Unit): # Not needed?
         super(Actor, self).__init__(x, y, appearance=appearance, color=color, name=name)
         self.current_state = self.states.calm
 
+    def set_target_coords(self, x, y):
+        self.target_x, self.target_y = x, y
+
+    def set_target_unit(self, unit):
+        self.target_unit = unit
+
+    def get_target_coords(self):
+        return self.target_x, self.target_y
+
+    def get_target_unit(self):
+        return self.target_unit
+
     def get_current_state(self):
         return self.current_state
 
