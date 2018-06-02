@@ -1,8 +1,6 @@
-from ..Units.Unit import Unit
-from Level_Routines import LevelController as LC
+from Level_Routines.Controllers import LevelController as LC
 from .Event import Event
 from Level_Routines.Units.Unit import Unit
-from Level_Routines.Player import Player
 from Routines import SidavRandom as RND
 
 
@@ -51,9 +49,19 @@ def attack_with_melee_weapon_event(attacker:Unit, victim:Unit):
         vis_attack_text = 'hit the'
         heard_attack_text = 'hear a hit'
         weapon_name = 'my '+weapon_name
+        seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
+        heard_text = 'I {}!'.format(heard_attack_text)
+    else:
+        if victim.is_player():
+            vis_attack_text = 'hits me'
+            heard_attack_text = 'feel a blade in my guts!'
+        else:
+            vis_attack_text = 'hits {}'.format(vic_name)
+            heard_attack_text = 'hear a hit!'
+        weapon_name = 'his ' + weapon_name
+        seen_text = '{} {} with {}!'.format(att_name, vis_attack_text, weapon_name)
+        heard_text = 'I {}!'.format(heard_attack_text)
 
-    seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
-    heard_text = '{} {}!'.format(att_name, heard_attack_text)
     expir_turn = LC.get_current_turn()+1
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
@@ -111,6 +119,7 @@ def stab_event(attacker:Unit, victim:Unit):
     vic_name = victim.get_name()
     vic_x, vic_y = victim.get_position()  # Not a mistake: the stab event has the victim coords.
     weapon_name = attacker.get_inventory().get_equipped_weapon().get_name()
+    heard_attack_text = 'hear a blade swinging'
 
     if attacker.__class__.__name__ == 'Player':
         heard_attack_text = 'hear a blade swinging'

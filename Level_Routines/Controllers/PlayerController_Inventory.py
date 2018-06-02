@@ -1,4 +1,4 @@
-from .. import LevelController as LC
+from Level_Routines.Controllers import LevelController as LC
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 import SidavMenu as MENU
