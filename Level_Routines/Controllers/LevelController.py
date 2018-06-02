@@ -42,6 +42,8 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
         current_level.add_item_on_floor_without_cordinates(body)
         event = EC.knockout_attack_event(attacker, victim)
+    else:
+        event = EC.action_event(attacker, 'failed to strangle', victim.get_name(), 2)
     events_stack.push_event(event)
 
 
