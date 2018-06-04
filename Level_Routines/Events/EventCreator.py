@@ -78,6 +78,9 @@ def ranged_attack_event(attacker:Unit, victim:Unit):
         vis_attack_text = 'shoot at the'
         heard_attack_text = 'hear a hit'
         weapon_name = 'my '+weapon_name
+    else:
+        vis_attack_text = 'shoots at the'
+        heard_attack_text = 'hear a hit'
 
     seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)

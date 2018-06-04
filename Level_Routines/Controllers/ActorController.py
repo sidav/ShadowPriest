@@ -80,7 +80,7 @@ def try_reload(attacker):
     if attacker_weapon is None or not attacker_weapon.is_of_type('RangedWeapon'):
         return False
     ammo = attacker_weapon.get_loaded_ammunition()
-    if ammo is not None and ammo.get_quantity() == 0:
+    if ammo is None or ammo.get_quantity() == 0:
         return LC.try_reload_unit_weapon(attacker)
     return False
 
@@ -89,10 +89,12 @@ def can_effectively_shoot_at(attacker, victim):
     a_x, a_y = attacker.get_position()
     v_x, v_y = victim.get_position()
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
-    ammo = attacker_weapon.get_loaded_ammunition()
+
     if attacker_weapon is None or not attacker_weapon.is_of_type('RangedWeapon'):
-        LOG.append_warning_message('AI: trying to shoot with no ranged weapon')
         return False
+
+    ammo = attacker_weapon.get_loaded_ammunition()
+
     if ammo is not None and ammo.get_quantity() == 0:
         return False
     if not LOS._straightLOSCheck(a_x, a_y, v_x, v_y): # We use simpler method first to save calculation time...
