@@ -105,7 +105,7 @@ class Inventory:
 
     def has_key_of_lock_level(self, lock_level):
         if lock_level == 0:
-            LOG.append_warning_message('attempt to request a key of zero lock level.')
+            # LOG.append_warning_message('attempt to request a key of zero lock level.')
             return True
         for item in self.backpack:
             if item.is_of_type('Key'):

@@ -1,6 +1,7 @@
 from ..Units.Actor import Actor
 from . import WeaponCreator as WPN_C
 from ..Items.Key import Key
+from ..Items.Ammunition import Ammunition
 from Routines.SidavRandom import rand
 
 # This whole file contains placeholders for now and needs to be tweaked.
@@ -20,7 +21,8 @@ def create_guard(x, y, rank):
 
 
 def create_key_holder(x, y, lock_level):  # temporary (hehe...)
-    weapon = WPN_C.create_dagger(x, y)
+    # weapon = WPN_C.create_dagger(x, y)
+    weapon = WPN_C.create_revolver(x, y)
     if lock_level == 1:
         color = (32, 192, 32)
         name = 'Guard Leutenant'
@@ -29,5 +31,6 @@ def create_key_holder(x, y, lock_level):  # temporary (hehe...)
         name = 'Guard Captain'
     keyholder = Actor(x, y, 'G', color, name)
     keyholder.get_inventory().equip_item(weapon)
+    keyholder.get_inventory().add_item_to_backpack(Ammunition(x, y, '9x19 ammo', '9x19', (196, 64, 128), 12))
     keyholder.get_inventory().add_item_to_backpack(Key(x, y, lock_level))
     return keyholder
