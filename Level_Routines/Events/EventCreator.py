@@ -79,7 +79,7 @@ def ranged_attack_event(attacker:Unit, victim:Unit):
         heard_attack_text = 'hear a hit'
         weapon_name = 'my '+weapon_name
     else:
-        weapon_name = attacker.get_inventory().get_equipped_weapon().get_name(False)
+        weapon_name = 'a '+attacker.get_inventory().get_equipped_weapon().get_name(False)
         if victim.is_player():
             vic_name = 'me'
             vis_attack_text = 'shoots at'

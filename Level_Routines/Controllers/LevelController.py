@@ -157,9 +157,13 @@ def get_current_turn():
 
 def drop_equipped_items(unit):
     x, y = unit.get_position()
-    item = unit.get_inventory().remove_equipped_weapon()
-    if item is not None:
-        current_level.add_item_on_floor_at_coordinates(item, x, y)
+    items = [
+        unit.get_inventory().remove_equipped_weapon(),
+        unit.get_inventory().remove_equipped_ammo()
+    ]
+    for item in items:
+        if item is not None:
+            current_level.add_item_on_floor_at_coordinates(item, x, y)
 
 
 def check_dead_units():

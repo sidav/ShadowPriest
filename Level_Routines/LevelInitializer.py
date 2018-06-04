@@ -24,8 +24,8 @@ def place_player(lvl):
             if lvl.is_upstairs_present(posx, posy):
                 lvl._player = Player(posx, posy)
                 lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
-                lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
-                lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
+                # lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
+                # lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
                 return posx, posy
 
 
@@ -54,6 +54,7 @@ def place_key_holders(lvl, restriction_map):
 
 
 def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
+    pass
     # # rand.randomize()
     # for lock in range(2): # <-- PLACEHOLDER! TODO: deal with it B-/
     #     posx = posy = 0
@@ -62,22 +63,23 @@ def place_random_items(lvl): # <- FUCKING TEMPORARY # TODO: REMOVE
     #         posy = rand.rand(lvl.MAP_HEIGHT)
     #     print("Key added at {}, {}".format(posx, posy))
     #     lvl._items_on_floor.append(Key(posx, posy, lock+1))
-    for _ in range(15):
-        weapon = WC.create_dagger(0, 0)
-        place_item_at_random_coordinates(lvl, weapon)
-    for _ in range(15):
-        weapon = WC.create_revolver(0, 0)
-        place_item_at_random_coordinates(lvl, weapon)
 
-    for _ in range(15):
-        ammo = Ammunition(0, 0, '9x19 ammo', '9x19', (196, 160, 64), 5)
-        place_item_at_random_coordinates(lvl, ammo)
-    for _ in range(15):
-        ammo = Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 5)
-        place_item_at_random_coordinates(lvl, ammo)
-    for _ in range(15):
-        ammo = Ammunition(0, 0, 'poison dart', 'dart', (64, 128, 64), 5)
-        place_item_at_random_coordinates(lvl, ammo)
+    # for _ in range(15):
+    #     weapon = WC.create_dagger(0, 0)
+    #     place_item_at_random_coordinates(lvl, weapon)
+    # for _ in range(15):
+    #     weapon = WC.create_revolver(0, 0)
+    #     place_item_at_random_coordinates(lvl, weapon)
+
+    # for _ in range(15):
+    #     ammo = Ammunition(0, 0, '9x19 ammo', '9x19', (196, 160, 64), 5)
+    #     place_item_at_random_coordinates(lvl, ammo)
+    # for _ in range(15):
+    #     ammo = Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 5)
+    #     place_item_at_random_coordinates(lvl, ammo)
+    # for _ in range(15):
+    #     ammo = Ammunition(0, 0, 'poison dart', 'dart', (64, 128, 64), 5)
+    #     place_item_at_random_coordinates(lvl, ammo)
 
 
 def place_item_at_random_coordinates(lvl, item):

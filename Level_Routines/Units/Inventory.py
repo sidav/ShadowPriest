@@ -47,6 +47,11 @@ class Inventory:
         self.equipped_weapon = None
         return weapon
 
+    def remove_equipped_ammo(self):
+        ammo = self.equipped_ammo
+        self.equipped_ammo = None
+        return ammo
+
     def move_weapon_to_backpack(self):
         self.add_item_to_backpack(self.equipped_weapon)
         self.equipped_weapon = None
