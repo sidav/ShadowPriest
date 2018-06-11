@@ -5,6 +5,7 @@ from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Level_Tile_Data as LTD
 import SidavMenu as MENU
+from .. import Debugging as DBG
 
 
 player_has_spent_time = False
@@ -24,6 +25,9 @@ def do_key_action(lvl):
         LOG.print_log()
         CW.flushConsole()
         keyPressed = CW.readKey()
+
+        DBG.do_debug_key(keyPressed) # <-- Delete it somewhen!
+
         key_text = keyPressed.text
 
         if keyPressed.text != '':
@@ -37,9 +41,6 @@ def do_key_action(lvl):
             if key_text == '-':
                 LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
                 LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
-            if keyPressed.key == 'F2': # debug: magic mapping
-                lvl.set_all_tiles_seen()
-                LOG.append_replaceable_message('Set all tiles as seen. ')
             if keyPressed.key == 'F1': # show help
                 show_help()
                 LC.force_redraw_screen()

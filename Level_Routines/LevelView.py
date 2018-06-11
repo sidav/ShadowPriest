@@ -3,7 +3,7 @@ import GLOBAL_DATA.Level_Tile_Data as DATA
 from Routines import SidavLOS as LOS
 import tdl
 
-
+DEBUG_RENDER_EVERYTHING = False
 SINGLE_ARROW_MODE = False
 NON_VISIBLE_TILE_COLOR = (32, 32, 64)
 
@@ -44,19 +44,19 @@ def draw_player(lvl):
     CW.putChar(plr.get_appearance(), posx, posy)
 
 
-def draw_all_units(lvl): # draws all the units regardless of LOS from player.
-    # TODO: make this not crap.
-    unit_list = lvl.get_all_units()
-    for curr_unit in unit_list:
-        draw_unit_itself_only(lvl, curr_unit)
-        if curr_unit.has_look_direction:
-            draw_unit_look_direction_only(lvl, curr_unit)
+# def draw_all_units(lvl): # draws all the units regardless of LOS from player.
+#     # TODO: make this not crap.
+#     unit_list = lvl.get_all_units()
+#     for curr_unit in unit_list:
+#         draw_unit_itself_only(lvl, curr_unit)
+#         if curr_unit.has_look_direction:
+#             draw_unit_look_direction_only(lvl, curr_unit)
 
 
-def draw_absolutely_everything(lvl):
-    draw_whole_level_map(lvl)
-    draw_all_units(lvl)
-    draw_player(lvl)
+# def draw_absolutely_everything(lvl):
+#     draw_whole_level_map(lvl)
+#     draw_all_units(lvl)
+#     draw_player(lvl)
 
 
 def draw_everything_in_LOS_from_position(lvl, px, py, looking_range=1):
@@ -68,6 +68,10 @@ def draw_everything_in_LOS_from_position(lvl, px, py, looking_range=1):
     CW.clearConsole()
     opacity_map = lvl.get_opacity_map()
     vis_map = LOS.getVisibilityTableFromPosition(px, py, opacity_map, looking_range)
+
+    if DEBUG_RENDER_EVERYTHING:
+        vis_map = [[True] * map_h for _ in range(map_w)]
+
     # print(opacity_map)
     draw_only_level_map_in_LOS(lvl, vis_map)
     draw_items_in_visibility_map(lvl, vis_map)
