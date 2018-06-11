@@ -2,7 +2,7 @@ from Level_Routines import LevelView
 from Level_Routines.Controllers import LevelController as LC, UnitController as UC, PlayerController_Inventory as PC_I
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
-from Routines import TdlConsoleWrapper as CW
+from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Level_Tile_Data as LTD
 import SidavMenu as MENU
 
@@ -68,6 +68,8 @@ def do_key_action(lvl):
                 LC.force_redraw_screen()
             if keyPressed.text == 'r': # reload weapon
                 do_reloading(player)
+            if keyPressed.text == 'N': # make a noise
+                do_noising(player)
             # if keyPressed.text == 'U': # unwield
             #     PC_I.do_unwielding(player)
             if keyPressed.text == 'i': # list equipped items
@@ -91,6 +93,8 @@ def show_help():
     values.append('Search body on floor for items')
     names.append('i')
     values.append('Show (i)nventory')
+    names.append('N')
+    values.append('Make a (N)oise')
     names.append('p')
     values.append('(p)eek around a corner or under a door')
     names.append('r')
@@ -210,6 +214,14 @@ def do_body_searching(player):
             LOG.append_message("I've already searched everything here.")
     else:
         LOG.append_message('There are no bodies here!')
+
+
+def do_noising(player):
+    noise_amount = RND.rand(3)+3
+    LOG.append_message('DBG: noise radius is {}'.format(noise_amount))
+    UC.make_noise(player, 'clap', 'my hands', noise_amount, 10)
+    spend_time(player)
+
 
 def do_reloading(player):
     inv = player.get_inventory()

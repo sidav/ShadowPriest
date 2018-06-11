@@ -305,6 +305,15 @@ def is_event_hearable_from(event, x, y):
     return False
 
 
+def get_all_events_hearable_from(x, y):
+    events = events_stack.get_active_events()
+    hearable = []
+    for e in events:
+        if is_event_hearable_from(e, x, y):
+            hearable.append(e)
+    return hearable
+
+
 def check_events_for_player():
     evnts = events_stack.get_player_perceivable_events()
     for e in evnts:
@@ -381,7 +390,9 @@ def control():
         current_turn = current_level.get_current_turn()
         # do we need to redraw the map?
         if redraw_map_timeout == 0 or is_time_to_act(player):
+            check_events_for_player() # DOUBLED BELOW! Not a mistake!
             force_redraw_screen()
+
 
             # # LevelView.draw_absolutely_everything(currentLevel)
             # if player.is_peeking():
@@ -398,7 +409,7 @@ def control():
 
         check_dead_units()
         check_unconscious_bodies()
-        check_events_for_player()
+        check_events_for_player() # DOUBLED ABOVE! NOT A MISTAKE!
         events_stack.cleanup_events(current_turn)
 
         if is_time_to_act(player):

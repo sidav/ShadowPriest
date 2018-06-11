@@ -19,14 +19,20 @@ levelmodel = None
 # All unit actions (when they're applicable for both player and actors) are here.
 
 
+def set_current_level(level):
+    global levelmodel
+    levelmodel = level
+
+
 def can_unit_open_door(unit, x, y):
     door_lock = LC.get_tile_lock_level(x, y)
     return unit.get_inventory().has_key_of_lock_level(door_lock)
 
 
-def set_current_level(level):
-    global levelmodel
-    levelmodel = level
+def make_noise(unit, text1, text2, loudness, time=0):
+    event = EC.action_event(unit, text1, text2, loudness)
+    LC.add_event_to_stack(event)
+    unit.spend_turns_for_action(time)
 
 
 def try_move_forward(unit):

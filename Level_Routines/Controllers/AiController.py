@@ -37,9 +37,15 @@ def decide_state(lvl, actor):
             actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
         elif actor_state == actor.states.distracted:
             actor.set_current_state(actor.states.calm)
-    else:
-        pass
-        # actor.set_current_state(actor.states.calm)
+
+    if actor_state == actor.states.calm:
+        # investigate noises
+        x, y = actor.get_position()
+        events = LC.get_all_events_hearable_from(x, y)
+        if len(events) > 0:
+            ex, ey = events[0].get_position()
+            actor.set_target_coords(ex, ey)
+            actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
 
 
 def pick_most_important_seen_enemy(lvl, actor):
