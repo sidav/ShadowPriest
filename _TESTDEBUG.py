@@ -1,7 +1,8 @@
 #import Overworld_Routines.OverworldView as OV
 
 from Level_Routines.Controllers import LevelController as LC
-
+from Minigames.Lockpick import Lockpick
+from Routines import TdlConsoleWrapper as CW
 
 #Following file is just a testing ground for any shit possible. It should not interfere with any other logic and should cause no problems when deleted.
 

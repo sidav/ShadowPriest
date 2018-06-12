@@ -52,17 +52,17 @@ class Lockpick:
             self.lockpick_coordinate += 1
             if self.lockpick_coordinate >= self.pins:
                 self.lockpick_coordinate = 0
-        if key.text == ',':
+        elif key.text == ',':
             self.lockpick_coordinate-=1
             if self.lockpick_coordinate < 0:
                 self.lockpick_coordinate = self.pins - 1
-        if key.text == ' ':
+        elif key.text == ' ':
             self.curr_pins_positions[self.lockpick_coordinate] -= 1
             if self.curr_pins_positions[self.lockpick_coordinate] < 0:
                 self.curr_pins_positions[self.lockpick_coordinate] = self.pin_positions - 1
-        if key.keychar == 'ENTER':
-            for i in range(self.pins):
-                if self.curr_pins_positions[i] != self.true_positions[i]:
-                    return False
-            return True
+        #if key.keychar == 'ENTER':
+        for i in range(self.pins):
+            if self.curr_pins_positions[i] != self.true_positions[i]:
+                return False
+        return True
         return False
