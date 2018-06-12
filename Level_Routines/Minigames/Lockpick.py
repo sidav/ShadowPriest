@@ -46,8 +46,9 @@ class Lockpick:
         CW.putChar('|', w_x + self.lockpick_coordinate * 2 + 1, puzzle_height + w_y)
         CW.putChar('|', w_x + self.lockpick_coordinate * 2 + 1, puzzle_height - 1 + w_y)
 
-    def do_turn(self):
-        key = CW.readKey()
+        CW.flushConsole()
+
+    def do_turn(self, key):
         if key.text == '.':
             self.lockpick_coordinate += 1
             if self.lockpick_coordinate >= self.pins:

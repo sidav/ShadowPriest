@@ -3,7 +3,7 @@ from Level_Routines.Controllers import LevelController as LC, UnitController as 
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
-from GLOBAL_DATA import Level_Tile_Data as LTD
+from GLOBAL_DATA import Level_Tile_Data as LTD, Global_Constants as GC
 import SidavMenu as MENU
 from .. import Debugging as DBG
 
@@ -133,7 +133,7 @@ def do_move_keys_action(lvl, player, key):
     target_x, target_y = px + vector_x, py + vector_y
     if lvl.is_door_present(target_x, target_y):
         lock_level = LC.get_tile_lock_level(target_x, target_y)
-        if lock_level > 0:
+        if lock_level > 0 and not lvl.is_tile_passable(target_x, target_y):
             if player.get_inventory().has_key_of_lock_level(lock_level):
                 LOG.append_message('I unlock the door with my key.')
             else:
@@ -192,11 +192,38 @@ def do_lockpicking(lvl, player):
     if LC.get_tile_lock_level(x, y) == 0 or lvl.is_tile_passable(x, y):
         LOG.append_message("No need to pick a lock there.")
         return
+
     player.set_lockpicking(True)
+
     player.set_peeking_vector(pick_x, pick_y)
     LOG.append_message('I prepare my lockpicks... ')
     LOG.append_replaceable_message('Use ESC to cancel.')
-    # spend_time(player, 'peek')
+    minigame = LC.get_lockpicking_minigame_for_door(x, y)
+    minigame.draw_puzzle(GC.CONSOLE_WIDTH // 2, GC.CONSOLE_HEIGHT // 2)
+    keyPressed = CW.readKey()
+    minigame.do_turn(keyPressed)
+    spend_time(player, 'lockpicking step')
+
+
+def continue_lockpicking(player):
+    px, py = player.get_position()
+    pick_x, pick_y = player.get_peeking_vector()
+    LOG.append_replaceable_message('I continue picking the lock... ')
+    minigame = LC.get_lockpicking_minigame_for_door(px + pick_x, py + pick_y)
+    minigame.draw_puzzle(GC.CONSOLE_WIDTH // 2, GC.CONSOLE_HEIGHT // 2)
+
+    keyPressed = CW.readKey()
+    if keyPressed.keychar == 'ESCAPE':
+        player.set_lockpicking(False)
+        LOG.append_message('I recoil and look around. ')
+        spend_time(player, 'lockpicking step')
+        return
+    result = minigame.do_turn(keyPressed)
+    if result:
+        LC.set_door_closed(px + pick_x, py + pick_y, False)
+        player.set_lockpicking(False)
+        LOG.append_message('I successfully open the lock!')
+    spend_time(player, 'lockpicking step')
 
 
 def notify_for_anything_on_floor(lvl, player):

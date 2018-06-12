@@ -24,7 +24,7 @@ class Player(Unit):
         return self._is_picking_a_lock
 
     def set_lockpicking(self, b):
-        self.is_picking_a_lock = b
+        self._is_picking_a_lock = b
 
     def set_peeking_vector(self, x, y):
         self._peek_x = x
