@@ -15,13 +15,18 @@ class Lockpick:
             self._true_positions.append(random.rand(pin_positions))
             self._curr_pins_positions.append(pin_positions - 1)
 
+    def reset_state(self):
+        self._lockpick_coordinate = 0
+        for i in range(self._pins):
+            self._curr_pins_positions[i] = self._pin_positions - 1
+
     def draw_puzzle(self):
         puzzle_width = self._pins * 2 + 1
         puzzle_height = self._pin_positions + 2
         w_x = GC.CONSOLE_WIDTH // 2 - puzzle_width // 2
         w_y = GC.CONSOLE_HEIGHT // 2 - puzzle_height // 2
-        for x in range(puzzle_width):
-            for y in range(puzzle_height):
+        for x in range(puzzle_width+1):
+            for y in range(puzzle_height+1):
                 CW.putChar(' ', x+w_x, y+w_y)
         for x in range(puzzle_width):
             if x % 2 == 0:
@@ -36,11 +41,18 @@ class Lockpick:
                     CW.putChar('|', x+w_x, y+w_y+1)
                 CW.putChar('V', x+w_x, w_y + self._curr_pins_positions[x // 2] + 1)
 
-        # draw border:
+        # draw the lock itself:
         CW.setForegroundColor(64, 64, 64)
         for x in range(puzzle_width+1):
             for y in range(puzzle_height + 2):
                 if x == 0 or x == puzzle_width or y == 0 or y == puzzle_height + 1:
+                    CW.putString(chr(177), x + w_x, y + w_y)
+
+        #draw border
+        CW.setForegroundColor(196, 32, 32)
+        for x in range(-1, puzzle_width + 2):
+            for y in range(-1, puzzle_height + 3):
+                if x == -1 or x == puzzle_width + 1 or y == -1 or y == puzzle_height + 2:
                     CW.putString(chr(177), x + w_x, y + w_y)
 
         # draw lockpick:

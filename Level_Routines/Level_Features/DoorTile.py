@@ -34,6 +34,8 @@ class DoorTile(LevelTile):
 
     def set_closed(self, closed=True):
         self._closed = closed
+        if self._lockpicking_minigame is not None:
+            self._lockpicking_minigame.reset_state()
 
     def get_closed(self):
         return self._closed
