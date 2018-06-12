@@ -94,6 +94,12 @@ class LevelModel:
             return True
         return False
 
+    def get_lockpicking_minigame_for_door(self, x, y):
+        if self.is_door_present(x, y):
+            return self._level_map[x][y].get_lockpicking_minigame()
+        else:
+            return None
+
     def set_door_closed(self, x, y, closed=True):
         if self._level_map[x][y].__class__.__name__ == 'DoorTile':
             self._level_map[x][y].set_closed(closed)

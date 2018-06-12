@@ -21,6 +21,9 @@ def do_key_action(lvl):
     if player.is_peeking():
         continue_peeking(player)
 
+    if player.is_lockpicking():
+        continue_lockpicking(player)
+
     while not player_has_spent_time:
         LOG.print_log()
         CW.flushConsole()
@@ -71,6 +74,8 @@ def do_key_action(lvl):
                 do_reloading(player)
             if keyPressed.text == 'N': # make a noise
                 do_noising(player)
+            if keyPressed.text == 'P': # pick a lock
+                do_lockpicking(lvl, player)
             # if keyPressed.text == 'U': # unwield
             #     PC_I.do_unwielding(player)
             if keyPressed.text == 'i': # list equipped items
@@ -98,6 +103,8 @@ def show_help():
     values.append('Make a (N)oise')
     names.append('p')
     values.append('(p)eek around a corner or under a door')
+    names.append('P')
+    values.append('(P)ick a lock')
     names.append('r')
     values.append('(r)eload wielded weapon')
     names.append('s')
@@ -173,6 +180,23 @@ def continue_peeking(player):
         LOG.append_message('I recoil and look around. ')
     else:
         spend_time(player, 'peek')
+
+
+def do_lockpicking(lvl, player):
+    px, py = player.get_position()
+    pick_x, pick_y = ask_for_direction('Pick which lock?')
+    x, y = px + pick_x, py + pick_y
+    if not lvl.is_door_present(x, y):
+        LOG.append_message("I see no locks there...")
+        return
+    if LC.get_tile_lock_level(x, y) == 0 or lvl.is_tile_passable(x, y):
+        LOG.append_message("No need to pick a lock there.")
+        return
+    player.set_lockpicking(True)
+    player.set_peeking_vector(pick_x, pick_y)
+    LOG.append_message('I prepare my lockpicks... ')
+    LOG.append_replaceable_message('Use ESC to cancel.')
+    # spend_time(player, 'peek')
 
 
 def notify_for_anything_on_floor(lvl, player):

@@ -6,6 +6,7 @@ class Player(Unit):
     _faction = 0
     _stabbable = False
     _is_peeking = False
+    _is_picking_a_lock = False
     _peek_x = _peek_y = 0
 
     def __init__(self, x, y):
@@ -18,6 +19,12 @@ class Player(Unit):
 
     def set_peeking(self, b):
         self._is_peeking = b
+
+    def is_lockpicking(self):
+        return self._is_picking_a_lock
+
+    def set_lockpicking(self, b):
+        self.is_picking_a_lock = b
 
     def set_peeking_vector(self, x, y):
         self._peek_x = x

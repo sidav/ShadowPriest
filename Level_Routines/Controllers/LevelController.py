@@ -76,6 +76,10 @@ def get_tile_lock_level(x, y):
     return current_level.get_tile_lock_level(x, y)
 
 
+def get_lockpicking_minigame_for_door(x, y):
+    return current_level.get_lockpicking_minigame_for_door(x, y)
+
+
 def try_open_door(unit, x, y):
     if current_level.is_door_present(x, y):
         lock_level = current_level.get_tile_lock_level(x, y)
