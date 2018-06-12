@@ -17,7 +17,7 @@ class DoorTile(LevelTile):
         self._lock_level = lock_level
         if lock_level == 1:
             self._lockpicking_minigame = Lockpick(2, 2)
-        if lock_level == 2:
+        elif lock_level == 2:
             self._lockpicking_minigame = Lockpick(3, 3)
 
     def get_tile_char(self):

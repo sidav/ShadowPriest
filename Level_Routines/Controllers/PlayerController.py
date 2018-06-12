@@ -194,13 +194,18 @@ def do_lockpicking(lvl, player):
         return
 
     player.set_lockpicking(True)
-
     player.set_peeking_vector(pick_x, pick_y)
+
     LOG.append_message('I prepare my lockpicks... ')
     LOG.append_replaceable_message('Use ESC to cancel.')
     minigame = LC.get_lockpicking_minigame_for_door(x, y)
-    minigame.draw_puzzle(GC.CONSOLE_WIDTH // 2, GC.CONSOLE_HEIGHT // 2)
+    minigame.draw_puzzle()
     keyPressed = CW.readKey()
+    if keyPressed.keychar == 'ESCAPE':
+        player.set_lockpicking(False)
+        LOG.append_message('I recoil and look around. ')
+        spend_time(player, 'lockpicking step')
+        return
     minigame.do_turn(keyPressed)
     spend_time(player, 'lockpicking step')
 
@@ -208,9 +213,9 @@ def do_lockpicking(lvl, player):
 def continue_lockpicking(player):
     px, py = player.get_position()
     pick_x, pick_y = player.get_peeking_vector()
-    LOG.append_replaceable_message('I continue picking the lock... ')
+    LOG.append_message('I continue picking the lock... ')
     minigame = LC.get_lockpicking_minigame_for_door(px + pick_x, py + pick_y)
-    minigame.draw_puzzle(GC.CONSOLE_WIDTH // 2, GC.CONSOLE_HEIGHT // 2)
+    minigame.draw_puzzle()
 
     keyPressed = CW.readKey()
     if keyPressed.keychar == 'ESCAPE':
@@ -220,9 +225,9 @@ def continue_lockpicking(player):
         return
     result = minigame.do_turn(keyPressed)
     if result:
+        LOG.append_message('I successfully open the lock!')
         LC.set_door_closed(px + pick_x, py + pick_y, False)
         player.set_lockpicking(False)
-        LOG.append_message('I successfully open the lock!')
     spend_time(player, 'lockpicking step')
 
 
