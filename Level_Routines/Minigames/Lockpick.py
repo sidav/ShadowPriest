@@ -12,8 +12,12 @@ class Lockpick:
         self._curr_pins_positions = []
         self._true_positions = []
         for i in range(pins):
-            self._true_positions.append(random.rand(pin_positions))
+            self._true_positions.append(pin_positions - 1)
             self._curr_pins_positions.append(pin_positions - 1)
+        # Generate solution position. Reject the 'all pins on start' position.
+        while sum(self._true_positions) == self._pins * (pin_positions - 1):
+            for i in range(pins):
+                self._true_positions[i] = (random.rand(pin_positions))
 
     def reset_state(self):
         self._lockpick_coordinate = 0
@@ -78,6 +82,7 @@ class Lockpick:
             if self._curr_pins_positions[self._lockpick_coordinate] < 0:
                 self._curr_pins_positions[self._lockpick_coordinate] = self._pin_positions - 1
         #if key.keychar == 'ENTER':
+        #print('True position: {}'.format(self._true_positions))
         for i in range(self._pins):
             if self._curr_pins_positions[i] != self._true_positions[i]:
                 return False
