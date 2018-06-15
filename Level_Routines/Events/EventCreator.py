@@ -165,3 +165,8 @@ def action_event(acting_unit, action, text='', hear_radius = 0):
 
     event = Event(x, y, seen_text, heard_text, hear_radius=hear_radius, expiration_turn=expir_turn)
     return event
+
+
+def shout_event(shouting_unit, x, y, text, loudness):
+    event = Event(x, y, text, text, False, loudness)
+    return event

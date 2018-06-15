@@ -23,9 +23,18 @@ def decide_state(lvl, actor):
     state_turns_left = actor.get_current_state_expiration_turn() - curr_turn
 
     if AC_D.is_actor_seeing_an_enemy(lvl, actor):
-        actor.set_current_state(actor.states.alerted, curr_turn + ALERTED_STATE_DURATION)
         enemy = pick_most_important_seen_enemy(lvl, actor)
         actor.set_target_unit(enemy)
+
+        # Let's shout for attention of others.
+        e_x, e_y = enemy.get_position()
+        if actor.get_current_state() == actor.states.alerted: # if he's already alerted, don't make player-perceivable event
+            # TODO
+            pass
+        else:
+            AC.do_shout_for_attention_to(actor, e_x, e_y, "\"HERE YOU ARE! STOP RIGHT THERE!\"", 10)
+
+        actor.set_current_state(actor.states.alerted, curr_turn + ALERTED_STATE_DURATION)
 
     actor_state = actor.get_current_state()
     if actor_state == actor.states.alerted:

@@ -1,5 +1,6 @@
 from Level_Routines.Controllers import LevelController as LC, ActorController_Detection as AC_D
 from Level_Routines.Mechanics import TurnCosts as TC
+from ..Events import EventCreator as EC
 from Routines import SidavRandom as RND, AStarPathfinding as ASP
 from . import UnitController as UC
 from Message_Log import MessageLog as LOG
@@ -73,6 +74,12 @@ def do_search(lvl, actor): # search for an enemy which have disappeared from act
     UC.try_make_directional_action(lvl, actor, nextx, nexty)
 
 # TODO: make do_investigate
+
+
+def do_shout_for_attention_to(shouting_unit, x, y, text, loudness, time=0):
+    event = EC.shout_event(shouting_unit, x, y, text, loudness)
+    LC.add_event_to_stack(event)
+    shouting_unit.spend_turns_for_action(time)
 
 
 def try_reload(attacker):
