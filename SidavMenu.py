@@ -150,3 +150,86 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
         elif key.keychar == 'ESCAPE':
             # cancel selection
             return []
+
+
+def values_pick_menu(title='Multi Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', names=[],
+                     min_permitted_value=0, max_permitted_value=10, min_sum_of_values = 0, max_sum_of_values=10):
+    # returns the list of values of selected lines.
+    cursor_line = 0
+    items_in_menu = len(names)
+    values = [min_permitted_value for _ in range(len(names))]
+    names_color = (164, 164, 164)
+    left_arrow = '< '
+    left_arrow_denied = '  '
+    right_arrow = ' >'
+    right_arrow_denied = '  '
+
+    width_of_name_column = 0
+    for name in names:
+        if len(name) >= width_of_name_column:
+            width_of_name_column = len(name) + 4
+    left_margin = C_W // 2 - (width_of_name_column + 4) // 2
+
+    sum_was_lesser = sum_was_greater = False
+    while 1:
+        draw_title_and_subheading(title, subheading + ' ({}/{} spent)'.format(sum(values), max_sum_of_values))
+        _draw_line_at_the_bottom('Use UP/DOWN or 8/2 to move the cursor, LEFT/RIGHT or 4/6 to change values.')
+
+        if sum_was_lesser or sum(values) < min_sum_of_values:
+            CW.setForegroundColor(196, 32, 32)
+            CW.putString('Sum of values should be greater or equal to {}    '.format(min_sum_of_values), 0, C_H-2)
+            sum_was_lesser = False
+        elif sum_was_greater or sum(values) > max_sum_of_values:
+            CW.setForegroundColor(196, 32, 32)
+            CW.putString('Sum of values should be lesser or equal to {}      '.format(max_sum_of_values), 0, C_H-2)
+            sum_was_greater = False
+        elif max_sum_of_values >= sum(values) >= min_sum_of_values:
+            CW.setForegroundColor(32, 196, 32)
+            CW.putString('You can press ENTER to confirm your choice.                   ', 0, C_H - 2)
+
+        CW.setForegroundColor(names_color)
+        for i, name in enumerate(names):
+            if i == cursor_line:
+                CW.setForegroundColor(0, 0, 0)
+                CW.setBackgroundColor(names_color)
+            else:
+                CW.setForegroundColor(names_color)
+                CW.setBackgroundColor(0, 0, 0)
+            CW.putString('   ' +name+'    ', left_margin-3, 3+i)
+
+            left_bracket = left_arrow if values[i] > min_permitted_value else left_arrow_denied
+            right_bracket = right_arrow if values[i] < max_permitted_value and sum(values) < max_sum_of_values else right_arrow_denied
+            value_to_put = '0'+str(values[i]) if values[i] < 10 else str(values[i])
+            CW.putString("{}{}{}".format(left_bracket, value_to_put, right_bracket),
+                         left_margin + width_of_name_column, 3+i)
+        CW.setBackgroundColor(0, 0, 0)
+        CW.flushConsole()
+
+        key = CW.readKey()
+        if key.keychar == 'DOWN' or key.text == '2':
+            cursor_line += 1
+            if cursor_line >= items_in_menu:
+                cursor_line = 0
+        elif key.keychar == 'UP' or key.text == '8':
+            cursor_line -= 1
+            if cursor_line < 0:
+                cursor_line = items_in_menu - 1
+        elif key.keychar == 'RIGHT' or key.text == '6':
+            if values[cursor_line] >= max_permitted_value or sum(values) >= max_sum_of_values:
+                sum_was_greater = True
+            else:
+                values[cursor_line] += 1
+        elif key.keychar == 'LEFT' or key.text == '4':
+            if values[cursor_line] <= min_permitted_value:
+                sum_was_lesser = True
+            else:
+                values[cursor_line] -= 1
+
+        elif key.keychar.__contains__('ENTER'):
+            if max_sum_of_values >= sum(values) >= min_sum_of_values:
+                return values
+        elif key.keychar == 'ESCAPE':
+            # cancel selection
+            return []
+
+

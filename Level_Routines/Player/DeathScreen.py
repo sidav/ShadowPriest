@@ -2,9 +2,10 @@ from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as GC
 
 _death_text = [
-    "                         YOU'RE DEAD                                ",
-    '                                                                    ',
-    'this is a placeholder death screen. More beautiful one coming soon. '
+"_  _  _____  __ __ // _____ _____    _____ _____  ___  _____",
+"\\\\// ((   )) || ||    ||_// ||==     ||  ) ||==  ||=|| ||  )",
+" //   \\\\_//  \\\\_//    || \\\\ ||___  _ ||_// ||___ || || ||_//"
+
 ]
 
 
