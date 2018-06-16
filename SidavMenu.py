@@ -152,17 +152,21 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
             return []
 
 
-def values_pick_menu(title='Multi Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', names=[],
+def values_pick_menu(title, subheading, names, descriptions,
                      min_permitted_value=0, max_permitted_value=10, min_sum_of_values = 0, max_sum_of_values=10):
     # returns the list of values of selected lines.
     cursor_line = 0
     items_in_menu = len(names)
     values = [min_permitted_value for _ in range(len(names))]
     names_color = (164, 164, 164)
+    descriptions_color = (64, 32, 128)
+
     left_arrow = '< '
     left_arrow_denied = '  '
     right_arrow = ' >'
     right_arrow_denied = '  '
+
+    descriptions_margin = 1
 
     width_of_name_column = 0
     for name in names:
@@ -202,9 +206,14 @@ def values_pick_menu(title='Multi Select. Pick a title, dummy!', subheading='Pic
             value_to_put = '0'+str(values[i]) if values[i] < 10 else str(values[i])
             CW.putString("{}{}{}".format(left_bracket, value_to_put, right_bracket),
                          left_margin + width_of_name_column, 3+i)
+
+            if descriptions is not None:
+                CW.setForegroundColor(descriptions_color)
+                CW.put_wrapped_text_in_rect(descriptions[cursor_line], descriptions_margin, C_H - 13, C_W-descriptions_margin, 10)
         CW.setBackgroundColor(0, 0, 0)
         CW.flushConsole()
 
+        # KEYBOARD
         key = CW.readKey()
         if key.keychar == 'DOWN' or key.text == '2':
             cursor_line += 1

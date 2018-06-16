@@ -63,5 +63,35 @@ def makeSomeTestCrap():
     # print(AStarPathfinding.get_next_step_to_target(map, 1, 2, 3, 2))
     # /A* TEST
 
+    # import Routines.TdlConsoleWrapper as CW
+    # CW.put_wrapped_text_in_rect('fuck fuck fuck fuck fuck', 0, 0, 10, 10)
+    # CW.flushConsole()
+    # CW.readKey()
+
+    from SidavMenu import values_pick_menu
+    val_names = ['Strength', 'Nimbleness', 'Endurance', 'Advertence', 'Knowledge']
+    descriptions = [
+        "Strength is all-around useful characteristic of the Priest. It represents how strong the shadow priest is, "
+        "how powerful his melee attacks are, how much stuff he can carry and what kind of weapons he could use. "
+        "The priest with high strength can wield heavy and powerful weapons, strangle enemies quicker, fights in melee"
+        " more efficiently and isn't slowed down while carrying a lot of items in his inventory or a body on his shoulder.",
+
+        "Nimbleness stat represents how quick and agile the shadow priest is, how fast he can move, how efficient he is while stabbing, "
+        "picking the lock or searching trough other's pockets, whether the pocket's owner is dead, unconscious or alive and clueless. "
+        "The one should be as nimble as strong to become a real Priest.",
+
+        "Endurance stat represents how healthy and durable the shadow priest is, how much damage he can survive, "
+        "how he deals with blood loss, being poisoned, burned, frozen, crippled or touched by the powers and forces "
+        "of the unknown. They say that the Priest could endure very unsettling and hostile environment conditions for a very long time.",
+
+        "Advertence stat represents how attentive and responsive to surroundings the shadow priest is, how far he sees or hears, how likely he is to spot the hidden passages, items, creatures or people.",
+        "",
+    ]
+    values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 20)
+
+    # from Level_Routines.Player.DeathScreen import show_death_screen
+    # show_death_screen(None)
+
+
     LC.initialize()
     LC.control()
