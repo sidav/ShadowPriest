@@ -84,8 +84,12 @@ def makeSomeTestCrap():
         "how he deals with blood loss, being poisoned, burned, frozen, crippled or touched by the powers and forces "
         "of the unknown. They say that the Priest could endure very unsettling and hostile environment conditions for a very long time.",
 
-        "Advertence stat represents how attentive and responsive to surroundings the shadow priest is, how far he sees or hears, how likely he is to spot the hidden passages, items, creatures or people.",
-        "",
+        "Advertence stat represents how attentive and responsive to surroundings the shadow priest is, how far he sees or hears,"
+        " how likely he is to spot the hidden passages, items, creatures or people. The rumors are that the experienced Priest "
+        "is extraordinarily perceptive.",
+
+        "Knowledge stat represents how intelligent the shadow priest is, how much he can learn from books, how good he can "
+        "memorize the surroundings, how good he is at questioning someone and how much powers of the unknown he can wield.",
     ]
     values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 20)
 
