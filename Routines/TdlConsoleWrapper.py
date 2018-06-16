@@ -38,6 +38,20 @@ def putString(string, x, y):
     console.draw_str(x, y, string, bg=BACKCOLOR, fg=FORECOLOR)
 
 
+def put_wrapped_text_in_rect(text, x, y, w, h):
+    words = text.split()
+    curr_line = 0
+    curr_line_length = 0
+    for word in words:
+        if curr_line_length + len(word) >= w:
+            curr_line += 1
+            curr_line_length = 0
+            if curr_line == h:
+                return
+        putString(word+' ', x+curr_line_length, y + curr_line)
+        curr_line_length += len(word) + 1
+
+
 def drawLine(x0, y0, x1, y1, chr = "#"):
     class xy:
         def __init__(self, x, y):
