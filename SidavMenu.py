@@ -207,6 +207,7 @@ def values_pick_menu(title, subheading, names, descriptions,
             CW.putString("{}{}{}".format(left_bracket, value_to_put, right_bracket),
                          left_margin + width_of_name_column, 3+i)
 
+            CW.setBackgroundColor(0, 0, 0)
             if descriptions is not None:
                 CW.setForegroundColor(descriptions_color)
                 CW.put_wrapped_text_in_rect(descriptions[cursor_line], descriptions_margin, C_H - 13, C_W-descriptions_margin, 10)
