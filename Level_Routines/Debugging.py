@@ -19,4 +19,4 @@ def do_debug_key(keypressed):
         LOG.append_warning_message('All actor states have been reset.')
 
     elif keypressed.keychar == 'F7':
-        DeathScreen.show_death_screen(None)
+        DeathScreen.show_death_screen(None, True)

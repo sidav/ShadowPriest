@@ -7,16 +7,18 @@ from GLOBAL_DATA import Level_Tile_Data as LTD, Global_Constants as GC
 import SidavMenu as MENU
 from .. import Debugging as DBG
 from ..Player import PlayerStatsScreen as STATSCREEN
+from ..Player import DeathScreen
 
 player_has_spent_time = False
 
 
 def do_key_action(lvl):
     global player_has_spent_time
-
     player_has_spent_time = False
-
     player = lvl.get_player()
+
+    if player.is_dead():
+        DeathScreen.show_death_screen(player)
 
     if player.is_peeking():
         continue_peeking(player)

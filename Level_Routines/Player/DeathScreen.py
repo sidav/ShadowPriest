@@ -85,60 +85,62 @@ def get_char_for_sparkle(death_text, fade_in, x = 0, y = 0):
         return curr_char
 
 
+def show_death_screen(player, forced=False):
+    if forced or not GC.DEBUG_ENABLED:
+        _death_texts[0] = finalize_pic(_death_texts[0])
+        chosen_text = _death_texts[RND.rand(len(_death_texts))]
 
-def show_death_screen(player):
-    _death_texts[0] = finalize_pic(_death_texts[0])
-    chosen_text = _death_texts[RND.rand(len(_death_texts))]
+        bottom_margin = GC.LOG_HEIGHT + 1 # the number is the UI height
+        w = GC.CONSOLE_WIDTH
+        h = GC.CONSOLE_HEIGHT - bottom_margin
+        bloody_pixels_on_screen = [[False] * h for _ in range(w)]
+        total_shown_pixels = 0
 
-    bottom_margin = GC.LOG_HEIGHT + 2 # the 2 is the UI height
-    w = GC.CONSOLE_WIDTH
-    h = GC.CONSOLE_HEIGHT - bottom_margin
-    bloody_pixels_on_screen = [[False] * h for _ in range(w)]
-    total_shown_pixels = 0
-
-    # FIRST: fill the screen with blood.
-    while total_shown_pixels < w * h:
-        # draw blood
-        for _ in range(_fade_in_sparkles_per_frame):
-            if total_shown_pixels >= w*h:
-                break
-            number = RND.rand(w * h)
-            coord_x, coord_y = number % w, number // w
-
-            while bloody_pixels_on_screen[coord_x][coord_y]:
-                number += 1
-                if number >= w*h:
-                    number = 0
+        # FIRST: fill the screen with blood.
+        while total_shown_pixels < w * h:
+            # draw blood
+            for _ in range(_fade_in_sparkles_per_frame):
+                if total_shown_pixels >= w*h:
+                    break
+                number = RND.rand(w * h)
                 coord_x, coord_y = number % w, number // w
 
-            CW.setForegroundColor(_sparkles_color)
-            sparkle = get_char_for_sparkle(chosen_text, True)
-            CW.putChar(sparkle, coord_x, coord_y)
+                while bloody_pixels_on_screen[coord_x][coord_y]:
+                    number += 1
+                    if number >= w*h:
+                        number = 0
+                    coord_x, coord_y = number % w, number // w
 
-            bloody_pixels_on_screen[coord_x][coord_y] = True
-            total_shown_pixels += 1
-        CW.flushConsole()
+                CW.setForegroundColor(_sparkles_color)
+                sparkle = get_char_for_sparkle(chosen_text, True)
+                CW.putChar(sparkle, coord_x, coord_y)
 
-    # SECOND: clear everything except the 'you're dead' label.
-    total_shown_pixels = 0
-    while total_shown_pixels < w * h:
-        # draw blood
-        for _ in range(_fade_out_sparkles_per_frame):
-            if total_shown_pixels >= w*h:
-                break
-            number = RND.rand(w * h)
-            coord_x, coord_y = number % w, number // w
+                bloody_pixels_on_screen[coord_x][coord_y] = True
+                total_shown_pixels += 1
+            CW.flushConsole()
 
-            while not bloody_pixels_on_screen[coord_x][coord_y]:
-                number += 1
-                if number >= w * h:
-                    number = 0
+        # SECOND: clear everything except the 'you're dead' label.
+        total_shown_pixels = 0
+        while total_shown_pixels < w * h:
+            # draw blood
+            for _ in range(_fade_out_sparkles_per_frame):
+                if total_shown_pixels >= w*h:
+                    break
+                number = RND.rand(w * h)
                 coord_x, coord_y = number % w, number // w
 
-            CW.setForegroundColor(_sparkles_color)
-            CW.putChar(get_char_for_sparkle(chosen_text, False, coord_x, coord_y), coord_x, coord_y)
-            bloody_pixels_on_screen[coord_x][coord_y] = False
-            total_shown_pixels += 1
-        # CW.setForegroundColor(sparkles_color)
-        CW.flushConsole()
-    CW.readKey()
+                while not bloody_pixels_on_screen[coord_x][coord_y]:
+                    number += 1
+                    if number >= w * h:
+                        number = 0
+                    coord_x, coord_y = number % w, number // w
+
+                CW.setForegroundColor(_sparkles_color)
+                CW.putChar(get_char_for_sparkle(chosen_text, False, coord_x, coord_y), coord_x, coord_y)
+                bloody_pixels_on_screen[coord_x][coord_y] = False
+                total_shown_pixels += 1
+            # CW.setForegroundColor(sparkles_color)
+            CW.flushConsole()
+        CW.readKey()
+        if not forced:
+            exit()

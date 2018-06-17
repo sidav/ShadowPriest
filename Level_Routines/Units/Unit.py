@@ -8,7 +8,6 @@ class Unit:
     _name = 'Unidentified Unit'
     _max_hitpoints = 100
     _curr_hitpoints = _max_hitpoints
-    rpg_stats = RpgStats()
     _faction = 1  # 0 is player's faction.
 
     _inventory = None
@@ -30,6 +29,7 @@ class Unit:
         self._pos_y = posy
         self._color = color
         self._name = name
+        self.rpg_stats = RpgStats()
         if rpg_stats != None:
             self.rpg_stats = rpg_stats
         while self._look_x == 0 and self._look_y == 0:
