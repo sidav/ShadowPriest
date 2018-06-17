@@ -2,6 +2,7 @@ from . import LevelView as LV
 from .Controllers import LevelController as LC
 from Message_Log import MessageLog as LOG
 from .Player import DeathScreen
+from GLOBAL_DATA import Global_Constants as GC
 
 
 def do_debug_key(keypressed):
@@ -20,3 +21,10 @@ def do_debug_key(keypressed):
 
     elif keypressed.keychar == 'F7':
         DeathScreen.show_death_screen(None, True)
+
+    elif keypressed.keychar == 'F8':
+        GC.DEBUG_ENABLED ^= 1
+        if GC.DEBUG_ENABLED:
+            LOG.append_warning_message('Developer mode is enabled.')
+        else:
+            LOG.append_message('Developer mode is disabled. Have a good death!')

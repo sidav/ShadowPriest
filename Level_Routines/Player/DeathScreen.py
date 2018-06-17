@@ -1,5 +1,6 @@
 from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Global_Constants as GC
+import time
 
 _fade_in_sparkles_per_frame = 75
 _fade_out_sparkles_per_frame = 45
@@ -141,6 +142,7 @@ def show_death_screen(player, forced=False):
                 total_shown_pixels += 1
             # CW.setForegroundColor(sparkles_color)
             CW.flushConsole()
+        time.sleep(1)
         CW.readKey()
         if not forced:
             exit()

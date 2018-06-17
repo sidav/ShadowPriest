@@ -1,5 +1,5 @@
 import Routines.TdlConsoleWrapper as CW
-from GLOBAL_DATA.Global_Constants import LOG_HEIGHT, CONSOLE_HEIGHT, CONSOLE_WIDTH, MAP_HEIGHT, DEBUG_ENABLED
+import GLOBAL_DATA.Global_Constants as GC
 from .Message import LogMessage
 
 all_messages = []
@@ -31,25 +31,26 @@ def append_replaceable_message(text):
 
 
 def append_error_message(text):
-    if DEBUG_ENABLED:
+    if GC.DEBUG_ENABLED:
         _add_message_object_to_list(LogMessage('ERROR: '+text, color=(128, 32, 32)))
-    print_log()
-    CW.flushConsole()
-    print('ERROR: '+text)
+        print_log()
+        CW.flushConsole()
+    print('ERROR: ' + text)
+
 
 def append_warning_message(text):
-    if DEBUG_ENABLED:
+    if GC.DEBUG_ENABLED:
         _add_message_object_to_list(LogMessage('WARNING: '+text, color=(192, 192, 32)))
+        print_log()
+        CW.flushConsole()
     print('WARNING: '+text)
-    print_log()
-    CW.flushConsole()
 
 
 def print_log():
-    last_msgs = all_messages[-LOG_HEIGHT:]
+    last_msgs = all_messages[-GC.LOG_HEIGHT:]
 
     for i in range(len(last_msgs)):
-        CW.putString(str(' ' * CONSOLE_WIDTH), 0, MAP_HEIGHT + i)
+        CW.putString(str(' ' * GC.CONSOLE_WIDTH), 0, GC.MAP_HEIGHT + i)
 
     for i in range(len(last_msgs)):
         text = last_msgs[i].text
@@ -57,4 +58,4 @@ def print_log():
         if last_msgs[i].stack > 1:
             text += ' (x{0})'.format(stack)
         CW.setForegroundColor(last_msgs[i].color)
-        CW.putString(text, 0, MAP_HEIGHT+i)
+        CW.putString(text, 0, GC.MAP_HEIGHT+i)
