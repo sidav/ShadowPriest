@@ -22,10 +22,10 @@ events_stack = None
 events_to_show_at_player_turn = []
 
 
-def initialize():
+def initialize(player):
     global current_level, events_stack
     current_level = LevelModel(GC.MAP_WIDTH, GC.MAP_HEIGHT)
-    current_level = initialize_level(current_level)
+    current_level = initialize_level(current_level, player)
     U_C.set_current_level(current_level)
     events_stack = ESTCK()
 

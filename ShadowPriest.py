@@ -18,11 +18,14 @@ def main():
     _TESTDBG_.makeSomeTestCrap()# <--- SHOULD BE SAFELY DELETED!
 
     TitleScreen.drawTitle()
+
+    # DELETE THE FOLLOWING
+    from Level_Routines import main
+    main.init()
+    main.start_main_loop()
+
     while not CW.isWindowClosed():
         CW.flushConsole()
-
-
-
 
 
 

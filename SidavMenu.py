@@ -53,7 +53,7 @@ def name_value_menu(title='Name-value menu. Pick a title, dummy!', subheading='P
 
     CW.setForegroundColor(values_color)
     for i, value in enumerate(values):
-        CW.putString(value, width_of_name_column, i + 2)
+        CW.putString(str(value), width_of_name_column+2, i + 2)
 
     CW.flushConsole()
 
@@ -245,7 +245,7 @@ def values_pick_menu(title, subheading, names, descriptions,
             return []
 
 
-def keyboard_input_menu(title, subheading, min_length, max_length):
+def keyboard_input_menu(title, subheading, min_length, max_length, default_value=''):
 
     left_margin = C_W // 2 - max_length // 2 - 2
     upper_margin = 4
@@ -253,7 +253,7 @@ def keyboard_input_menu(title, subheading, min_length, max_length):
     border_color = (160, 128, 160)
     label_color = (128, 128, 128)
 
-    value = ''
+    value = default_value
 
     draw_title_and_subheading(title, subheading, 2, True)
 
@@ -283,8 +283,11 @@ def keyboard_input_menu(title, subheading, min_length, max_length):
 
         key = CW.readKey()
         if key.keychar =='ENTER':
-            if len(value) > min_length:
+            if len(value) >= min_length:
                 return value
+            else:
+                warning_string = '{} characters minimum, please.'.format(min_length)
+                CW.putString(warning_string, C_W // 2 - len(warning_string) // 2, C_H-1)
         elif key.keychar =='BACKSPACE':
             if len(value) > 0:
                 value = value[:-1]

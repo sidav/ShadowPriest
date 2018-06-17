@@ -156,7 +156,7 @@ def show_equipped_items(player):
     item_slot_names.append('')
     items_in_slots_names.append('')
 
-    item_slot_names.append('-------- Backpack')
+    item_slot_names.append('---- Backpack')
     if len(backpack) > 0:
         items_in_slots_names.append('')
     else:

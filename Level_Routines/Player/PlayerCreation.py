@@ -4,7 +4,7 @@ from .Player import Player
 
 def create_player():
 
-    player_name = MENU.keyboard_input_menu('PRIEST IS INITIATING', 'What is your name, Priest?', 3, 25)
+    player_name = MENU.keyboard_input_menu('PRIEST IS INITIATING', 'What is your name, Priest?', 3, 25, 'The Imperceptible')
 
     val_names = ['Strength', 'Nimbleness', 'Endurance', 'Advertence', 'Knowledge']
     descriptions = [

@@ -6,7 +6,7 @@ from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Level_Tile_Data as LTD, Global_Constants as GC
 import SidavMenu as MENU
 from .. import Debugging as DBG
-
+from ..Player import PlayerStatsScreen as STATSCREEN
 
 player_has_spent_time = False
 
@@ -76,6 +76,9 @@ def do_key_action(lvl):
                 do_noising(player)
             if keyPressed.text == 'P': # pick a lock
                 do_lockpicking(lvl, player)
+            if keyPressed.text == '@': # show player stats
+                STATSCREEN.show_player_stats(player)
+                LC.force_redraw_screen(True)
             # if keyPressed.text == 'U': # unwield
             #     PC_I.do_unwielding(player)
             if keyPressed.text == 'i': # list equipped items
@@ -87,6 +90,8 @@ def show_help():
     general_info = 'Move with numpad or vi-keys (hjkl + yu+bn), use 5 to wait a turn. Other keys:'
     names = []
     values = []
+    names.append('@')
+    values.append('Take a look at your SNEAK stats')
     names.append('c')
     values.append('(c)lose a door')
     names.append('d')

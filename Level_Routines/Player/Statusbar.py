@@ -5,7 +5,7 @@ from GLOBAL_DATA import Global_Constants as CONST, Level_Tile_Data as LTD
 def print_statusbar(player, current_turn):
     # print player name (TODO)
     # player_name = 'Badass vile sneaky bastard priest of shadows'
-    player_name = player.get_name()
+    player_name = ' {} '.format(player.get_name())
     print_name_with_healthbar(player_name, player.get_current_hitpoints(), player.get_max_hitpoints())
 
     if player.get_inventory().is_carrying_body_on_shoulder():

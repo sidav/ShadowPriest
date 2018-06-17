@@ -19,6 +19,15 @@ class RpgStats:
         self._advertence = array[3]
         self._knowledge = array[4]
 
+    def get_stats_array(self):
+        return [
+            self._strength,
+            self._nimbleness,
+            self._endurance,
+            self._advertence,
+            self._knowledge
+        ]
+
     # def get_all_stats(self):
     def get_strength(self): 
         return self._strength

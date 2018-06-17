@@ -6,8 +6,8 @@ from .Creators import ActorCreator as AC, WeaponCreator as WC
 from Routines import SidavLOS as LOS
 
 
-def initialize_level(lvl):
-    placed_player_x, placed_player_y = place_player(lvl)
+def initialize_level(lvl, player):
+    placed_player_x, placed_player_y = place_player(lvl, player)
     # let's restrict spawning units in player LOS:
     opacity_map = lvl.get_opacity_map()
     vis_map_for_spawned_player = LOS.getVisibilityTableFromPosition(placed_player_x, placed_player_y, opacity_map, 15)
@@ -18,11 +18,12 @@ def initialize_level(lvl):
     return lvl
 
 
-def place_player(lvl):
+def place_player(lvl, player):
     for posx in range(lvl.MAP_WIDTH):
         for posy in range(lvl.MAP_HEIGHT):
             if lvl.is_upstairs_present(posx, posy):
-                lvl._player = Player(posx, posy)
+                player.set_coordinates(posx, posy)
+                lvl._player = player
                 lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
                 # lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
                 # lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
