@@ -20,6 +20,7 @@ def do_key_action(lvl):
     if player.is_dead():
         DeathScreen.show_death_screen(player)
 
+
     if player.is_peeking():
         continue_peeking(player)
 
