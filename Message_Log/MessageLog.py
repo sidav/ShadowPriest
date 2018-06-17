@@ -33,13 +33,16 @@ def append_replaceable_message(text):
 def append_error_message(text):
     if DEBUG_ENABLED:
         _add_message_object_to_list(LogMessage('ERROR: '+text, color=(128, 32, 32)))
-
+    print_log()
+    CW.flushConsole()
+    print('ERROR: '+text)
 
 def append_warning_message(text):
     if DEBUG_ENABLED:
         _add_message_object_to_list(LogMessage('WARNING: '+text, color=(192, 192, 32)))
-    # print_log()
-    # CW.flushConsole()
+    print('WARNING: '+text)
+    print_log()
+    CW.flushConsole()
 
 
 def print_log():
