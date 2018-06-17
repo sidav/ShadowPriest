@@ -50,6 +50,9 @@ class Unit:
     def get_name(self):
         return self._name
 
+    def set_name(self, name):
+        self._name = name
+
     def move_forward(self):
         self._pos_x += self._look_x
         self._pos_y += self._look_y
