@@ -159,7 +159,7 @@ def values_pick_menu(title, subheading, names, descriptions,
     # returns the list of values of selected lines.
     cursor_line = 0
     items_in_menu = len(names)
-    values = [min_permitted_value for _ in range(len(names))]
+    values = [max_sum_of_values // len(names) for _ in range(len(names))]
     names_color = (164, 164, 164)
     descriptions_color = (64, 32, 128)
 

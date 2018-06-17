@@ -28,7 +28,7 @@ def create_player():
         "Knowledge stat represents how intelligent the shadow priest is, how much he can learn from books, how good he can "
         "memorize the surroundings, how good he is at questioning someone and how much powers of the unknown he can wield.",
     ]
-    player_stats = MENU.values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 20)
+    player_stats = MENU.values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 25)
     player = Player(0, 0)
     player.set_name(player_name)
     player.get_rpg_stats().set_stats_by_array(player_stats)
