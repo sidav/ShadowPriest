@@ -1,5 +1,5 @@
 #import Overworld_Routines.OverworldView as OV
-
+from Routines import TdlConsoleWrapper as CW
 from Level_Routines.Controllers import LevelController as LC
 
 
@@ -95,10 +95,6 @@ def makeSomeTestCrap():
         "memorize the surroundings, how good he is at questioning someone and how much powers of the unknown he can wield.",
     ]
     values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 20)
-
-    # from Level_Routines.Player.DeathScreen import show_death_screen
-    # show_death_screen(None)
-
 
     LC.initialize()
     LC.control()

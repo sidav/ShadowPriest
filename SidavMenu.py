@@ -1,5 +1,6 @@
 from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as GC
+import Decorations as DECOR
 
 C_W, C_H = GC.CONSOLE_WIDTH, GC.CONSOLE_HEIGHT
 # cursor_line = 0
@@ -273,6 +274,11 @@ def keyboard_input_menu(title, subheading, min_length, max_length):
         CW.setForegroundColor(label_color)
         string_margin = max_length // 2 - len(value) // 2 + 1
         CW.putString(value, left_margin+string_margin, upper_margin+1)
+
+        # print decorations
+        DECOR.draw_skull(1, upper_margin, align_left=True)
+        DECOR.draw_skull(60, upper_margin, align_left=False)
+
         CW.flushConsole()
 
         key = CW.readKey()
