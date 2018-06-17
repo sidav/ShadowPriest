@@ -22,12 +22,13 @@ def _draw_line_at_the_bottom(text):
     CW.setForegroundColor(192, 192, 192)
     CW.putString(text, 0, C_H-1)
 
-def draw_title_and_subheading(title, subheading):
+def draw_title_and_subheading(title, subheading, subheading_upper_margin = 1, center_subheading = False):
+    subheading_margin = C_W // 2 - len(subheading) // 2 if center_subheading else 0
     CW.clearConsole()
     color = (128, 128, 128)
     _draw_titlebar(title)
     CW.setForegroundColor(color)
-    CW.putString(subheading, 0, 1)
+    CW.putString(subheading, subheading_margin, subheading_upper_margin)
 
 
 def name_value_menu(title='Name-value menu. Pick a title, dummy!', subheading='Pick subheading, dummy!',
@@ -243,3 +244,43 @@ def values_pick_menu(title, subheading, names, descriptions,
             return []
 
 
+def keyboard_input_menu(title, subheading, min_length, max_length):
+
+    left_margin = C_W // 2 - max_length // 2 - 2
+    upper_margin = 4
+
+    border_color = (160, 128, 160)
+    label_color = (128, 128, 128)
+
+    value = ''
+
+    draw_title_and_subheading(title, subheading, 2, True)
+
+    # firstly, print the borders
+    while True:
+        for x in range(max_length + 2):
+            for y in range(3):
+                if (x == 0 or x == max_length+1) and (y == 0 or y == 2):
+                    border_char = '+'
+                elif x == 0 or x == max_length+1:
+                    border_char = '|'
+                elif y == 0 or y == 2:
+                    border_char = '-'
+                else:
+                    border_char = ' '
+                CW.setForegroundColor(border_color)
+                CW.putChar(border_char, left_margin + x, upper_margin + y)
+        CW.setForegroundColor(label_color)
+        string_margin = max_length // 2 - len(value) // 2 + 1
+        CW.putString(value, left_margin+string_margin, upper_margin+1)
+        CW.flushConsole()
+
+        key = CW.readKey()
+        if key.keychar =='ENTER':
+            if len(value) > min_length:
+                return value
+        elif key.keychar =='BACKSPACE':
+            if len(value) > 0:
+                value = value[:-1]
+        if len(value) < max_length:
+            value += key.text

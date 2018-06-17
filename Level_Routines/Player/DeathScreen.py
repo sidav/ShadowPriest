@@ -2,7 +2,7 @@ from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Global_Constants as GC
 
 _fade_in_sparkles_per_frame = 75
-_fade_out_sparkles_per_frame = 35
+_fade_out_sparkles_per_frame = 45
 _sparkles_color = (96, 0, 0)
 
 _death_texts = [

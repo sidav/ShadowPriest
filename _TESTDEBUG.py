@@ -68,7 +68,10 @@ def makeSomeTestCrap():
     # CW.flushConsole()
     # CW.readKey()
 
-    from SidavMenu import values_pick_menu
+    from SidavMenu import values_pick_menu, keyboard_input_menu
+
+    keyboard_input_menu('PRIEST IS INITIATING', 'What is your name, Priest?', 3, 25)
+
     val_names = ['Strength', 'Nimbleness', 'Endurance', 'Advertence', 'Knowledge']
     descriptions = [
         "Strength is all-around useful characteristic of the Priest. It represents how strong the shadow priest is, "

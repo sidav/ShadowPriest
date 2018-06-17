@@ -190,7 +190,7 @@ def readKey():
         print("text: '{}', char: '{}', keychar: '{}'".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
         if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
             LAST_KEY_PRESSED.keychar == 'DOWN' or LAST_KEY_PRESSED.keychar == 'UP' or LAST_KEY_PRESSED.keychar.__contains__('ENTER') \
-                or LAST_KEY_PRESSED.keychar == 'ESCAPE':
+                or LAST_KEY_PRESSED.keychar == 'ESCAPE' or LAST_KEY_PRESSED.keychar == 'BACKSPACE':
             break
         else:
             print('KEY REJECTED.')
