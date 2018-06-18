@@ -29,8 +29,8 @@ def _get_skull_picture(align_left=True):
             ' ################# ',
             ' ################# ',
             '###################',
-            '###    #####    ###',
-            '##      ###      ##',
+            '###   #######   ###',
+            '##     #####     ##',
             '##      ###      ##',
             ' ##    ## ##    ## ',
             ' ### ###   ### ### ',
@@ -49,5 +49,5 @@ def _draw_decoration(pic, x, y, color):
     CW.drawCharArrayAtPosition(pic, x, y, True)
 
 
-def draw_skull(x, y, color=(96, 96, 96), align_left=False):
+def draw_skull(x, y, color=(96, 96, 128), align_left=False):
     _draw_decoration(_get_skull_picture(align_left), x, y, color)
