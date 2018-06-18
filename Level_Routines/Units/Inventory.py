@@ -132,6 +132,13 @@ class Inventory:
                 ammo.append(item)
         return ammo
 
+    def get_items_of_type_from_backpack(self, type):
+        items = []
+        for item in self.backpack:
+            if item.is_of_type(type):
+                items.append(item)
+        return items
+
     def add_item_to_backpack(self, item):
         if item is not None:
             if item.is_of_type('Ammunition'):

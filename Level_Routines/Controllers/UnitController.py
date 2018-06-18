@@ -1,5 +1,5 @@
 from GLOBAL_DATA import Global_Constants as GC
-from Level_Routines.Mechanics import TurnCosts as TC
+from Level_Routines.Mechanics import TurnCosts as TC, StatusEffect as SE
 from Level_Routines.Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
@@ -98,3 +98,16 @@ def melee_attack(attacker:Unit, victim:Unit):
             attacker.spend_turns_for_action(TC.cost_for('melee attack'))
             event = EC.attack_with_melee_weapon_event(attacker, victim)
     LC.add_event_to_stack(event)
+
+
+def quaff_a_potion(unit, potion):
+    inv = unit.get_inventory()
+    if potion.get_quantity() > 1:               # <-- DO SOMETHING WITH THAT KOSTYLI!!1
+        potion.change_quantity_by(-1)           # <-- DO SOMETHING WITH THAT KOSTYLI!!1
+    else:                                       # <-- DO SOMETHING WITH THAT KOSTYLI!!1
+        inv.remove_item_from_backpack(potion)   # <-- DO SOMETHING WITH THAT KOSTYLI!!1
+    se_name = potion.get_status_effect_name()
+    se_dur = potion.get_status_effect_duration()
+    unit.add_status_effect(SE.StatusEffect(se_name, se_dur))
+    LC.add_event_to_stack(EC.action_event(unit, 'quaff', 'a {}'.format(potion.get_name()), 2))
+    unit.spend_turns_for_action(TC.cost_for('quaffing', unit))

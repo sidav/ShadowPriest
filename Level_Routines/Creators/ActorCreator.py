@@ -2,6 +2,7 @@ from ..Units.Actor import Actor
 from . import WeaponCreator as WPN_C
 from ..Items.Key import Key
 from ..Items.Ammunition import Ammunition
+from ..Items.Potion import Potion
 from Routines.SidavRandom import rand
 
 # This whole file contains placeholders for now and needs to be tweaked.
@@ -17,6 +18,8 @@ def create_guard(x, y, rank):
         name = 'Guard Officer'
     guard = Actor(x, y, 'G', color, name)
     guard.get_inventory().equip_item(weapon)
+    if rand(10) > 6:
+        guard.get_inventory().add_item_to_backpack(Potion(x, y, 'Potion of healing'))
     return guard
 
 
@@ -33,4 +36,5 @@ def create_key_holder(x, y, lock_level):  # temporary (hehe...)
     keyholder.get_inventory().equip_item(weapon)
     keyholder.get_inventory().add_item_to_backpack(Ammunition(x, y, '9x19 ammo', '9x19', (196, 64, 128), 12))
     keyholder.get_inventory().add_item_to_backpack(Key(x, y, lock_level))
+    keyholder.get_inventory().add_item_to_backpack(Potion(x, y, 'Potion of healing'))
     return keyholder

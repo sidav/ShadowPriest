@@ -70,6 +70,9 @@ def do_key_action(lvl):
             if keyPressed.text == 'q': # quiver / ready ammo
                 PC_I.do_quivering(player)
                 LC.force_redraw_screen()
+            if keyPressed.text == 'Q': # Quaff a potion
+                PC_I.do_quaffing(player)
+                LC.force_redraw_screen()
             if keyPressed.text == 'f': # fire ranged weapon in hands
                 do_firing(lvl, player)
                 LC.force_redraw_screen()
@@ -113,12 +116,14 @@ def show_help():
     values.append('(p)eek around a corner or under a door')
     names.append('P')
     values.append('(P)ick a lock')
+    names.append('q')
+    values.append('ready an ammo')
+    names.append('Q')
+    values.append('(Q)uaff a potion')
     names.append('r')
     values.append('(r)eload wielded weapon')
     names.append('s')
     values.append('(s)trangle an enemy')
-    names.append('q')
-    values.append('ready an ammo')
     names.append('w')
     values.append('(w)ield or unwield a weapon')
     names.append('-')

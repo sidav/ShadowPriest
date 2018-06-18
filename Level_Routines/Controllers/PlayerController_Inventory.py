@@ -1,4 +1,4 @@
-from Level_Routines.Controllers import LevelController as LC
+from Level_Routines.Controllers import LevelController as LC, UnitController as UC
 from Level_Routines.Mechanics import TurnCosts as TC
 from Message_Log import MessageLog as LOG
 import SidavMenu as MENU
@@ -120,6 +120,24 @@ def do_quivering(player):
             LOG.append_message('I ready the {}.'.format(ammo[selected_ammo_index].get_name()))
             inv.equip_item(ammo[selected_ammo_index])
 
+def do_quaffing(player):
+    inv = player.get_inventory()
+
+    if inv.is_carrying_body_on_shoulder():
+        LOG.append_message("I can't take out a potion with that burden on my shoulder.")
+        return
+
+    # curr_potions = inv.get_equipped_potions()
+    potions = inv.get_items_of_type_from_backpack('Potion')
+    if len(potions) == 0:
+        LOG.append_message('I have nothing to drink!')
+    else:
+        names = get_names_from_list_of_items(potions)
+        selected_potions_index = MENU.single_select_menu('QUAFF A POTION', 'Select a potion to drink', names)
+        if selected_potions_index is None:
+            LOG.append_replaceable_message('Okay, then.')
+        else:
+            UC.quaff_a_potion(player, potions[selected_potions_index])
 
 # def do_unwielding(player):
 #     inv = player.get_inventory()

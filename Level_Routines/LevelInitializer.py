@@ -1,6 +1,7 @@
 from Routines import SidavRandom as rand
 from .Player.Player import Player
 from .Items.Item import Item
+from .Items.Potion import Potion
 from .Items.Ammunition import Ammunition
 from .Creators import ActorCreator as AC, WeaponCreator as WC
 from Routines import SidavLOS as LOS
@@ -25,6 +26,7 @@ def place_player(lvl, player):
                 player.set_coordinates(posx, posy)
                 lvl._player = player
                 lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
+                lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'Potion of poison'))
                 # lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
                 # lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
                 return posx, posy
@@ -37,7 +39,7 @@ def place_random_units(lvl, restriction_map):
             posx = rand.rand(lvl.MAP_WIDTH)
             posy = rand.rand(lvl.MAP_HEIGHT)
         unit = AC.create_guard(posx, posy, rand.rand(2))
-        unit.get_inventory().add_item_to_backpack(Item(posx, posy, name='Some debug item', color=(192, 0, 32)))
+        # unit.get_inventory().add_item_to_backpack(Item(posx, posy, name='Some debug item', color=(192, 0, 32)))
         lvl.spawn_unit(unit)
 
 
