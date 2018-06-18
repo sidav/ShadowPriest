@@ -107,7 +107,7 @@ def quaff_a_potion(unit, potion):
     else:                                       # <-- DO SOMETHING WITH THAT KOSTYLI!!1
         inv.remove_item_from_backpack(potion)   # <-- DO SOMETHING WITH THAT KOSTYLI!!1
     se_name = potion.get_status_effect_name()
-    se_dur = potion.get_status_effect_duration()
-    unit.add_status_effect(SE.StatusEffect(se_name, se_dur))
+    se_expiration_turn = LC.get_current_turn() + potion.get_status_effect_duration()
+    unit.add_status_effect(SE.StatusEffect(se_name, se_expiration_turn))
     LC.add_event_to_stack(EC.action_event(unit, 'quaff', 'a {}'.format(potion.get_name()), 2))
     unit.spend_turns_for_action(TC.cost_for('quaffing', unit))
