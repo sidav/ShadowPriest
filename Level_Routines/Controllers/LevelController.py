@@ -10,7 +10,7 @@ from Level_Routines.LevelInitializer import initialize_level
 from Level_Routines.LevelModel import LevelModel
 from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
 from Level_Routines.Player import Statusbar
-from Level_Routines.Controllers import PlayerController as P_C, AiController as AI, UnitController as U_C
+from . import PlayerController as P_C, AiController as AI, UnitController as U_C, StatusEffectsController as SEC
 from Level_Routines.Units.Unit import Unit
 
 player_x = player_y = 0
@@ -420,9 +420,14 @@ def control():
         check_events_for_player() # DOUBLED ABOVE! NOT A MISTAKE!
         events_stack.cleanup_events(current_turn)
 
+        if current_turn % 10 == 0:
+            SEC.apply_status_effects_to_a_unit(player)
         if is_time_to_act(player):
             P_C.do_key_action(current_level)
+
         for unit in all_units:
+            if current_turn % 10 == 0:
+                SEC.apply_status_effects_to_a_unit(unit)
             if is_time_to_act(unit):
                 AI.control(current_level, unit)
         current_level.next_turn()

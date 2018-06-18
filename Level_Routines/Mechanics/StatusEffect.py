@@ -8,4 +8,4 @@ class StatusEffect:
         return self._name
 
     def get_expiration_turn(self):
-        return self._turn
+        return self._expiration_turn

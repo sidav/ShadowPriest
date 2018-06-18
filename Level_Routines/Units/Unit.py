@@ -30,12 +30,13 @@ class Unit:
         self._color = color
         self._name = name
         self.rpg_stats = RpgStats()
+        self._status_effects = []
         if rpg_stats != None:
             self.rpg_stats = rpg_stats
         while self._look_x == 0 and self._look_y == 0:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
-        pass
+
 
     def set_coordinates(self, x, y):
         self._pos_x = x
@@ -111,6 +112,15 @@ class Unit:
     def get_rpg_stats(self):
         return self.rpg_stats
 
+    def get_status_effects(self):
+        return self._status_effects
+
+    def add_status_effect(self, status_effect):
+        self._status_effects.append(status_effect)
+
+    def remove_status_effect(self, status_effect):
+        self._status_effects.remove(status_effect)
+
     def spend_turns_for_action(self, turns):
         self._next_turn_to_act += turns
 
@@ -146,6 +156,11 @@ class Unit:
 
     def decrease_hitpoints(self, dmg):
         self._curr_hitpoints -= dmg
+
+    def increase_hitpoints(self, inc):
+        self._curr_hitpoints += inc
+        if self._curr_hitpoints > self._max_hitpoints:
+            self._curr_hitpoints = self._max_hitpoints
 
     def is_player(self):
         return False
