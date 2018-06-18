@@ -12,7 +12,7 @@ class Potion(Item):
             self._status_effect_duration = 300
         elif self._name == 'Potion of poison':
             self._status_effect_name = 'POISON'
-            self._status_effect_duration = 300
+            self._status_effect_duration = 900
 
     def get_status_effect_name(self):
         return self._status_effect_name
