@@ -115,6 +115,13 @@ class Unit:
     def get_status_effects(self):
         return self._status_effects
 
+    def count_status_effect(self, effect_name):
+        count = 0
+        for effect in self._status_effects:
+            if effect.get_name() == effect_name:
+                count += 1
+        return count
+
     def add_status_effect(self, status_effect):
         self._status_effects.append(status_effect)
 
