@@ -1,5 +1,6 @@
 from Level_Routines.Controllers import LevelController as LC, UnitController as UC
 from Level_Routines.Mechanics import TurnCosts as TC
+from . import PlayerController as PC
 from Message_Log import MessageLog as LOG
 import SidavMenu as MENU
 
@@ -120,6 +121,7 @@ def do_quivering(player):
             LOG.append_message('I ready the {}.'.format(ammo[selected_ammo_index].get_name()))
             inv.equip_item(ammo[selected_ammo_index])
 
+
 def do_quaffing(player):
     inv = player.get_inventory()
 
@@ -138,7 +140,7 @@ def do_quaffing(player):
             LOG.append_replaceable_message('Okay, then.')
         else:
             UC.quaff_a_potion(player, potions[selected_potions_index])
-
+            PC.spend_time(player)
 # def do_unwielding(player):
 #     inv = player.get_inventory()
 #     inv.get_equipped_weapon()
