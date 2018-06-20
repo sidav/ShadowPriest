@@ -23,9 +23,11 @@ def do_key_action(lvl):
 
     if player.is_peeking():
         continue_peeking(player)
+        return
 
     if player.is_lockpicking():
         continue_lockpicking(player)
+        return
 
     while not player_has_spent_time(player):
         LOG.print_log()
@@ -206,7 +208,7 @@ def continue_lockpicking(player):
         LOG.append_message('I successfully open the lock!')
         LC.set_door_closed(px + pick_x, py + pick_y, False)
         player.set_lockpicking(False)
-        player.spend_turns_for_action(TC.cost_for('lockpicking step'))
+    player.spend_turns_for_action(TC.cost_for('lockpicking step'))
 
 
 def notify_for_anything_on_floor(lvl, player):
