@@ -44,6 +44,7 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         event = EC.knockout_attack_event(attacker, victim)
     else:
         event = EC.action_event(attacker, 'failed to strangle', victim.get_name(), 2)
+    attacker.spend_turns_for_action(TC.cost_for('knockout attack'))
     events_stack.push_event(event)
 
 
@@ -90,6 +91,7 @@ def try_open_door(unit, x, y):
         if lock_level == 0 or unit.get_inventory().has_key_of_lock_level(lock_level):
             current_level.set_door_closed(x, y, False)
             events_stack.push_event(EC.action_event(unit, 'open', 'the door', 5))
+            unit.spend_turns_for_action(TC.cost_for('open door'))
             return True
         else:
             # LOG.append_warning_message('Attempt to open a door with no appropriate key!')
@@ -100,6 +102,7 @@ def try_open_door(unit, x, y):
 def try_close_door(unit, x, y):
     if current_level.is_door_present(x, y):
         events_stack.push_event(EC.action_event(unit, 'close', 'the door', 5))
+        unit.spend_turns_for_action(TC.cost_for('close door'))
         current_level.set_door_closed(x, y)
         return True
     return False

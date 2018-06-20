@@ -9,12 +9,12 @@ from .. import Debugging as DBG
 from ..Player import PlayerStatsScreen as STATSCREEN
 from ..Player import DeathScreen
 
-player_has_spent_time = False
+# player_has_spent_time = False
 
 
 def do_key_action(lvl):
-    global player_has_spent_time
-    player_has_spent_time = False
+    # global player_has_spent_time
+    # player_has_spent_time = False
     player = lvl.get_player()
 
     if player.is_dead():
@@ -27,7 +27,7 @@ def do_key_action(lvl):
     if player.is_lockpicking():
         continue_lockpicking(player)
 
-    while not player_has_spent_time:
+    while not player_has_spent_time(player):
         LOG.print_log()
         CW.flushConsole()
         keyPressed = CW.readKey()
@@ -42,7 +42,7 @@ def do_key_action(lvl):
 
         if not do_move_keys_action(lvl, player, key_text):
             if keyPressed.text == '5' or keyPressed.text == ' ':
-                spend_time(player, 'wait')
+                player.spend_turns_for_action(TC.cost_for('wait'))
                 LOG.append_message('I wait for a sec. ')
             if key_text == '-':
                 LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
@@ -131,11 +131,15 @@ def show_help():
     MENU.name_value_menu('COMMANDS LIST', general_info, names, values)
 
 
-def spend_time(player, action_name=''):
-    global player_has_spent_time
-    if action_name != '':
-        player.spend_turns_for_action(TC.cost_for(action_name))
-    player_has_spent_time = True
+def player_has_spent_time(player):
+    return player.get_next_turn_to_act() > LC.get_current_turn()
+
+
+# def spend_time(player, action_name=''): # deprecated
+#     # global player_has_spent_time
+#     if action_name != '':
+#         player.spend_turns_for_action(TC.cost_for(action_name))
+#     # player_has_spent_time = True
 
 
 def do_move_keys_action(lvl, player, key):
@@ -153,7 +157,7 @@ def do_move_keys_action(lvl, player, key):
                 LOG.append_message("I need a {} key to open that door.".format(LTD.door_lock_level_names[lock_level]))
     time_spent = UC.try_make_directional_action(lvl, player, vector_x, vector_y)
     if time_spent:
-        spend_time(player)
+        pass
     if (px, py) != player.get_position(): # i.e. player has moved this turn 
         notify_for_anything_on_floor(lvl, player)
     return True
@@ -167,7 +171,7 @@ def try_close_door(lvl, player):
             pass
         else:
             LOG.append_message("I can't close the door! ")
-        spend_time(player, 'close door')
+            player.spend_turns_for_action(TC.cost_for('close door'))
     else:
         LOG.append_message('There is no door here!')
 
@@ -182,7 +186,7 @@ def do_peeking(lvl, player):
     player.set_peeking_vector(peek_x, peek_y)
     LOG.append_message('I carefully peek there... ')
     LOG.append_replaceable_message('I can pass turns with space or 5 to continue peeking.')
-    spend_time(player, 'peek')
+    player.spend_turns_for_action(TC.cost_for('peek'))
 
 
 def continue_peeking(player):
@@ -192,7 +196,7 @@ def continue_peeking(player):
         player.set_peeking(False)
         LOG.append_message('I recoil and look around. ')
     else:
-        spend_time(player, 'peek')
+        player.spend_turns_for_action(TC.cost_for('peek'))
 
 
 def do_lockpicking(lvl, player):
@@ -217,10 +221,10 @@ def do_lockpicking(lvl, player):
     if keyPressed.keychar == 'ESCAPE':
         player.set_lockpicking(False)
         LOG.append_message('I recoil and look around. ')
-        spend_time(player, 'lockpicking step')
+        player.spend_turns_for_action(TC.cost_for('lockpicking step'))
         return
     minigame.do_turn(keyPressed)
-    spend_time(player, 'lockpicking step')
+    player.spend_turns_for_action(TC.cost_for('lockpicking step'))
 
 
 def continue_lockpicking(player):
@@ -234,14 +238,14 @@ def continue_lockpicking(player):
     if keyPressed.keychar == 'ESCAPE':
         player.set_lockpicking(False)
         LOG.append_message('I recoil and look around. ')
-        spend_time(player, 'lockpicking step')
+        player.spend_turns_for_action(TC.cost_for('lockpicking step'))
         return
     result = minigame.do_turn(keyPressed)
     if result:
         LOG.append_message('I successfully open the lock!')
         LC.set_door_closed(px + pick_x, py + pick_y, False)
         player.set_lockpicking(False)
-    spend_time(player, 'lockpicking step')
+        player.spend_turns_for_action(TC.cost_for('lockpicking step'))
 
 
 def notify_for_anything_on_floor(lvl, player):
@@ -270,7 +274,6 @@ def do_ko_attack(lvl, player):
     if lvl.is_unit_present(target_x, target_y):
         target_unit = lvl.get_unit_at(target_x, target_y)
         LC.knockout_attack(player, target_unit)
-        spend_time(player, 'knockout attack')
     else:
         LOG.append_message('There is nobody here!')
 
@@ -290,7 +293,7 @@ def do_noising(player):
     noise_amount = RND.rand(3)+3
     LOG.append_message('DBG: noise radius is {}'.format(noise_amount))
     UC.make_noise(player, 'clap', 'my hands', noise_amount, 10)
-    spend_time(player)
+    player.spend_turns_for_action(TC.cost_for('do noise'))
 
 
 def do_reloading(player):
@@ -313,7 +316,8 @@ def do_reloading(player):
         LOG.append_message("I don't have ammo for my {} in ready!".format(weapon.get_name(False)))
         return
     if LC.try_reload_unit_weapon(player):
-        spend_time(player)
+        return
+        # spend_time(player)
     else:
         LOG.append_error_message("can't reload {} for unknown reason".format(weapon.get_name()))
 
@@ -344,7 +348,7 @@ def do_firing(lvl, player):
         return
     else:
         LC.ranged_attack(player, tx, ty)
-        spend_time(player)
+        # spend_time(player)
 
 
 ################ Technical code below ################################
