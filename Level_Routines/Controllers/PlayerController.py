@@ -6,7 +6,7 @@ from Routines import TdlConsoleWrapper as CW, SidavRandom as RND
 from GLOBAL_DATA import Level_Tile_Data as LTD, Global_Constants as GC
 import SidavMenu as MENU
 from .. import Debugging as DBG
-from ..Player import PlayerStatsScreen as STATSCREEN
+from ..Player import PlayerStatsScreen as STATSCREEN, HelpScreen as HELPSCREEN
 from ..Player import DeathScreen
 
 # player_has_spent_time = False
@@ -48,7 +48,7 @@ def do_key_action(lvl):
                 LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
                 LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
             if keyPressed.key == 'F1': # show help
-                show_help()
+                HELPSCREEN.show_help()
                 LC.force_redraw_screen()
             if keyPressed.text == 'c': # close door
                 try_close_door(lvl, player)
@@ -67,10 +67,10 @@ def do_key_action(lvl):
             if keyPressed.text == 'w': # wield
                 PC_I.do_wielding(player)
                 LC.force_redraw_screen()
-            if keyPressed.text == 'q': # quiver / ready ammo
+            if keyPressed.text == 'R': # quiver / ready ammo
                 PC_I.do_quivering(player)
                 LC.force_redraw_screen()
-            if keyPressed.text == 'Q': # Quaff a potion
+            if keyPressed.text == 'q': # Quaff a potion
                 PC_I.do_quaffing(player)
                 LC.force_redraw_screen()
             if keyPressed.text == 'f': # fire ranged weapon in hands
@@ -90,45 +90,6 @@ def do_key_action(lvl):
             if keyPressed.text == 'i': # list equipped items
                 PC_I.show_equipped_items(player)
                 LC.force_redraw_screen()
-
-
-def show_help():
-    general_info = 'Move with numpad or vi-keys (hjkl + yu+bn), use 5 to wait a turn. Other keys:'
-    names = []
-    values = []
-    names.append('@')
-    values.append('Take a look at your SNEAK stats')
-    names.append('c')
-    values.append('(c)lose a door')
-    names.append('d')
-    values.append('(d)rop an item')
-    names.append('f')
-    values.append('(f)ire wielded weapon')
-    names.append('g')
-    values.append('(g)rab items from floor')
-    names.append('G')
-    values.append('Search body on floor for items')
-    names.append('i')
-    values.append('Show (i)nventory')
-    names.append('N')
-    values.append('Make a (N)oise')
-    names.append('p')
-    values.append('(p)eek around a corner or under a door')
-    names.append('P')
-    values.append('(P)ick a lock')
-    names.append('q')
-    values.append('ready an ammo')
-    names.append('Q')
-    values.append('(Q)uaff a potion')
-    names.append('r')
-    values.append('(r)eload wielded weapon')
-    names.append('s')
-    values.append('(s)trangle an enemy')
-    names.append('w')
-    values.append('(w)ield or unwield a weapon')
-    names.append('-')
-    values.append('Toggle the single-arrow-only mode for displayed enemies.')
-    MENU.name_value_menu('COMMANDS LIST', general_info, names, values)
 
 
 def player_has_spent_time(player):

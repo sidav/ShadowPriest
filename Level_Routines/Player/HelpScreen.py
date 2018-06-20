@@ -1,0 +1,40 @@
+import SidavMenu as MENU
+
+
+def show_help():
+    general_info = 'Move with numpad or vi-keys (hjkl + yu+bn), use 5 to wait a turn. Other keys:'
+    names = []
+    values = []
+    names.append('@')
+    values.append('Take a look at your SNEAK stats')
+    names.append('c')
+    values.append('(c)lose a door')
+    names.append('d')
+    values.append('(d)rop an item')
+    names.append('f')
+    values.append('(f)ire wielded weapon')
+    names.append('g')
+    values.append('(g)rab items from floor')
+    names.append('G')
+    values.append('Search body on floor for items')
+    names.append('i')
+    values.append('Show (i)nventory')
+    names.append('N')
+    values.append('Make a (N)oise')
+    names.append('p')
+    values.append('(p)eek around a corner or under a door')
+    names.append('P')
+    values.append('(P)ick a lock')
+    names.append('q')
+    values.append('(q)uaff a potion')
+    names.append('r')
+    values.append('(r)eload wielded weapon')
+    names.append('R')
+    values.append('(R)eady an ammo')
+    names.append('s')
+    values.append('(s)trangle an enemy')
+    names.append('w')
+    values.append('(w)ield or unwield a weapon')
+    names.append('-')
+    values.append('Toggle the single-arrow-only mode for displayed enemies.')
+    MENU.name_value_menu('COMMANDS LIST', general_info, names, values)
