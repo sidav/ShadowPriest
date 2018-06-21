@@ -1,7 +1,8 @@
 from ..Units.Unit import Unit
 from Message_Log import MessageLog as LOG
 from . import Damage as DMG
-from Routines import SidavLOS as LOS
+from Routines import SidavLOS as LOS, TdlConsoleWrapper as CW
+from ..Controllers import LevelController as LC
 
 
 def try_to_shoot(attacker:Unit, victim:Unit):
@@ -25,6 +26,7 @@ def try_to_shoot(attacker:Unit, victim:Unit):
     attacker_stats = attacker.get_rpg_stats()
     damage = calculate_shooting_damage(attacker_weapon, attacker_stats)
     spend_ammo(attacker_weapon)
+    draw_bullet_trace(a_x, a_y, v_x, v_y, attacker_weapon.get_loaded_ammunition().get_color())
     DMG.do_damage_to_victim(damage, victim)
     return True
 
@@ -39,3 +41,47 @@ def spend_ammo(weapon):
         LOG.append_error_message('NoneType ammunition to spend!')
         return
     weapon.get_loaded_ammunition().change_quantity_by(-1)
+
+
+# The next two methods maybe should be moved to some controller!
+
+
+def draw_bullet_trace(fx, fy, tx, ty, color):
+    from Routines import BresenhamLine as BL
+    import time
+    line = BL.get_line(fx, fy, tx, ty)
+    bullet_char = get_bullet_char(fx, fy, tx, ty)
+    for cell in line:
+        LC.force_redraw_screen(False)
+        # CW.setForegroundColor(color)
+        CW.setForegroundColor(192, 192, 0)
+        CW.putChar(bullet_char, cell.x, cell.y)
+        CW.flushConsole()
+        time.sleep(0.1)
+
+
+def get_bullet_char(fx, fy, tx, ty):
+    import math
+    target_look_x = tx - fx
+    target_look_y = ty - fy
+    length = math.sqrt(target_look_x ** 2 + target_look_y ** 2)
+    target_look_x /= length
+    target_look_y /= length
+    if abs(target_look_x) >= 0.5:
+        target_look_x /= abs(target_look_x)
+    else:
+        target_look_x = 0
+    if abs(target_look_y) >= 0.5:
+        target_look_y /= abs(target_look_y)
+    else:
+        target_look_y = 0
+    if target_look_x == 0:
+        return '|'
+    elif target_look_y == 0:
+        return '-'
+    elif target_look_x * target_look_y == 1:
+        return '\\'
+    elif target_look_x * target_look_y == -1:
+        return '/'
+    else:
+        return '?'
