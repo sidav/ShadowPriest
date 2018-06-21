@@ -1,5 +1,6 @@
 import tdl
 from sys import exit as closeProgram
+import time
 
 _SCREEN_WIDTH = 80#80 is default
 _SCREEN_HEIGHT = 25#25 is default
@@ -183,9 +184,17 @@ def isWindowClosed():
     return tdl.event.is_window_closed()
 
 
+last_pressed_key_time = 0.0
+KEYPRESS_TIMEOUT = 0.2
+
+
 def readKey():
-    global LAST_KEY_PRESSED
+    global LAST_KEY_PRESSED, last_pressed_key_time
     while not tdl.event.is_window_closed():
+        curr_time = time.time()
+        while curr_time - last_pressed_key_time < KEYPRESS_TIMEOUT:
+            last_pressed_key_time = curr_time
+            time.sleep(0.05)
         LAST_KEY_PRESSED = tdl.event.key_wait()
         print("text: '{}', char: '{}', keychar: '{}'".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
         if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
