@@ -163,6 +163,8 @@ class Unit:
 
     def decrease_hitpoints(self, dmg):
         self._curr_hitpoints -= dmg
+        if self._curr_hitpoints < 0:
+            self._curr_hitpoints = 0
 
     def increase_hitpoints(self, inc):
         self._curr_hitpoints += inc
