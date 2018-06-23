@@ -19,6 +19,7 @@ class Cell:
             self.g = self.parent.g + inc
 
 
+PATHFINDING_DEPTH_LIMIT = 25
 STRAIGHT_COST = 10
 DIAGONAL_COST = 14
 diagonalsAllowed = True
@@ -92,13 +93,14 @@ def _reverse_path_list(path):
     return final_path
 
 
-def _do_pathfinding():
+def _do_pathfinding(limit_search_depth):
     global diagonalsAllowed, openlist, closedlist, finalReversedPath, cellmap, target, origin
     #some pre-checks:
     # if not target.passable:
     #     print("Target square is non-passable!")
         # return []  # finalReversedPath
     #step 1:
+    _total_steps = 0
     targetReached = False
     openlist.append(origin)
     #step 2:
@@ -111,13 +113,20 @@ def _do_pathfinding():
         #substep 2c:
         _consider_neighbours(currentCell)
         # substep 2d:
+        _total_steps += 1
         if target in openlist:
             #step 3:
             targetReached = True
             finalReversedPath = _reverse_path_list(finalReversedPath)
-        if len(openlist) == 0 and not targetReached:
-            print("No path exists!")
+        if limit_search_depth and _total_steps >= PATHFINDING_DEPTH_LIMIT:
+            # print("Pathfinding limit reached!")
+            # print('STEPS BEFORE BREAK: {}'.format(_total_steps))
             break
+        if len(openlist) == 0 and not targetReached:
+            # print("No path exists!")
+            # print('STEPS FOR UNEXISTENT: {}'.format(_total_steps))
+            break
+    # print('STEPS: {}'.format(_total_steps))
     return finalReversedPath
 
 
@@ -129,14 +138,14 @@ def get_path_cost():
         return -1  # error or something
 
 
-def get_path(inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+def get_path(inpboolmap, fromx, fromy, tox, toy, allowDiags = True, limit_search_depth = True):
     _init_values(inpboolmap, fromx, fromy, tox, toy, allowDiags)
-    return _do_pathfinding()
+    return _do_pathfinding(limit_search_depth)
 
 
-def get_next_step_to_target(inpboolmap, fromx, fromy, tox, toy, allowDiags = True):
+def get_next_step_to_target(inpboolmap, fromx, fromy, tox, toy, allowDiags = True, limit_search_depth = True):
     _init_values(inpboolmap, fromx, fromy, tox, toy, allowDiags)
-    path = _do_pathfinding()
+    path = _do_pathfinding(limit_search_depth)
     if len(path) == 0:
         return 0, 0
     next_cell_in_path = path[-1]
