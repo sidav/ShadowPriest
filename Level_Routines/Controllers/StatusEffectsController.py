@@ -1,4 +1,5 @@
 from . import LevelController as LC
+from Message_Log import MessageLog as LOG
 
 def apply_status_effects_to_a_unit(unit):
     all_se = unit.get_status_effects()
@@ -9,3 +10,5 @@ def apply_status_effects_to_a_unit(unit):
             unit.increase_hitpoints(1)
         elif status_effect.get_name() == 'POISON':
             unit.decrease_hitpoints(1)
+        else:
+            LOG.append_warning_message('Unknown status effect "{}" passed to a controller!'.format(status_effect.get_name()))

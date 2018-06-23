@@ -3,19 +3,21 @@ from ..Mechanics.StatusEffect import StatusEffect
 
 class Potion(Item):
 
-    def __init__(self, posx, posy, name='Unknown Potion', appearance='*', color=(192, 192, 0)):
-        self._name = name
+    def __init__(self, posx, posy, effect='Unknown', appearance='*', color=(192, 192, 0)):
         self._pos_x, self._pos_y = posx, posy
         self._appearance = '!'
-        if self._name == 'Potion of healing':
-            self._status_effect_name = 'HEALING'
+        self._name = effect.capitalize() + ' potion'
+        self._status_effect_name = effect.upper()
+
+        if self._status_effect_name == 'HEALING':
             self._status_effect_duration = 300
-        elif self._name == 'Potion of poison':
-            self._status_effect_name = 'POISON'
+        elif self._status_effect_name == 'POISON':
             self._status_effect_duration = 900
+        else:
+            self._status_effect_duration = 1
 
     def get_status_effect_name(self):
-        return self._status_effect_name
+        return self._status_effect_name.upper()
 
     def get_status_effect_duration(self):
         return self._status_effect_duration
