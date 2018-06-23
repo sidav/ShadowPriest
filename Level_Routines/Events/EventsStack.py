@@ -13,6 +13,9 @@ class EventsStack:
     def get_active_events(self):
         return self._events
 
+    def count_active_events(self):
+        return len(self._events)
+
     def get_player_perceivable_events(self):
         events = []
         for event in self._events:

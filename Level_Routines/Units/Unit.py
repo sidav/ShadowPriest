@@ -177,3 +177,6 @@ class Unit:
 
     def get_inventory(self):
         return self._inventory
+
+    def is_of_type(self, type):
+        return self.__class__.__name__ == type
