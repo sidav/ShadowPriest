@@ -109,5 +109,5 @@ def quaff_a_potion(unit, potion):
     se_name = potion.get_status_effect_name()
     se_expiration_turn = LC.get_current_turn() + potion.get_status_effect_duration()
     unit.add_status_effect(SE.StatusEffect(se_name, se_expiration_turn))
-    LC.add_event_to_stack(EC.action_event(unit, 'quaff', 'a {}'.format(potion.get_name()), 2))
+    LC.add_event_to_stack(EC.action_event(unit, 'quaff', 'a {}'.format(potion.get_singular_name()), 2))
     unit.spend_turns_for_action(TC.cost_for('quaffing', unit))

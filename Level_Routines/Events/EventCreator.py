@@ -16,7 +16,7 @@ def knockout_attack_event(attacker:Unit, victim:Unit):
 
     seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn() + 1
+    expir_turn = LC.get_current_turn() + 10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -33,7 +33,7 @@ def attack_with_bare_hands_event(attacker:Unit, victim:Unit):
 
     seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn() + 1
+    expir_turn = LC.get_current_turn() + 10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -62,7 +62,7 @@ def attack_with_melee_weapon_event(attacker:Unit, victim:Unit):
         seen_text = '{} {} with {}!'.format(att_name, vis_attack_text, weapon_name)
         heard_text = 'I {}!'.format(heard_attack_text)
 
-    expir_turn = LC.get_current_turn()+1
+    expir_turn = LC.get_current_turn()+10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -90,7 +90,7 @@ def ranged_attack_event(attacker:Unit, victim:Unit):
 
     seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn()+1
+    expir_turn = LC.get_current_turn()+10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -109,7 +109,7 @@ def missed_ranged_attack_event(attacker:Unit, victim:Unit):
 
     seen_text = '{} {} {} with {}!'.format(att_name, vis_attack_text, vic_name, weapon_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn()+1
+    expir_turn = LC.get_current_turn()+10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -118,7 +118,7 @@ def empty_ammo_shooting_event(attacker, sound):
     att_x, att_y = attacker.get_position()
     seen_text = sound
     heard_text = sound
-    expir_turn = LC.get_current_turn()+1
+    expir_turn = LC.get_current_turn()+10
     event = Event(att_x, att_y, seen_text, heard_text, expiration_turn=expir_turn)
     return event
 
@@ -142,12 +142,12 @@ def stab_event(attacker:Unit, victim:Unit):
 
     # seen_text = "{} {} {}'s throat with {}!".format(att_name, vis_attack_text, vic_name, weapon_name)
     heard_text = '{} {}!'.format(att_name, heard_attack_text)
-    expir_turn = LC.get_current_turn() + 1
+    expir_turn = LC.get_current_turn() + 10
     event = Event(vic_x, vic_y, seen_text, heard_text, expiration_turn=expir_turn, hear_radius=2)
     return event
 
 
-def action_event(acting_unit, action, text='', hear_radius = 0):
+def action_event(acting_unit, action, text='', hear_radius = 0, duration=10):
     # TODO: coordinates for (for example) 'close door' or 'open door' events aren't quite adequate, because
     # TODO: player sees the event when he sees acting_unit, but not when he sees the door only!
     # TODO: he still properly hears the event, though.
@@ -159,7 +159,7 @@ def action_event(acting_unit, action, text='', hear_radius = 0):
         name = acting_unit.get_name()
         ending = 's'
 
-    expir_turn = LC.get_current_turn() + 1
+    expir_turn = LC.get_current_turn() + duration
     seen_text = '{} {}{} {}.'.format(name, action, ending, text)
     heard_text = 'I hear a sound of {} {}ing'.format(text, action)
 
@@ -168,5 +168,6 @@ def action_event(acting_unit, action, text='', hear_radius = 0):
 
 
 def shout_event(shouting_unit, x, y, text, loudness):
-    event = Event(x, y, text, text, False, loudness)
+    SHOUT_EVENT_DURATION = 15
+    event = Event(x, y, text, text, False, loudness, expiration_turn=LC.get_current_turn()+SHOUT_EVENT_DURATION)
     return event
