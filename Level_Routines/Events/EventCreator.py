@@ -169,5 +169,6 @@ def action_event(acting_unit, action, text='', hear_radius = 0, duration=10, sus
 
 def shout_event(shouting_unit, x, y, text, loudness):
     SHOUT_EVENT_DURATION = 15
-    event = Event(x, y, text, text, False, loudness, expiration_turn=LC.get_current_turn()+SHOUT_EVENT_DURATION)
+    hear_text = 'I hear someone shouting "{}"'.format(text)
+    event = Event(x, y, text, hear_text, False, loudness, expiration_turn=LC.get_current_turn()+SHOUT_EVENT_DURATION)
     return event
