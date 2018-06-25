@@ -1,10 +1,10 @@
+from GLOBAL_DATA import Global_Constants as GC
 import Routines.TdlConsoleWrapper as CW
-import ShadowPriest as Main
 import Routines.SidavRandom as RNG
 
 
 def _determineXPosition(arr):
-    ww = Main.CONSOLE_WIDTH
+    ww = GC.CONSOLE_WIDTH
     if isinstance(arr, list):
         picw = len(arr[0])
         return int((ww - picw) * 0.5)
@@ -14,7 +14,7 @@ def _determineXPosition(arr):
 
 
 def _determineYPosition(arr):
-    wh = Main.CONSOLE_HEIGHT
+    wh = GC.CONSOLE_HEIGHT
     pich = len(arr)
     return int((wh-pich)/3)
 
@@ -99,7 +99,7 @@ def drawTitle():
         _drawTitlePic3()
     CW.setForegroundColor(132, 132, 104)
     pressanykey = "Press spacebar"
-    CW.putString(pressanykey, _determineXPosition(pressanykey), Main.CONSOLE_HEIGHT-2)
+    CW.putString(pressanykey, _determineXPosition(pressanykey), GC.CONSOLE_HEIGHT-2)
 
     CW.flushConsole()
     keypressed = CW.readKey()
