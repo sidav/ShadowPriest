@@ -58,6 +58,8 @@ def decide_state(lvl, actor):
             if event.is_suspicious():
                 actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
                 return
+            else:
+                actor.set_current_state(actor.states.distracted, curr_turn + 1)  # be distracted only for one tick - just for "look at this sound" behaviour.
 
 
 def pick_most_important_seen_enemy(lvl, actor):
