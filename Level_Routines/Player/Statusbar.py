@@ -1,7 +1,9 @@
 from Routines import TdlConsoleWrapper as CW
 from GLOBAL_DATA import Global_Constants as CONST, Level_Tile_Data as LTD
 
+
 _statusbar_line_width = 0
+
 
 def print_statusbar(player, current_turn):
     global _statusbar_line_width
@@ -29,6 +31,7 @@ def print_statusbar(player, current_turn):
     CW.setForegroundColor(128, 128, 128)
     CW.putString(cur_turn_str, CONST.CONSOLE_WIDTH - indent, CONST.CONSOLE_HEIGHT - 1)
 
+
 def print_keys(player):
     global _statusbar_line_width
     player_name = player.get_name()
@@ -43,6 +46,7 @@ def print_keys(player):
         CW.putString('KEYS:', len(player_name) + 3, CONST.CONSOLE_HEIGHT - 1)
         _statusbar_line_width += 7
 
+
 def print_name_with_healthbar(name, hp, max_hp):
     global _statusbar_line_width
     name_len = len(name)
@@ -51,7 +55,9 @@ def print_name_with_healthbar(name, hp, max_hp):
 
     hp_color = (0, 128, 0)
     # decide hp color:
-    if fraction_of_hp < 0.33:
+    if fraction_of_hp == 0:
+        hp_color = (0, 0, 0)
+    elif fraction_of_hp < 0.33:
         hp_color = (128, 0, 0)
     elif fraction_of_hp <= 0.66:
         hp_color = (128, 128, 0)
@@ -69,6 +75,7 @@ def print_name_with_healthbar(name, hp, max_hp):
     CW.setBackgroundColor(0, 0, 0)
     CW.setForegroundColor(128, 128, 128)
     CW.putChar(']', name_len+1, CONST.CONSOLE_HEIGHT - 1)
+
 
 def print_status_effects(player):
     global _statusbar_line_width
@@ -96,4 +103,3 @@ def print_status_effects(player):
         CW.setForegroundColor(90, 196, 90)
         CW.putString('POIS+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 5
-    
