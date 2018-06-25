@@ -18,10 +18,18 @@ def _draw_titlebar(title, fgcolor=(128, 128, 128), bgcolor=(128, 0, 0)):
     CW.putString(title, title_xcoord, 0)
 
 
-def _draw_line_at_the_bottom(text):
+def _draw_bottom_tooltip(text, center=True):
     CW.setBackgroundColor(0, 0, 0)
     CW.setForegroundColor(192, 192, 192)
-    CW.putString(text, 0, C_H-1)
+    if center:
+        CW.putString(text, C_W // 2 - len(text) // 2, C_H - 1)
+    else:
+        CW.putString(text, 0, C_H-1)
+
+
+def _draw_centered_line(text, y):
+    CW.putString(text, C_W // 2 - len(text) // 2, y)
+
 
 def draw_title_and_subheading(title, subheading, subheading_upper_margin = 1, center_subheading = False):
     subheading_margin = C_W // 2 - len(subheading) // 2 if center_subheading else 0
@@ -61,8 +69,6 @@ def name_value_menu(title='Name-value menu. Pick a title, dummy!', subheading='P
         key = CW.readKey()
         if key.keychar.__contains__('ENTER') or key.keychar == 'ESCAPE' or key.text == ' ':
             return
-
-
 
 
 def single_select_menu(title='Single Select. Pick a title, dummy!', subheading='Pick subheading, dummy!', items=[]):
@@ -108,7 +114,7 @@ def multi_select_menu(title='Multi Select. Pick a title, dummy!', subheading='Pi
 
     draw_title_and_subheading(title, subheading)
 
-    _draw_line_at_the_bottom('SPACE: select at the cursor, a/d: select/deselect all, ENTER: confirm selected')
+    _draw_bottom_tooltip('SPACE: select at the cursor, a/d: select/deselect all, ENTER: confirm selected')
 
     while 1:
         for i, item in enumerate(items):
@@ -179,19 +185,19 @@ def values_pick_menu(title, subheading, names, descriptions,
     sum_was_lesser = sum_was_greater = False
     while 1:
         draw_title_and_subheading(title, subheading + ' ({}/{} spent)'.format(sum(values), max_sum_of_values))
-        _draw_line_at_the_bottom('Use UP/DOWN or 8/2 to move the cursor, LEFT/RIGHT or 4/6 to change values.')
+        _draw_bottom_tooltip('Use UP/DOWN or 8/2 to move the cursor, LEFT/RIGHT or 4/6 to change values.')
 
         if sum_was_lesser or sum(values) < min_sum_of_values:
             CW.setForegroundColor(196, 32, 32)
-            CW.putString('Sum of values should be greater or equal to {}    '.format(min_sum_of_values), 0, C_H-2)
+            _draw_centered_line('Sum of values should be greater or equal to {}'.format(min_sum_of_values), C_H-2)
             sum_was_lesser = False
         elif sum_was_greater or sum(values) > max_sum_of_values:
             CW.setForegroundColor(196, 32, 32)
-            CW.putString('Sum of values should be lesser or equal to {}      '.format(max_sum_of_values), 0, C_H-2)
+            _draw_centered_line('Sum of values should be lesser or equal to {}'.format(max_sum_of_values), C_H-2)
             sum_was_greater = False
         elif max_sum_of_values >= sum(values) >= min_sum_of_values:
             CW.setForegroundColor(32, 196, 32)
-            CW.putString('You can press ENTER to confirm your choice.                   ', 0, C_H - 2)
+            _draw_centered_line('You can press ENTER to confirm your choice.', C_H - 2)
 
         CW.setForegroundColor(names_color)
         for i, name in enumerate(names):
@@ -246,7 +252,6 @@ def values_pick_menu(title, subheading, names, descriptions,
 
 
 def keyboard_input_menu(title, subheading, min_length, max_length, default_value=''):
-
     left_margin = C_W // 2 - max_length // 2 - 2
     upper_margin = 4
 
@@ -256,6 +261,7 @@ def keyboard_input_menu(title, subheading, min_length, max_length, default_value
     value = default_value
 
     draw_title_and_subheading(title, subheading, 2, True)
+    _draw_bottom_tooltip('Press ENTER to confirm', True)
 
     # firstly, print the borders
     while True:
