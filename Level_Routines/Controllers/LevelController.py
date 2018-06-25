@@ -431,7 +431,7 @@ def control():
         for unit in all_units:
             if current_turn % 10 == 0:
                 SEC.apply_status_effects_to_a_unit(unit)
-            if is_time_to_act(unit):
+            if is_time_to_act(unit) and not GC.DEBUG_AI_DISABLED:
                 AI.control(current_level, unit)
         current_level.next_turn()
         redraw_map_timeout -= 1

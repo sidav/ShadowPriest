@@ -28,3 +28,10 @@ def do_debug_key(keypressed):
             LOG.append_warning_message('Developer mode is enabled.')
         else:
             LOG.append_message('Developer mode is disabled. Have a good death!')
+
+    elif keypressed.keychar == 'F9':
+        GC.DEBUG_AI_DISABLED ^= 1
+        if GC.DEBUG_AI_DISABLED:
+            LOG.append_warning_message('All AIs lobotomized.')
+        else:
+            LOG.append_message('All AIs are now self-aware.')
