@@ -2,11 +2,17 @@ from Level_Routines.Controllers import LevelController as LC, ActorController_De
 from Level_Routines.Mechanics import TurnCosts as TC
 from Routines import SidavRandom as RND
 from . import ActorController as AC, ActorController_Detection as ACD
+from ..Events import EventCreator as EC
+from ..Creators import ActorCreator as ACREATOR
+from Message_Log import MessageLog as LOG
 
 # High-level AI here. Technical things going to ActorController.
 
 ALERTED_STATE_DURATION = 30 # In ticks. 1 turn is 10 ticks.
 DISTRACTED_STATE_DURATION = 150
+
+# CORPSES_SEEN_UNTIL_REINFORCEMENTS = 1
+# total_corpses_seen = 0
 
 
 def control(lvl, current_actor):
@@ -49,6 +55,16 @@ def decide_state(lvl, actor):
             actor.set_current_state(actor.states.calm)
 
     if actor_state == actor.states.calm:
+        # act if seeing a lying body
+        bodies = LC.get_all_bodies_on_floor()
+        for body in bodies:
+            if body.is_of_type('Corpse') and not body.get_was_seen_by_ai():
+                bx, by = body.get_position()
+                if AC_D.is_unit_seeing_position(lvl, actor, bx, by):
+                    LC.add_event_to_stack(EC.shout_event(actor, bx, by, 'There is a corpse here!', 999))
+                    LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))
+                    LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))
+
         # investigate noises
         x, y = actor.get_position()
         events = LC.get_all_events_hearable_from(x, y)

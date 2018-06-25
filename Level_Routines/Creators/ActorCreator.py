@@ -43,7 +43,7 @@ def create_key_holder(x, y, lock_level):  # temporary (hehe...)
 
 
 def create_enforcer(x, y):
-    color = (176, 32, 176)
+    color = (128, 32, 176)
     weapon = WPN_C.create_dagger(x, y)
     name = 'Enforcer'
     enforcer = Actor(x, y, 'E', color, name)
