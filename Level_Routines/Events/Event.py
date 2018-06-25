@@ -3,22 +3,23 @@ class Event:
 
     # text = "Empty event"
 
-    pos_x = pos_y = 0
+    # pos_x = pos_y = 0
+    #
+    # visual = True
+    # text_when_seen = 'Empty seen text'
+    #
+    # acoustic = True
+    # text_when_heard = 'Empty heared text'
+    # hear_radius = 3
+    #
+    # _is_perceivable_by_player = True
+    # _was_already_perceived = False
+    #
+    # # continious = False
+    # expiration_turn = 0
 
-    visual = True
-    text_when_seen = 'Empty seen text'
-
-    acoustic = True
-    text_when_heard = 'Empty heared text'
-    hear_radius = 3
-
-    _is_perceivable_by_player = True
-    _was_already_perceived = False
-
-    # continious = False
-    expiration_turn = 0
-
-    def __init__(self, x, y, s_text='NULL_SEEN_EVENT', h_text='NULL_HEARD_EVENT', visual=True, hear_radius=3, expiration_turn = 0):
+    def __init__(self, x, y, s_text='NULL_SEEN_EVENT', h_text='NULL_HEARD_EVENT', visual=True, hear_radius=3,
+                 expiration_turn = 0, perceivable_by_player=True, suspicious=True):
         self.pos_x = x
         self.pos_y = y
         self.text_when_seen = s_text
@@ -28,6 +29,9 @@ class Event:
         self.hear_radius = hear_radius
         # self.continious = expiration_turn > 0
         self.expiration_turn = expiration_turn
+        self._is_perceivable_by_player = perceivable_by_player
+        self._suspicious = suspicious
+        self._was_already_perceived = False
 
     def get_expiration_turn(self):
         return self.expiration_turn
@@ -40,6 +44,9 @@ class Event:
 
     def set_already_perceived(self):
         self._was_already_perceived = True
+
+    def is_suspicious(self):
+        return self._suspicious
 
     def get_text_when_seen(self):
         return self.text_when_seen
