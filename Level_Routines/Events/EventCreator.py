@@ -147,7 +147,7 @@ def stab_event(attacker:Unit, victim:Unit):
     return event
 
 
-def action_event(acting_unit, action, text='', hear_radius = 0, duration=10):
+def action_event(acting_unit, action, text='', hear_radius = 0, duration=10, suspicious = False):
     # TODO: coordinates for (for example) 'close door' or 'open door' events aren't quite adequate, because
     # TODO: player sees the event when he sees acting_unit, but not when he sees the door only!
     # TODO: he still properly hears the event, though.
@@ -163,7 +163,7 @@ def action_event(acting_unit, action, text='', hear_radius = 0, duration=10):
     seen_text = '{} {}{} {}.'.format(name, action, ending, text)
     heard_text = 'I hear a sound of {} {}ing'.format(text, action)
 
-    event = Event(x, y, seen_text, heard_text, hear_radius=hear_radius, expiration_turn=expir_turn)
+    event = Event(x, y, seen_text, heard_text, hear_radius=hear_radius, expiration_turn=expir_turn, suspicious=suspicious)
     return event
 
 

@@ -22,7 +22,7 @@ class Actor(Unit): # Not needed?
         self.current_state_expiration_turn = 0
         self.was_rotated_previous_turn = False
         self.target_unit = None  # for engaging or whatever
-        self.target_x = target_y = 0 # for "i must go here" behaviour
+        self.target_x = self.target_y = 0 # for "i must go here" behaviour
         self.prefers_clockwise_rotation = True
         self.was_rotated_previous_turn = False # For AI.
         # /AI DATA

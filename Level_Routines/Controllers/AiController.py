@@ -52,10 +52,12 @@ def decide_state(lvl, actor):
         # investigate noises
         x, y = actor.get_position()
         events = LC.get_all_events_hearable_from(x, y)
-        if len(events) > 0:
-            ex, ey = events[0].get_position()
+        for event in events:
+            ex, ey = event.get_position()
             actor.set_target_coords(ex, ey)
-            actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
+            if event.is_suspicious():
+                actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
+                return
 
 
 def pick_most_important_seen_enemy(lvl, actor):
