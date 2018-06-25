@@ -1,3 +1,4 @@
+from Routines.SidavRandom import rand
 from Level_Routines.Controllers import LevelController as LC
 from .Event import Event
 from Level_Routines.Units.Unit import Unit
@@ -29,6 +30,20 @@ def attack_with_bare_hands_event(attacker:Unit, victim:Unit):
     if attacker.__class__.__name__ == 'Player':
         att_name = 'I'
         vis_attack_text = 'punch the'
+        heard_attack_text = 'hear a hit'
+    else:
+        variant = rand(3)
+        if victim.is_player():
+            vic_name = 'me'
+        else:
+            vic_name = victim.get_name()
+        if variant == 0:
+            vis_attack_text = 'punches'
+        elif variant == 1:
+            vis_attack_text = 'uppercuts'
+        else:
+            vis_attack_text = 'delivers a nice jab'
+            vic_name = 'on my face'
         heard_attack_text = 'hear a hit'
 
     seen_text = '{} {} {}!'.format(att_name, vis_attack_text, vic_name)
