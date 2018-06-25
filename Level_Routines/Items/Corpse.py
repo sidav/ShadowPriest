@@ -6,14 +6,14 @@ class Corpse(Item):
     _appearance = '&'
     _stackable = False
     _weight = 25
-    _inventory = None
-    _searched = False
 
     def __init__(self, x, y, color, name='Unidentified Corpse', inventory = None):
         self._pos_x = x
         self._pos_y = y
         self._color = color
         self._name = name
+        self._searched = False
+        self._was_already_seen_by_AI = False
         if inventory is None:
             LOG.append_error_message('Corpse created without an inventory!')
         else:
@@ -27,6 +27,12 @@ class Corpse(Item):
 
     def empty_backpack(self):
         self._inventory.backpack = []
+
+    def get_was_seen_by_ai(self):
+        return self._was_already_seen_by_AI
+
+    def set_was_seen_by_ai(self, seen=True):
+        self._was_already_seen_by_AI = seen
 
     def set_searched(self, set=True):
         self._searched = set

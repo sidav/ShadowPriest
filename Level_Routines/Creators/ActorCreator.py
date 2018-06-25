@@ -20,7 +20,7 @@ def create_guard(x, y, rank):
         name = 'Guard Officer'
     guard = Actor(x, y, 'G', color, name)
     guard.get_inventory().equip_item(weapon)
-    if rand(10) > 6:
+    if rand(4) == 0:
         guard.get_inventory().add_item_to_backpack(Potion(x, y, 'Potion of healing'))
     return guard
 
@@ -40,3 +40,17 @@ def create_key_holder(x, y, lock_level):  # temporary (hehe...)
     keyholder.get_inventory().add_item_to_backpack(Key(x, y, lock_level))
     keyholder.get_inventory().add_item_to_backpack(Potion(x, y, 'Potion of healing'))
     return keyholder
+
+
+def create_enforcer(x, y):
+    color = (176, 32, 176)
+    weapon = WPN_C.create_dagger(x, y)
+    name = 'Enforcer'
+    enforcer = Actor(x, y, 'E', color, name)
+    enforcer.get_inventory().equip_item(weapon)
+    enforcer.get_inventory().add_item_to_backpack(Potion(x, y, 'Potion of healing'))
+    enforcer.get_inventory().add_item_to_backpack(Key(x, y, 1))
+    enforcer.get_inventory().add_item_to_backpack(Key(x, y, 2))
+    enforcer.get_rpg_stats().set_stats_by_array([9, 6, 8, 8, 4])
+    enforcer._max_hitpoints = 120  # <- deprecated shit
+    return enforcer
