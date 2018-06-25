@@ -9,12 +9,14 @@ from Routines.SidavRandom import rand
 
 
 def create_guard(x, y, rank):
-    weapon = WPN_C.create_dagger(x, y)  # TODO: create weapons individually
+    # weapon = WPN_C.create_dagger(x, y)  # TODO: create weapons individually
     if rank == 0:
         color = (160, 160, 160)
+        weapon = WPN_C.create_club(x, y)
         name = 'Guard'
     if rank == 1:
         color = (176, 160, 0)
+        weapon = WPN_C.create_dagger(x, y)
         name = 'Guard Officer'
     guard = Actor(x, y, 'G', color, name)
     guard.get_inventory().equip_item(weapon)
