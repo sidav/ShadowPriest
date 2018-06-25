@@ -61,7 +61,8 @@ def decide_state(lvl, actor):
             if body.is_of_type('Corpse') and not body.get_was_seen_by_ai():
                 bx, by = body.get_position()
                 if AC_D.is_unit_seeing_position(lvl, actor, bx, by):
-                    LC.add_event_to_stack(EC.shout_event(actor, bx, by, 'There is a corpse here!', 999))
+                    body.set_was_seen_by_ai(True)
+                    LC.add_event_to_stack(EC.shout_event(actor, bx, by, 'There is a corpse here!', 15))
                     LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))
                     LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))
 
