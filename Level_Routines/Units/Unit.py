@@ -6,8 +6,6 @@ from ..Mechanics.Sneak import RpgStats
 # Represents (as superclass) the player, some character or enemy or what the heck you want to.
 class Unit:
     _name = 'Unidentified Unit'
-    _max_hitpoints = 100
-    _curr_hitpoints = _max_hitpoints
     _faction = 1  # 0 is player's faction.
 
     _inventory = None
@@ -23,6 +21,8 @@ class Unit:
     _stabbable = True
 
     def __init__(self, posx, posy, appearance = 'G', color=(32, 192, 32), name='Unidentified Unit', rpg_stats = None):
+        self._max_hitpoints = 100
+        self._curr_hitpoints = self._max_hitpoints
         self._inventory = Inventory()
         self._appearance = appearance
         self._pos_x = posx
