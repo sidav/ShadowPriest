@@ -3,7 +3,7 @@ from Level_Routines.Mechanics import TurnCosts as TC
 from Level_Routines.Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
-from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
+from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS, SidavRandom as RAND
 from Level_Routines import LevelView
 from Level_Routines.Creators import BodyCreator
 from Level_Routines.LevelInitializer import initialize_level
@@ -160,6 +160,25 @@ def get_items_at_coordinates(x, y):
 
 def get_bodies_at_coordinates(x, y):
     return current_level.get_bodies_at_coordinates(x, y)
+
+
+def get_all_bodies_on_floor():
+    return current_level.get_all_bodies_on_floor()
+
+
+def spawn_unit_outside_player_fov(unit, min_distance=0, max_distance=999):
+    px, py = current_level.get_player().get_position()
+    opacity_map = current_level.get_opacity_map()
+    vis_map_for_player = LOS.getVisibilityTableFromPosition(px, py, opacity_map, 15)
+    ux = uy = 0
+    dist_from_player = (ux-px) ** 2 + (uy-py) ** 2
+    while vis_map_for_player[ux][uy] or not current_level.is_tile_passable(ux, uy) \
+        or min_distance ** 2 > dist_from_player > max_distance ** 2:
+        ux = RAND.rand(GC.MAP_WIDTH)
+        uy = RAND.rand(GC.MAP_HEIGHT)
+        dist_from_player = (ux - px) ** 2 + (uy - py) ** 2
+    unit.set_coordinates(ux, uy)
+    current_level.spawn_unit(unit)
 
 
 def get_current_turn():
