@@ -244,8 +244,11 @@ def do_ko_attack(lvl, player):
 def do_body_searching(player):
     x, y = player.get_position()
     if LC.is_body_present_at(x, y):
-        if LC.try_lay_out_items_from_body(player):
-            LOG.append_message("I've laid out items from the body on floor.")
+        if LC.is_any_body_at_unit_coords_not_searched(player):
+            if LC.try_lay_out_items_from_body(player):
+                LOG.append_message("I've laid out items from the body on floor.")
+            else:
+                LOG.append_message("I've searched the body, but found nothing.")
         else:
             LOG.append_message("I've already searched everything here.")
     else:

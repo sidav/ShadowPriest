@@ -253,6 +253,18 @@ def try_drop_item(unit, item):
     return True
 
 
+def is_any_body_at_unit_coords_not_searched(unit):
+    x, y = unit.get_position()
+    bodies = get_bodies_at_coordinates(x, y)
+    if len(bodies) == 0:
+        return False
+    else:
+        for body in bodies:
+            if not body.get_searched():
+                return True
+    return False
+
+
 def try_lay_out_items_from_body(acting:Unit):
     x, y = acting.get_position()
     bodies = get_bodies_at_coordinates(x, y)
@@ -260,6 +272,7 @@ def try_lay_out_items_from_body(acting:Unit):
         return False
     else:
         for body in bodies:
+            body.set_searched()
             if not body.get_inventory().is_backpack_empty():
                 drop_all_items_from_body(body)
                 return True

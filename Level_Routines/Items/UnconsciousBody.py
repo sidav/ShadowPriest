@@ -38,6 +38,9 @@ class UnconsciousBody(Item):
     def set_searched(self, set=True):
         self._searched = set
 
+    def get_searched(self):
+        return self._searched
+
     def is_of_type(self, type):
         if type == 'Body' or type == 'UnconsciousBody':
             return True
