@@ -164,6 +164,9 @@ def continue_peeking(player):
 
 def do_lockpicking(lvl, player):
     px, py = player.get_position()
+    if player.get_inventory().is_carrying_body_on_shoulder():
+        LOG.append_message("I can't pick a lock with that burden on my shoulder.")
+        return 
     pick_x, pick_y = ask_for_direction('Pick which lock?')
     x, y = px + pick_x, py + pick_y
     if not lvl.is_door_present(x, y):
