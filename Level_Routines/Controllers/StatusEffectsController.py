@@ -9,9 +9,13 @@ PAINKILLER_HEALING_AMOUNT = 50 # TODO: move this somewhere!
 def add_potion_status_effect_to_a_unit(potion, unit):
     se_name = potion.get_status_effect_name()
     se_expiration_turn = LC.get_current_turn() + potion.get_status_effect_duration()
-    unit.add_status_effect(StatusEffect(se_name, se_expiration_turn))
+
     if se_name == 'PAINKILLER':
+        if unit.get_current_hitpoints()+PAINKILLER_HEALING_AMOUNT > unit.get_max_hitpoints():
+            se_expiration_turn = LC.get_current_turn() + 10 * ((unit.get_max_hitpoints() - unit.get_current_hitpoints()) // 2) # TODO: deconstantize that crap
         unit.increase_hitpoints(PAINKILLER_HEALING_AMOUNT)
+
+    unit.add_status_effect(StatusEffect(se_name, se_expiration_turn))
 
 
 def apply_status_effects_to_a_unit(unit):
