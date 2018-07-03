@@ -41,7 +41,13 @@ def make_and_print_status_text(player):
     if poison_count == 1:
         status_text += 'I feel sick. '
     elif poison_count > 1:
-        status_text += 'I feel something wicked in my veins!'
+        status_text += 'I feel something wicked in my veins! '
+
+    painkiller_count = player.count_status_effect('PAINKILLER')
+    if painkiller_count == 1:
+        status_text += 'I feel my pain somewhat faded away. '
+    elif painkiller_count > 1:
+        status_text += 'My feelings are uncomfortably dull. '
 
     CW.setForegroundColor(128, 64, 128)
-    CW.put_wrapped_text_in_rect(status_text, 10, 10, GC.CONSOLE_WIDTH-10, 10)
+    CW.put_wrapped_text_in_rect(status_text, 10, 10, GC.CONSOLE_WIDTH-20, 10)

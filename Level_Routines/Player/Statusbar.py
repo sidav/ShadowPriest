@@ -82,24 +82,35 @@ def print_status_effects(player):
     status_effects = player.get_status_effects()
     total_healing = 0
     total_poison = 0
+    total_painkiller = 0
     for effect in status_effects:
         if effect.get_name() == 'HEALING':
             total_healing += 1
         if effect.get_name() == 'POISON':
             total_poison += 1
+        if effect.get_name() == 'PAINKILLER':
+            total_painkiller += 1
+
+    CW.setForegroundColor(100, 100, 196)
     if total_healing == 1:
-        CW.setForegroundColor(100, 100, 196)
         CW.putString('HLNG', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 4
     elif total_healing > 1:
-        CW.setForegroundColor(100, 100, 196)
         CW.putString('HLNG+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 5
+
+    CW.setForegroundColor(90, 196, 90)
     if total_poison == 1:
-        CW.setForegroundColor(90, 196, 90)
         CW.putString('POIS', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 4
     elif total_poison > 1:
-        CW.setForegroundColor(90, 196, 90)
         CW.putString('POIS+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 5
+
+    CW.setForegroundColor(132, 32, 160)
+    if total_painkiller == 1:
+        CW.putString('PAINKLR', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 7
+    elif total_painkiller > 1:
+        CW.putString('PAINKLR+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 8
