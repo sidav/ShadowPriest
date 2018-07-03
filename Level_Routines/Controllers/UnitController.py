@@ -10,7 +10,7 @@ from Level_Routines.LevelInitializer import initialize_level
 from Level_Routines.LevelModel import LevelModel
 from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
 from Level_Routines.Player import Statusbar
-from . import LevelController as LC, PlayerController as P_C, ActorController as A_C
+from . import LevelController as LC, PlayerController as P_C, ActorController as A_C, StatusEffectsController as SE_C
 from Level_Routines.Units.Unit import Unit
 
 levelmodel = None
@@ -106,8 +106,6 @@ def quaff_a_potion(unit, potion):
         potion.change_quantity_by(-1)           # <-- DO SOMETHING WITH THAT KOSTYLI!!1
     else:                                       # <-- DO SOMETHING WITH THAT KOSTYLI!!1
         inv.remove_item_from_backpack(potion)   # <-- DO SOMETHING WITH THAT KOSTYLI!!1
-    se_name = potion.get_status_effect_name()
-    se_expiration_turn = LC.get_current_turn() + potion.get_status_effect_duration()
-    unit.add_status_effect(SE.StatusEffect(se_name, se_expiration_turn))
+    SE_C.add_potion_status_effect_to_a_unit(potion, unit)
     LC.add_event_to_stack(EC.action_event(unit, 'quaff', 'a {}'.format(potion.get_singular_name()), 2))
     unit.spend_turns_for_action(TC.cost_for('quaffing', unit))
