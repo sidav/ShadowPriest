@@ -7,17 +7,16 @@ _statusbar_line_width = 0
 
 def print_statusbar(player, current_turn):
     global _statusbar_line_width
+    _statusbar_line_width = 0
     # print player name (TODO)
     # player_name = 'Badass vile sneaky bastard priest of shadows'
     player_name = ' {} '.format(player.get_name())
     print_name_with_healthbar(player_name, player.get_current_hitpoints(), player.get_max_hitpoints())
 
-    _statusbar_line_width = len(player_name)+3
-
     if player.get_inventory().is_carrying_body_on_shoulder():
         CW.setForegroundColor(192, 192, 32)
-        CW.putString('CARRYING BODY', len(player_name) + 3, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 13
+        CW.putString('CARRYING BODY', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 14
     else:
         print_keys(player)
 
@@ -34,17 +33,17 @@ def print_statusbar(player, current_turn):
 
 def print_keys(player):
     global _statusbar_line_width
-    player_name = player.get_name()
-    has_any_keys = False
+    keys_line = 'KEYS:'
+    total_keys = 0
     for i in [1, 2]:
         if player.get_inventory().has_key_of_lock_level(i):
             CW.setBackgroundColor(LTD.door_lock_level_colors[i])
-            CW.putString(' ', len(player_name) + 7 + i, CONST.CONSOLE_HEIGHT - 1)
-            has_any_keys = True
+            CW.putString(' ', _statusbar_line_width + len(keys_line) + i - 1, CONST.CONSOLE_HEIGHT - 1)
+            total_keys += 1
     CW.setBackgroundColor(0, 0, 0)
-    if has_any_keys:
-        CW.putString('KEYS:', len(player_name) + 3, CONST.CONSOLE_HEIGHT - 1)
-        _statusbar_line_width += 7
+    if total_keys > 0:
+        CW.putString(keys_line, _statusbar_line_width, CONST.CONSOLE_HEIGHT - 1)
+        _statusbar_line_width += len(keys_line) + total_keys + 1
 
 
 def print_name_with_healthbar(name, hp, max_hp):
@@ -75,6 +74,7 @@ def print_name_with_healthbar(name, hp, max_hp):
     CW.setBackgroundColor(0, 0, 0)
     CW.setForegroundColor(128, 128, 128)
     CW.putChar(']', name_len+1, CONST.CONSOLE_HEIGHT - 1)
+    _statusbar_line_width += len(name) + 3
 
 
 def print_status_effects(player):
@@ -92,25 +92,25 @@ def print_status_effects(player):
             total_painkiller += 1
 
     CW.setForegroundColor(100, 100, 196)
-    if total_healing == 1:
+    if total_healing > 0:
         CW.putString('HLNG', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 4
-    elif total_healing > 1:
-        CW.putString('HLNG+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 5
+    if total_healing > 1:
+        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 1
 
     CW.setForegroundColor(90, 196, 90)
-    if total_poison == 1:
+    if total_poison > 0:
         CW.putString('POIS', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 4
-    elif total_poison > 1:
-        CW.putString('POIS+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 5
+    if total_poison > 1:
+        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 1
 
     CW.setForegroundColor(132, 32, 160)
-    if total_painkiller == 1:
+    if total_painkiller > 0:
         CW.putString('PAINKLR', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
         _statusbar_line_width += 7
-    elif total_painkiller > 1:
-        CW.putString('PAINKLR+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 8
+    if total_painkiller > 1:
+        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
+        _statusbar_line_width += 1
