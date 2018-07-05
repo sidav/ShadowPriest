@@ -9,13 +9,31 @@ from Routines import SidavLOS as LOS
 
 # Controls AI-controlled units at low level of abstraction.
 
+
+def do_emergency_actions_if_needed(actor):
+    health_percent = actor.get_hitpoints_percentage()
+    actor_state = actor.get_current_state()
+    if actor_state != actor.states.calm:
+        if health_percent < 50:
+            if try_drink_potion_of_effect(actor, 'PAINKILLER'):
+                return
+        elif health_percent < 75:
+            if try_drink_potion_of_effect(actor, 'HEALING'):
+                return
+
+    # reload weapon if needed.
+    if try_reload_if_neccessary(actor):
+        return
+
+    if actor_state == actor.states.calm:
+        if health_percent < 66:
+            if try_drink_potion_of_effect(actor, 'HEALING'):
+                return
+
+
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
     posx, posy = actor.get_position()
     lookx, looky = actor.get_look_direction()
-
-    # reload weapon if needed.
-    if try_reload(actor):
-        return
 
     # close opened door behind.
     if lvl.is_door_present(posx - lookx, posy - looky) and not lvl.is_door_closed(posx - lookx, posy - looky):
@@ -80,13 +98,32 @@ def do_shout_for_attention_to(shouting_unit, x, y, text, loudness, time=0):
     shouting_unit.spend_turns_for_action(time)
 
 
-def try_reload(attacker):
+def try_reload_if_neccessary(attacker):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     if attacker_weapon is None or not attacker_weapon.is_of_type('RangedWeapon'):
         return False
     ammo = attacker_weapon.get_loaded_ammunition()
     if ammo is None or ammo.get_quantity() == 0:
         return LC.try_reload_unit_weapon(attacker)
+    return False
+
+
+# def has_potion_of_effect(actor, effect):
+#     inventory = actor.get_inventory()
+#     potions = inventory.get_items_of_type_from_backpack('Potion')
+#     for potion in potions:
+#         if potion.get_status_effect_name() == effect:
+#             return True
+#     return False
+
+
+def try_drink_potion_of_effect(actor, effect):
+    inventory = actor.get_inventory()
+    potions = inventory.get_items_of_type_from_backpack('Potion')
+    for potion in potions:
+        if potion.has_effect(effect):
+            UC.quaff_a_potion(actor, potion)
+            return True
     return False
 
 

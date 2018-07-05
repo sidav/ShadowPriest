@@ -16,13 +16,15 @@ DISTRACTED_STATE_DURATION = 150
 
 
 def control(lvl, current_actor):
-    decide_state(lvl, current_actor)
-    if current_actor.current_state == current_actor.states.calm:
-        AC.do_roam(lvl, current_actor)
-    elif current_actor.current_state == current_actor.states.alerted:
-        AC.do_engage(lvl, current_actor)
-    elif current_actor.current_state == current_actor.states.distracted:
-        AC.do_search(lvl, current_actor)
+    AC.do_emergency_actions_if_needed(current_actor)
+    if LC.is_time_to_act(current_actor):
+        decide_state(lvl, current_actor)
+        if current_actor.current_state == current_actor.states.calm:
+            AC.do_roam(lvl, current_actor)
+        elif current_actor.current_state == current_actor.states.alerted:
+            AC.do_engage(lvl, current_actor)
+        elif current_actor.current_state == current_actor.states.distracted:
+            AC.do_search(lvl, current_actor)
 
 
 def decide_state(lvl, actor):

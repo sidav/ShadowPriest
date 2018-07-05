@@ -26,6 +26,9 @@ class Potion(Item):
     def get_status_effect_duration(self):
         return self._status_effect_duration
 
+    def has_effect(self, effect):
+        return self._status_effect_name == effect.upper()
+
     def is_of_type(self, type):
         if type == 'Potion':
             return True

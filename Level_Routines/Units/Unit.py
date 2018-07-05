@@ -161,6 +161,9 @@ class Unit:
     def get_current_hitpoints(self):
         return self._curr_hitpoints
 
+    def get_hitpoints_percentage(self):
+        return (self._curr_hitpoints / self._max_hitpoints) * 100
+
     def decrease_hitpoints(self, dmg):
         self._curr_hitpoints -= dmg
         if self._curr_hitpoints < 0:
