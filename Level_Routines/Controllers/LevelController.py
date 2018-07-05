@@ -456,13 +456,13 @@ def control():
         events_stack.cleanup_events(current_turn)
 
         if current_turn % 10 == 0:
-            SEC.apply_status_effects_to_a_unit(player)
+            SEC.apply_all_status_effects_to_a_unit(player)
         if is_time_to_act(player):
             P_C.do_key_action(current_level)
 
         for unit in all_units:
             if current_turn % 10 == 0:
-                SEC.apply_status_effects_to_a_unit(unit)
+                SEC.apply_all_status_effects_to_a_unit(unit)
             if is_time_to_act(unit) and not GC.DEBUG_AI_DISABLED:
                 AI.control(current_level, unit)
         current_level.next_turn()
