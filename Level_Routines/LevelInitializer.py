@@ -3,7 +3,7 @@ from .Player.Player import Player
 from .Items.Item import Item
 from .Items.Potion import Potion
 from .Items.Ammunition import Ammunition
-from .Creators import ActorCreator as AC, WeaponCreator as WC
+from .Creators import ActorCreator as AC, WeaponCreator as WC, PotionCreator as POT_C
 from Routines import SidavLOS as LOS
 
 
@@ -26,12 +26,10 @@ def place_player(lvl, player):
                 player.set_coordinates(posx, posy)
                 lvl._player = player
                 lvl._player.get_inventory().equip_item(WC.create_dagger(posx, posy))
-                lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'Healing'))
-                lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'Healing'))
                 lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'PoIsOn'))
                 lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'POISON'))
-                lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'Painkiller'))
-                lvl._player.get_inventory().add_item_to_backpack(Potion(posx, posy, 'Painkiller'))
+                for _ in range(4):
+                    lvl._player.get_inventory().add_item_to_backpack(POT_C.random_beneficial_potion())
                 # lvl._player.get_inventory().add_item_to_backpack(WC.create_revolver(posx, posy))
                 # lvl._player.get_inventory().add_item_to_backpack(Ammunition(0, 0, '9x19 hollow-point ammo', '9x19', (196, 64, 128), 13))
                 return posx, posy
