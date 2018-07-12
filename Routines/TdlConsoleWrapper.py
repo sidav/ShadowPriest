@@ -184,26 +184,30 @@ def isWindowClosed():
     return tdl.event.is_window_closed()
 
 
-last_pressed_key_time = 0.0
-KEYPRESS_TIMEOUT = 0.2
+# last_pressed_key_time = 0.0
+# KEYPRESS_TIMEOUT = 0.2
 
 
 def readKey():
     global LAST_KEY_PRESSED, last_pressed_key_time
     while not tdl.event.is_window_closed():
         curr_time = time.time()
-        while curr_time - last_pressed_key_time < KEYPRESS_TIMEOUT:
-            last_pressed_key_time = curr_time
-            time.sleep(0.05)
-        LAST_KEY_PRESSED = tdl.event.key_wait()
-        print("text: '{}', char: '{}', keychar: '{}'".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
-        if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
-            LAST_KEY_PRESSED.keychar == 'DOWN' or LAST_KEY_PRESSED.keychar == 'UP' or LAST_KEY_PRESSED.keychar == 'LEFT' \
-            or LAST_KEY_PRESSED.keychar == 'RIGHT' or LAST_KEY_PRESSED.keychar.__contains__('ENTER') \
-                or LAST_KEY_PRESSED.keychar == 'ESCAPE' or LAST_KEY_PRESSED.keychar == 'BACKSPACE':
-            break
-        else:
-            print('KEY REJECTED.')
+        # while curr_time - last_pressed_key_time < KEYPRESS_TIMEOUT:
+        #     last_pressed_key_time = curr_time
+        #     time.sleep(0.05)
+        LAST_KEY_PRESSED = None
+        for tdl_event in tdl.event.get():
+            if tdl_event.type == 'KEYDOWN':
+                LAST_KEY_PRESSED = tdl_event
+        if LAST_KEY_PRESSED is not None:
+            print("text: '{}', char: '{}', keychar: '{}'".format(LAST_KEY_PRESSED.text, LAST_KEY_PRESSED.char, LAST_KEY_PRESSED.keychar))
+            if LAST_KEY_PRESSED.keychar == 'TEXT' or LAST_KEY_PRESSED.keychar.__contains__('F') or \
+                LAST_KEY_PRESSED.keychar == 'DOWN' or LAST_KEY_PRESSED.keychar == 'UP' or LAST_KEY_PRESSED.keychar == 'LEFT' \
+                or LAST_KEY_PRESSED.keychar == 'RIGHT' or LAST_KEY_PRESSED.keychar.__contains__('ENTER') \
+                    or LAST_KEY_PRESSED.keychar == 'ESCAPE' or LAST_KEY_PRESSED.keychar == 'BACKSPACE':
+                break
+            else:
+                print('KEY REJECTED.')
     if tdl.event.is_window_closed():
         closeProgram(0)
     return LAST_KEY_PRESSED
