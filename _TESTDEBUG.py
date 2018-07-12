@@ -73,8 +73,8 @@ def makeSomeTestCrap():
     # LC.initialize()
     # LC.control()
 
-    print('SIGHT RANGE FORMULA TEST: ')
-    for adv in range(1, 11):
-        print('ADV {}, RANGE_ENEMY {}, RANGE_PLAYER {}'.format(adv, 4 + (adv // 2), 4 + ((adv + 3) // 2)))
+    # print('SIGHT RANGE FORMULA TEST: ')
+    # for adv in range(1, 11):
+    #     print('ADV {}, RANGE_ENEMY {}, RANGE_PLAYER {}'.format(adv, 4 + (adv // 2), 4 + ((adv + 3) // 2)))
 
     pass

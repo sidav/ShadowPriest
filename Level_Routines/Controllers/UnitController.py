@@ -21,9 +21,9 @@ levelmodel = None
 
 def get_sight_range(unit):
     adv = unit.get_rpg_stats().get_advertence()
-    looking_range = 4 + (adv // 2)
-    if unit.is_of_type('Player'):
-        looking_range += 2
+    MIN_RANGE = 4
+    PLAYER_BONUS = 3
+    looking_range = MIN_RANGE + (adv + PLAYER_BONUS) // 2 if unit.is_of_type('Player') else MIN_RANGE + (adv // 2)
     return looking_range
 
 
