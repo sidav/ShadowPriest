@@ -1,5 +1,6 @@
 from Routines import SidavAngularLOS as ALOS
 from Routines import SidavLOS as LOS
+from . import UnitController as UC
 
 # routine for checking NPC behaviour and something
 
@@ -9,7 +10,7 @@ def is_unit_seeing_position(lvl, actor, px, py):
     from_x, from_y = actor.get_position()
     fov_angle = actor.get_fov_angle()
     look_x, look_y = actor.get_look_direction()
-    if (px - from_x) ** 2 + (py - from_y) ** 2 > actor.get_looking_range() ** 2:
+    if (px - from_x) ** 2 + (py - from_y) ** 2 > UC.get_sight_range(actor) ** 2:
         return False
     if not ALOS.is_point_in_sector(from_x, from_y, look_x, look_y, px, py, fov_angle):
         return False

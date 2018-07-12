@@ -371,7 +371,7 @@ def show_events_for_player(player):
         peekx, peeky = player.get_peeking_vector()
         px += peekx
         py += peeky
-    looking_range = player.get_looking_range()
+    looking_range = U_C.get_sight_range(player)
     heared_event_num = 0 # for drawing the noises
     for event in events_to_show_at_player_turn:
         event.set_already_perceived()
@@ -403,7 +403,7 @@ def force_redraw_screen(flush=True):  # deprecated to use outside of control() o
     global redraw_map_timeout
     player = current_level.get_player()
     current_turn = current_level.get_current_turn()
-    player_looking_range = player.get_looking_range()
+    player_looking_range = U_C.get_sight_range(player)
     player_x, player_y = player.get_position()
     peek_x, peek_y = player.get_peeking_vector()
     if player.is_peeking():

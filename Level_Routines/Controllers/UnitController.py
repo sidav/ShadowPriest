@@ -19,6 +19,14 @@ levelmodel = None
 # All unit actions (when they're applicable for both player and actors) are here.
 
 
+def get_sight_range(unit):
+    adv = unit.get_rpg_stats().get_advertence()
+    looking_range = 4 + (adv // 2)
+    if unit.is_of_type('Player'):
+        looking_range += 2
+    return looking_range
+
+
 def set_current_level(level):
     global levelmodel
     levelmodel = level

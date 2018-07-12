@@ -13,7 +13,6 @@ class Unit:
     _look_x = _look_y = 0
     _fov_angle = 110
     _has_look_direction = True # <-- is the "looking thingy" neccessary to draw?
-    _looking_range = 6
     _appearance = 'G'
     _color = (32, 192, 32)
     _next_turn_to_act = 0
@@ -151,9 +150,6 @@ class Unit:
 
     def get_fov_angle(self):
         return self._fov_angle
-
-    def get_looking_range(self):
-        return self._looking_range
 
     def get_max_hitpoints(self):
         return self._max_hitpoints
