@@ -48,7 +48,7 @@ class Inventory:
         return weapon
 
     def remove_equipped_ammo(self):
-        ammo_count = self.equipped_ammo.get_quantity()
+        ammo_count = 0 if self.equipped_ammo is None else self.equipped_ammo.get_quantity()
         ammo = self.equipped_ammo if ammo_count > 0 else None  # dangerous
         self.equipped_ammo = None
         return ammo

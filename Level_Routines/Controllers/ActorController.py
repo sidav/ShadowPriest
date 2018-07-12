@@ -102,9 +102,12 @@ def try_reload_if_neccessary(attacker):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     if attacker_weapon is None or not attacker_weapon.is_of_type('RangedWeapon'):
         return False
-    ammo = attacker_weapon.get_loaded_ammunition()
-    if ammo is None or ammo.get_quantity() == 0:
-        return LC.try_reload_unit_weapon(attacker)
+    ammo_in_weapon = attacker_weapon.get_loaded_ammunition()
+    equipped_ammo = attacker.get_inventory().get_equipped_ammo()
+    equipped_ammo_count = 0 if equipped_ammo is None else equipped_ammo.get_quantity()
+    if ammo_in_weapon is None or ammo_in_weapon.get_quantity() == 0:
+        if equipped_ammo_count > 0:
+            return LC.try_reload_unit_weapon(attacker)
     return False
 
 
