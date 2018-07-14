@@ -79,6 +79,11 @@ def print_name_with_healthbar(name, hp, max_hp):
 
 def print_status_effects(player):
     global _statusbar_line_width
+
+    CW.setForegroundColor(100, 100, 0)
+    if player.is_peeking():
+        add_status_line('PEEK')
+
     status_effects = player.get_status_effects()
     total_healing = 0
     total_poison = 0
@@ -93,24 +98,21 @@ def print_status_effects(player):
 
     CW.setForegroundColor(100, 100, 196)
     if total_healing > 0:
-        CW.putString('HLNG', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 4
-    if total_healing > 1:
-        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 1
+        status_line = 'HLNG' if total_healing == 1 else 'HLNG+'
+        add_status_line(status_line)
 
     CW.setForegroundColor(90, 196, 90)
     if total_poison > 0:
-        CW.putString('POIS', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 4
-    if total_poison > 1:
-        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 1
+        status_line = 'POIS' if total_poison == 1 else 'POIS+'
+        add_status_line(status_line)
 
     CW.setForegroundColor(132, 32, 160)
     if total_painkiller > 0:
-        CW.putString('PAINKLR', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 7
-    if total_painkiller > 1:
-        CW.putString('+', _statusbar_line_width, CONST.CONSOLE_HEIGHT-1)
-        _statusbar_line_width += 1
+        status_line = 'PNKLR' if total_painkiller == 1 else 'PNKLR+'
+        add_status_line(status_line)
+
+
+def add_status_line(line):
+    global _statusbar_line_width
+    CW.putString(line, _statusbar_line_width, CONST.CONSOLE_HEIGHT - 1)
+    _statusbar_line_width += len(line)
