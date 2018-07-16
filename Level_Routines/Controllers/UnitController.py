@@ -79,6 +79,7 @@ def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or ope
         x, y = posx + vect_x, posy + vect_y
         if lvl.is_tile_passable(x, y):
             try_move_by_vector(unit, vect_x, vect_y)
+            unit.set_hidden_in_shadow(False)
             return True
         elif LC.is_unit_present_at(x, y):
             potential_victim = LC.get_unit_at(x, y)
@@ -89,6 +90,13 @@ def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or ope
             success = LC.try_open_door(unit, x, y)
             return success
     return False
+
+
+def try_hide_in_shadow(unit):
+    x, y = unit.get_position()
+    unit.set_hidden_in_shadow(True)
+    unit.spend_turns_for_action(TC.cost_for('hide'))
+    return True
 
 
 def melee_attack(attacker:Unit, victim:Unit):

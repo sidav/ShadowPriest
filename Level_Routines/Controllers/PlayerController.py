@@ -44,8 +44,7 @@ def do_key_action(lvl):
 
         if not do_move_keys_action(lvl, player, key_text):
             if keyPressed.text == '5' or keyPressed.text == ' ':
-                player.spend_turns_for_action(TC.cost_for('wait'))
-                LOG.append_message('I wait for a sec. ')
+                wait_or_hide(player)
             if key_text == '-':
                 LevelView.SINGLE_ARROW_MODE ^= True # "some_bool ^= True" is equivalent to "some_bool = not some_bool"
                 LOG.append_replaceable_message("Single arrow mode set to {0}".format(bool(LevelView.SINGLE_ARROW_MODE)))
@@ -103,6 +102,16 @@ def player_has_spent_time(player):
 #     if action_name != '':
 #         player.spend_turns_for_action(TC.cost_for(action_name))
 #     # player_has_spent_time = True
+
+
+def wait_or_hide(player):
+    if not player.is_hidden_in_shadow():
+        if UC.try_hide_in_shadow(player):
+            LOG.append_message('I stick to shadows.')
+            return
+    player.spend_turns_for_action(TC.cost_for('wait'))
+    LOG.append_message('I wait for a sec. ')
+    return
 
 
 def do_move_keys_action(lvl, player, key):

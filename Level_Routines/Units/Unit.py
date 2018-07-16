@@ -35,7 +35,7 @@ class Unit:
         while self._look_x == 0 and self._look_y == 0:
             self._look_x = random.rand(3) - 1
             self._look_y = random.rand(3) - 1
-
+        self._is_hidden_in_shadow = False
 
     def set_coordinates(self, x, y):
         self._pos_x = x
@@ -181,3 +181,9 @@ class Unit:
 
     def is_of_type(self, type):
         return self.__class__.__name__ == type
+
+    def is_hidden_in_shadow(self):
+        return self._is_hidden_in_shadow
+
+    def set_hidden_in_shadow(self, hide=True):
+        self._is_hidden_in_shadow = hide
