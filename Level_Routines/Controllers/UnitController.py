@@ -94,9 +94,11 @@ def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or ope
 
 def try_hide_in_shadow(unit):
     x, y = unit.get_position()
-    unit.set_hidden_in_shadow(True)
-    unit.spend_turns_for_action(TC.cost_for('hide'))
-    return True
+    if LC.count_vision_blocking_tiles_around_coordinates(x, y) >= 4:
+        unit.set_hidden_in_shadow(True)
+        unit.spend_turns_for_action(TC.cost_for('hide'))
+        return True
+    return False
 
 
 def melee_attack(attacker:Unit, victim:Unit):

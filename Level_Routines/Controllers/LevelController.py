@@ -399,6 +399,16 @@ def get_passability_map_for(unit):
     return map
 
 
+def count_vision_blocking_tiles_around_coordinates(x, y, adjacent=True, diagonal=True):
+    # TODO: count diagonal and adjacent separately.
+    tiles = 0
+    for i in [-1, 0, 1]:
+        for j in [-1, 0, 1]:
+            if current_level.is_tile_opaque(x+i, y+j):
+                tiles += 1
+    return tiles
+
+
 def force_redraw_screen(flush=True):  # deprecated to use outside of control() or UI-only modules
     global redraw_map_timeout
     player = current_level.get_player()

@@ -189,6 +189,9 @@ class LevelModel:
                 vis_map[x][y] = self._level_map[x][y].get_opaque()
         return vis_map
 
+    def is_tile_opaque(self, x, y):
+        return self._level_map[x][y].get_opaque()
+
     def get_current_turn(self):
         return self._current_turn
 
