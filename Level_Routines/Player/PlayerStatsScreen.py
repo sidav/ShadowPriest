@@ -40,6 +40,32 @@ def make_and_print_status_text(player):
 
     hp = player.get_current_hitpoints()
     max_hp = player.get_max_hitpoints()
+
+    hp_percent = player.get_hitpoints_percentage()
+
+    if hp_percent < 10:
+        status_text += "I'm probably not going to make it. "
+    elif hp_percent <= 20:
+        status_text += "I'm barely clinging to life. "
+    elif hp_percent <= 30:
+        status_text += "I'm about to faint. "
+    elif hp_percent <= 40:
+        status_text += "I'm badly injured. "
+    elif hp_percent <= 50:
+        status_text += "The pain is bearable. "
+    elif hp_percent <= 60:
+        status_text += "I can keep going. "
+    elif hp_percent <= 70:
+        status_text += "I feel a bit wearied off. "
+    elif hp_percent <= 80:
+        status_text += "I feel sore. "
+    elif hp_percent <= 90:
+        status_text += "I'm fine. "
+    elif hp_percent < 100:
+        status_text += "I feel well. "
+    elif hp_percent == 100:
+        status_text += "I'm as healthy as ever. "
+
     # is healing now?
     healing_count = player.count_status_effect('HEALING')
     if healing_count == 1:
