@@ -3,7 +3,7 @@ from Level_Routines.Mechanics import TurnCosts as TC, StatusEffect as SE
 from Level_Routines.Events import EventCreator as EC
 from Level_Routines.Events.EventsStack import EventsStack as ESTCK
 from Message_Log import MessageLog as LOG
-from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS
+from Routines import TdlConsoleWrapper as CW, SidavLOS as LOS, SidavRandom as RAND
 from Level_Routines import LevelView
 from Level_Routines.Creators import BodyCreator
 from Level_Routines.LevelInitializer import initialize_level
@@ -79,7 +79,7 @@ def try_make_directional_action(lvl, unit, vect_x, vect_y): #turn or move or ope
         x, y = posx + vect_x, posy + vect_y
         if lvl.is_tile_passable(x, y):
             try_move_by_vector(unit, vect_x, vect_y)
-            unit.set_hidden_in_shadow(False)
+            # unit.set_hidden_in_shadow(False)          # RETURN THAT HERE
             return True
         elif LC.is_unit_present_at(x, y):
             potential_victim = LC.get_unit_at(x, y)
@@ -97,6 +97,14 @@ def try_hide_in_shadow(unit):
     if LC.count_vision_blocking_tiles_around_coordinates(x, y) >= 4:
         unit.set_hidden_in_shadow(True)
         unit.spend_turns_for_action(TC.cost_for('hide'))
+        return True
+    return False
+
+
+def try_to_be_not_exposed_from_shadow(unit):
+    nim = unit.get_rpg_stats().get_nimbleness()
+    failchance = 60 - 5 * nim
+    if RAND.rand(100) > failchance:
         return True
     return False
 
