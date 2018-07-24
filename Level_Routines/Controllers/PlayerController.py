@@ -292,8 +292,7 @@ def do_noising(player):
     noise_amount = RND.rand(3)+3
     LOG.append_message('DBG: noise radius is {}'.format(noise_amount))
     UC.make_noise(player, 'clap', 'my hands', noise_amount, 10)
-    player.spend_turns_for_action(TC.cost_for('do noise'))
-
+    
 
 def do_reloading(player):
     inv = player.get_inventory()
