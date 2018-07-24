@@ -135,20 +135,21 @@ def do_move_keys_action(lvl, player, key):
                 LOG.append_message("I need a {} key to open that door.".format(LTD.door_lock_level_names[lock_level]))
     time_spent = UC.try_make_directional_action(lvl, player, vector_x, vector_y)
     if time_spent:
-        if UC.try_to_be_not_exposed_from_shadow(player):                           ##
-            notification_variant = RND.rand(5)                                                   #
-            if notification_variant == 0:                                                        #
-                LOG.append_message('I stick to shadows.')                           #
-            elif notification_variant == 1:                                                      #
-                LOG.append_message('Darkness conceals my movement.')                #
-                                                                                    # FUCKING
-        else:                                                                       # BAD
-            player.set_hidden_in_shadow(False)                                      # PRACTICE
-            notification_variant = RND.rand(2)                                                   # (the logic needs to be moved to
-            if notification_variant == 0:                                                        # UnitController!)
-                LOG.append_message('I accidentally expose myself to a light.')      #
-            elif notification_variant == 1:                                                      #
-                LOG.append_message('Shadow betrays me.')                           ##
+        if player.is_hidden_in_shadow():                                               ##
+            if UC.try_to_be_not_exposed_from_shadow(player):                            #
+                notification_variant = RND.rand(5)                                      #
+                if notification_variant == 0:                                           #
+                    LOG.append_message('I stick to shadows.')                           #
+                elif notification_variant == 1:                                         #
+                    LOG.append_message('Darkness conceals my movement.')                #
+        #                                                                               # FUCKING
+            else:                                                                       # BAD
+                player.set_hidden_in_shadow(False)                                      # PRACTICE
+                notification_variant = RND.rand(2)                                      # (the logic needs to be moved
+                if notification_variant == 0:                                           # to UnitController!)
+                    LOG.append_message('I accidentally expose myself to a light.')      #
+                elif notification_variant == 1:                                         #
+                    LOG.append_message('Shadow betrays me.')                           ##
 
     if (px, py) != player.get_position(): # i.e. player has moved this turn 
         notify_for_anything_on_floor(lvl, player)
