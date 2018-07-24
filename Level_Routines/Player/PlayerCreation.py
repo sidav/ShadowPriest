@@ -8,25 +8,32 @@ def create_player():
 
     val_names = ['Strength', 'Nimbleness', 'Endurance', 'Advertence', 'Knowledge']
     descriptions = [
-        "Strength is all-around useful characteristic of the Priest. It represents how strong the shadow priest is, "
-        "how powerful his melee attacks are, how much stuff he can carry and what kind of weapons he could use. "
-        "The priest with high strength can wield heavy and powerful weapons, strangle enemies quicker, fights in melee"
-        " more efficiently and isn't slowed down while carrying a lot of items in his inventory or a body on his shoulder.",
+        'The Strength, as in physical might, is one of the primary disciplines for the Priests. The amount of effort put '
+        'into Strength training indicates how strong the said priest is, how powerful his melee attacks are, how much he '
+        'can carry and what kind of weapons he could use. The supposed masters of this discipline can "kill someone with '
+        'just one finger, wield anything and silence anyone before they could scream".',
 
-        "Nimbleness stat represents how quick and agile the shadow priest is, how fast he can move, how efficient he is while stabbing, "
-        "picking the lock or searching trough other's pockets, whether the pocket's owner is dead, unconscious or alive and clueless. "
-        "The one should be as nimble as strong to become a real Priest.",
+        'The Nimbleness, as in agility and dexterity, is a discipline that gave the Shadow Priests their name in the first '
+        'place. The time spent in Nimbleness training indicates how fast the Priest can move, how good he can hide and '
+        'how efficient he is picking the lock or searching trough other\'s pockets, whether the pocket\'s owner is dead, '
+        'unconscious or alive and clueless. The supposed masters of this discipline can "merge themselves with the shadows '
+        'to be never seen as mere mortals". ',
 
-        "Endurance stat represents how healthy and durable the shadow priest is, how much damage he can survive, "
-        "how he deals with blood loss, being poisoned, burned, frozen, crippled or touched by the powers and forces "
-        "of the unknown. They say that the Priest could endure very unsettling and hostile environment conditions for a very long time.",
+        'The Endurance, as in constitution and vim, is one of the primary disciplines, learned by Priests. The number of '
+        'exhausting Endurance exercises undertaken indicates how much damage the Priest can survive, how he deals with blood loss, '
+        'being poisoned, burned, frozen, crippled or touched by the powers and forces of the unknown(?). The supposed masters '
+        'of this discipline can "survive a thousand arrows, a slit throat and a knife in the heart".',
 
-        "Advertence stat represents how attentive and responsive to surroundings the shadow priest is, how far he sees or hears,"
-        " how likely he is to spot the hidden passages, items, creatures or people. The rumors are that the experienced Priest "
-        "is extraordinarily perceptive.",
+        'The Advertence, as in observance and attention, is considered one of the basic disciplines learned by Priests. '
+        'The extent of success in Advertence practice indicates how attentive and responsive to surroundings the Priest is, '
+        'how far he sees or hears, how likely he is to spot the hidden passages, items, creatures or people. The supposed masters '
+        'of this discipline can "spot a fly in a hundred miles, see inside the essence of darkness and witnesses anything, '
+        'as the whole world is their eyes and ears".',
 
-        "Knowledge stat represents how intelligent the shadow priest is, how much he can learn from books, how good he can "
-        "memorize the surroundings, how good he is at questioning someone and how much powers of the unknown he can wield.",
+        'The Knowledge, as in intellect and wisdom is one of the most respected disciplines for the Priests. The achievements '
+        'in Knowledge tuition indicates how intelligent the Priest is, how much he can learn from books, how good he can '
+        'memorize the surroundings, how good he is at questioning someone and how much powers of the unknown(?) he can wield. '
+        'There is no information that can unravel what supposed masters of this discipline can or cannot do. ',
     ]
     player_stats = MENU.values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 25)
     player = Player(0, 0)
