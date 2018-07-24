@@ -1,6 +1,7 @@
 import SidavMenu as MENU
 from Routines import TdlConsoleWrapper as CW
 import GLOBAL_DATA.Global_Constants as GC
+from ..Controllers import LevelController as LC
 
 
 def show_player_stats(player):
@@ -21,7 +22,22 @@ def show_player_stats(player):
 
 
 def make_and_print_status_text(player):
-    status_text = 'I feel confident. '
+    status_text = ''
+
+    if player.is_hidden_in_shadow():
+        x, y = player.get_position()
+        shadow_amount = LC.count_vision_blocking_tiles_around_coordinates(x, y)
+        if shadow_amount < 4:
+            status_text += 'I feel exposed. '
+        elif shadow_amount == 4:
+            status_text += 'I feel like I\'m in unreliable position. '
+        elif shadow_amount == 5:
+            status_text += 'I feel confident. '
+        elif shadow_amount >= 6:
+            status_text += 'I feel concealed. '
+    else:
+        status_text += 'I feel assailable. '
+
     hp = player.get_current_hitpoints()
     max_hp = player.get_max_hitpoints()
     # is healing now?
