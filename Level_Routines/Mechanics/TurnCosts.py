@@ -1,11 +1,14 @@
 from Message_Log import MessageLog as LOG
 # Contains methods for calculation of lengths of actions (for the timing system)
 
+
 def cost_for(action, unit=None):
     action = action.lower()
     if action == 'wait':
         return 10
     elif action == 'move':
+        if unit.is_of_type('Player'):
+            return 10 - (unit.get_rpg_stats().get_nimbleness() // 3)
         return 10
     elif action == 'turn':
         return 7

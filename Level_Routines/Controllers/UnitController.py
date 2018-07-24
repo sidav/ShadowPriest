@@ -43,12 +43,12 @@ def make_noise(unit, text1, text2, loudness, time=0):
     unit.spend_turns_for_action(time)
 
 
-def try_move_forward(unit):
+def try_move_forward(unit): # TODO: merge with the try_move_by_vector()
     posx, posy = unit.get_position()
     lookx, looky = unit.get_look_direction()
     if levelmodel.is_tile_passable(posx + lookx, posy + looky):
         unit.move_forward()
-        unit.spend_turns_for_action(TC.cost_for('move'))
+        unit.spend_turns_for_action(TC.cost_for('move', unit))
         return True
     return False
 
@@ -57,7 +57,7 @@ def try_move_by_vector(unit, x, y):
     posx, posy = unit.get_position()
     if levelmodel.is_tile_passable(posx + x, posy + y):
         unit.move_by_vector(x, y)
-        unit.spend_turns_for_action(TC.cost_for('move'))
+        unit.spend_turns_for_action(TC.cost_for('move', unit))
         return True
     return False
 
@@ -109,6 +109,27 @@ def try_to_be_not_exposed_from_shadow(unit):
     return False
 
 
+def is_victim_turned_back_to_attacker(attacker, victim):
+    l_x, l_y = victim.get_look_direction()
+    v_x, v_y = victim.get_position()
+    a_x, a_y = attacker.get_position()
+    vector_to_attacker_x = a_x - v_x
+    vector_to_attacker_y = a_y - v_y
+    if (l_x, l_y) == (-vector_to_attacker_x, -vector_to_attacker_y):
+        return True
+    # calculate angle:
+    import math
+    dot_product = vector_to_attacker_x * l_x + vector_to_attacker_y * l_y
+    dot_product /= math.sqrt(vector_to_attacker_x ** 2 + vector_to_attacker_y ** 2)
+    dot_product /= math.sqrt(l_x ** 2 + l_y ** 2)
+    angle = math.acos(dot_product) * 180 / 3.14159265
+    victim_fov_angle = victim.get_fov_angle()
+    LOG.append_warning_message('A_VECT({}, {}) ANGLE {}, TARGET ANGLE {}'.format(vector_to_attacker_x, vector_to_attacker_y, angle, victim_fov_angle))
+    if angle > victim_fov_angle:
+        return True
+    return False
+
+
 def melee_attack(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     if attacker_weapon is None:
@@ -116,7 +137,8 @@ def melee_attack(attacker:Unit, victim:Unit):
         if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
             event = EC.attack_with_bare_hands_event(attacker, victim)
     else:
-        if victim.can_be_stabbed() and attacker_weapon.is_stabbing():
+        if (victim.can_be_stabbed() or is_victim_turned_back_to_attacker(attacker, victim)) \
+                and not victim.is_of_type('Player') and attacker_weapon.is_stabbing():
             attacker.spend_turns_for_action(TC.cost_for('stab'))
             if MeleeAttack.try_to_stab(attacker, victim):
                 event = EC.stab_event(attacker, victim)
