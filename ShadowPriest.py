@@ -1,8 +1,7 @@
 from GLOBAL_DATA import Global_Constants as GC
 import Routines.TdlConsoleWrapper as CW
-import Procedurals.BSPDungeonGenerator as BSP
 import TitleScreen
-import _TESTDEBUG as _TESTDBG_
+from Debug_Module import _TESTDEBUG as _TESTDBG_
 
 
 def main():

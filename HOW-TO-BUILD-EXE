@@ -1,3 +1,12 @@
+### cx_freeze (recommended, works at 24.07.2018): ###
+1. 'pip3 install cx_freeze'
+2. 'python setup.py build'
+3. The exe will be in /build/some_folder_name. Don't forget to copy the font there!
+
+
+
+### PYINSTALLER (deprecated): ###
+
 First, install the packages: ``tdl``, ``libtcod-cffi``, and ``PyInstaller``.
 !!! AFAIK PyInstaller should be the dev version to support python 3.6!!!
 !!! dev version of it is installed via "pip install https://github.com/pyinstaller/pyinstaller/archive/develop.zip" !!!
