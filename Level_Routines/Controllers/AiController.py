@@ -79,13 +79,14 @@ def decide_state(lvl, actor):
         x, y = actor.get_position()
         events = LC.get_all_events_hearable_from(x, y)
         for event in events:
-            ex, ey = event.get_position()
-            actor.set_target_coords(ex, ey)
-            if event.is_suspicious():
-                actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
-                return
-            else:
-                actor.set_current_state(actor.states.distracted, curr_turn + 1)  # be distracted only for one tick - just for "look at this sound" behaviour.
+            if not event.is_for_player_only():
+                ex, ey = event.get_position()
+                actor.set_target_coords(ex, ey)
+                if event.is_suspicious():
+                    actor.set_current_state(actor.states.distracted, curr_turn + DISTRACTED_STATE_DURATION)
+                    return
+                else:
+                    actor.set_current_state(actor.states.distracted, curr_turn + 1)  # be distracted only for one tick - just for "look at this sound" behaviour.
 
 
 def increase_global_alert(amount):

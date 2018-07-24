@@ -19,7 +19,7 @@ class Event:
     # expiration_turn = 0
 
     def __init__(self, x, y, s_text='NULL_SEEN_EVENT', h_text='NULL_HEARD_EVENT', visual=True, hear_radius=3,
-                 expiration_turn = 0, perceivable_by_player=True, suspicious=True):
+                 expiration_turn = 0, perceivable_by_player=True, suspicious=True, is_for_player_only=False):
         self.pos_x = x
         self.pos_y = y
         self.text_when_seen = s_text
@@ -32,6 +32,7 @@ class Event:
         self._is_perceivable_by_player = perceivable_by_player
         self._suspicious = suspicious
         self._was_already_perceived = False
+        self._is_for_player_only = is_for_player_only
 
     def get_expiration_turn(self):
         return self.expiration_turn
@@ -59,3 +60,6 @@ class Event:
 
     def get_hear_radius(self):
         return self.hear_radius
+
+    def is_for_player_only(self):
+        return self._is_for_player_only

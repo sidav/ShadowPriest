@@ -12,23 +12,24 @@ from Routines import SidavLOS as LOS
 
 def do_emergency_actions_if_needed(actor):
     health_percent = actor.get_hitpoints_percentage()
-    actor_state = actor.get_current_state()
-    if actor_state != actor.states.calm:
-        if health_percent < 50:
-            if try_drink_potion_of_effect(actor, 'PAINKILLER'):
-                return
-        elif health_percent < 75:
-            if try_drink_potion_of_effect(actor, 'HEALING'):
-                return
+    if health_percent > 0:
+        actor_state = actor.get_current_state()
+        if actor_state != actor.states.calm:
+            if health_percent < 50:
+                if try_drink_potion_of_effect(actor, 'PAINKILLER'):
+                    return
+            elif health_percent < 75:
+                if try_drink_potion_of_effect(actor, 'HEALING'):
+                    return
 
-    # reload weapon if needed.
-    if try_reload_if_neccessary(actor):
-        return
+        # reload weapon if needed.
+        if try_reload_if_neccessary(actor):
+            return
 
-    if actor_state == actor.states.calm:
-        if health_percent < 66:
-            if try_drink_potion_of_effect(actor, 'HEALING'):
-                return
+        if actor_state == actor.states.calm:
+            if health_percent < 66:
+                if try_drink_potion_of_effect(actor, 'HEALING'):
+                    return
 
 
 def do_roam(lvl, actor): # just roam around if the actor is in calm state
