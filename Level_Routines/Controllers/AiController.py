@@ -44,6 +44,7 @@ def decide_state(lvl, actor):
             AC.do_shout_for_attention_to(actor, e_x, e_y, "\"HERE YOU ARE! STOP RIGHT THERE!\"", 10)
 
         actor.set_current_state(actor.states.alerted, curr_turn + ALERTED_STATE_DURATION)
+        enemy.set_hidden_in_shadow(False)  # TODO: this is bad!
 
     actor_state = actor.get_current_state()
     if actor_state == actor.states.alerted:
