@@ -145,9 +145,9 @@ def do_move_keys_action(lvl, player, key):
         else:                                                                       # BAD
             player.set_hidden_in_shadow(False)                                      # PRACTICE
             notification_variant = RND.rand(2)                                                   # (the logic needs to be moved to
-            if notification_variant == 1:                                                        # UnitController!)
+            if notification_variant == 0:                                                        # UnitController!)
                 LOG.append_message('I accidentally expose myself to a light.')      #
-            elif notification_variant == 2:                                                      #
+            elif notification_variant == 1:                                                      #
                 LOG.append_message('Shadow betrays me.')                           ##
 
     if (px, py) != player.get_position(): # i.e. player has moved this turn 

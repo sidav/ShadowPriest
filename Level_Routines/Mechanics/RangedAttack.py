@@ -1,7 +1,7 @@
 from ..Units.Unit import Unit
 from Message_Log import MessageLog as LOG
 from . import Damage as DMG
-from Routines import SidavLOS as LOS, TdlConsoleWrapper as CW
+from Routines import SidavLOS as LOS, TdlConsoleWrapper as CW, SidavRandom as RAND
 from ..Controllers import LevelController as LC
 
 
@@ -32,7 +32,9 @@ def try_to_shoot(attacker:Unit, victim:Unit):
 
 
 def calculate_shooting_damage(weapon, stats):
-    return 35
+    nim = stats.get_nimbleness()
+    adv = stats.get_advertence()
+    return 10 + adv + RAND.rand(4 * nim)  # PLACEHOLDER
 
 
 def spend_ammo(weapon):
