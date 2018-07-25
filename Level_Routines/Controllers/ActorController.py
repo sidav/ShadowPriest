@@ -4,7 +4,7 @@ from ..Events import EventCreator as EC
 from Routines import SidavRandom as RND, AStarPathfinding as ASP
 from . import UnitController as UC
 from Message_Log import MessageLog as LOG
-from Routines import SidavLOS as LOS
+from Routines import SidavLOS as LOS, SidavRandom as RAND
 
 
 # Controls AI-controlled units at low level of abstraction.
@@ -43,6 +43,7 @@ def do_roam(lvl, actor): # just roam around if the actor is in calm state
     #
     elif lvl.is_tile_passable(posx + lookx, posy+looky) and (
             lvl.is_tile_passable(posx + 2 * lookx, posy + 2 * looky) or lvl.is_door_present(posx + 2 * lookx, posy+2*looky)
+            or LC.is_unit_present_at(posx + 2 * lookx, posy + 2 * looky) or RAND.rand(2) == 0
     ):
         UC.try_move_forward(actor)
         if actor.was_rotated_previous_turn:

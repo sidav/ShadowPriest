@@ -46,6 +46,9 @@ def check_sight_with_shadow(seeing, target):
         from_x, from_y = seeing.get_position()
         to_x, to_y = target.get_position()
         dist = math.sqrt((from_x - to_x) ** 2 + (from_y - to_y) ** 2)
+        if dist <= 1.4:
+            target.set_hidden_in_shadow(False)
+            return True
         walls = LC.count_vision_blocking_tiles_around_coordinates(to_x, to_y)
         return _shadow_formula_check(walls, adv, dist)
     else:
