@@ -49,7 +49,7 @@ def decide_state(lvl, actor):
         else:
             from ..Player import Statistics as stat
             stat.spotted_times += 1
-            AC.do_shout_for_attention_to(actor, e_x, e_y, "\"HERE YOU ARE! STOP RIGHT THERE!\"", 10)
+            AC.do_shout_for_attention_to(actor, e_x, e_y, "HERE YOU ARE! STOP RIGHT THERE!", 10)
             increase_global_alert(ALERT_INCREMENT_FOR_PLAYER_NOTICED)
 
         actor.set_current_state(actor.states.alerted, curr_turn + ALERTED_STATE_DURATION)
