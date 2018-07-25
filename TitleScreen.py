@@ -21,33 +21,46 @@ def _determineYPosition(arr):
 
 titlepic1 = \
     [
-        "                         o+ommmy++:                      ",
-        "                     +mdmmmmmmmmmmms+                    ",
-        "                   +mmmmmmmmmmmmmmmmmm.                  ",
-        "                  hmmmmmmmmmmmmmmmmmmmm-                 ",
-        "                 smmmmmmmmmmmmmmmmmmmmmm                 ",
-        "                 mmmmmmmmmmmmmmmmmmmmmmdo                ",
-        "                 mmmmmmmmmmmmmmmmmmmmmmmN                ",
-        "                 dmmmmmdmd+++++smmmmmmmmm                ",
-        "                 mmmmm+o+hmmmmmm+++sdmmmN                ",
-        "-==]-  SHADOW    mmm++ommdmmmmmdmmys.mmdh    PRIEST -[==-",
-        "                ymmh+h.   /mmmm\   .m mmm                ",
-        "                mmdysmmdmmmmmmmmmmmmm mmmm               ",
-        "               mmmmm`+oo/.``..``-+o+/hmmmd+              ",
-        "              ymmmmmm`.............`ommmmmm              ",
-        "              :mmmmmm ............. dmmmmmm              ",
-        "               ommmmN ..............-mmmmm               ",
-        "                hmmmmd+`.........``+mmmmm.               ",
-        "                 +mmmmmm+`.....``+mmmmms+                ",
-        "                   -+++++o......++++++                   ",
+        "                           #######                           ",
+        "                        #############                        ",
+        "                       ###############                       ",
+        "                     ###################                     ",
+        "                     ###################                     ",
+        "                    ######         ######                    ",
+        "                    #####  1111111  #####                    ",
+        "                    ####  111111111  ####                    ",
+        "                    #### 11111111111 ####                    ",
+        "                   ####  11111111111  ####                   ",
+        "                   ###  1   11111   1  ###                   ",
+        "  -==]- SHADOW     ##  1     111     1  ##      PRIEST -[==- ",
+        "                  ### 111   11 11   111 ###                  ",
+        "                  ###  111111   111111  ###                  ",
+        "                  ###  111111   111111  ###                  ",
+        "                  ####   1111 1 1111   ####                  ",
+        "                 #######   1111111   #######                 ",
+        "                 ####### 11 11111 11 #######                 ",
+        "                  ###### 11       11 ######                  ",
+        "                   #####  11     11  #####                   ",
+        "                   ######  1111111  ######                   ",
+        "                    ######  11111  ######                    ",
+        "                     ######  111  ######                     "
     ]
 
 
 def _drawTitlePic1():
-    x = _determineXPosition(titlepic1)
-    y = _determineYPosition(titlepic1)
-    CW.setForegroundColor(96, 96, 128)
-    CW.drawCharArrayAtPosition(titlepic1, x, y, True)
+    corner_x = _determineXPosition(titlepic1)
+    corner_y = _determineYPosition(titlepic1)
+    for y in range(len(titlepic1)):
+        for x in range(len(titlepic1[y])):
+            char = titlepic1[y][x]
+            if char == '#':
+                CW.setForegroundColor(96, 96, 128)
+            elif char == '1':
+                char = chr(206)
+                CW.setForegroundColor(96, 96, 64)
+            else:
+                CW.setForegroundColor(96, 64, 128)
+            CW.putChar(char, corner_x+x, corner_y+y)
 
 
 titlepic2 = \
@@ -98,7 +111,7 @@ def drawTitle():
     elif title == 3:
         _drawTitlePic3()
     CW.setForegroundColor(132, 132, 104)
-    pressanykey = "Press spacebar"
+    pressanykey = "    Press ENTER"
     CW.putString(pressanykey, _determineXPosition(pressanykey), GC.CONSOLE_HEIGHT-2)
 
     CW.flushConsole()
