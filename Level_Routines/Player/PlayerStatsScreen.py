@@ -36,7 +36,7 @@ def make_and_print_status_text(player):
         elif shadow_amount >= 6:
             status_text += 'I feel concealed. '
     else:
-        status_text += 'I feel assailable. '
+        status_text += 'I feel vulnerable. '
 
     hp = player.get_current_hitpoints()
     max_hp = player.get_max_hitpoints()

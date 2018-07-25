@@ -303,7 +303,7 @@ def do_body_searching(player):
 
 def do_noising(player):
     noise_amount = RND.rand(3)+3
-    LOG.append_message('DBG: noise radius is {}'.format(noise_amount))
+    LOG.append_warning_message('noise radius is {}'.format(noise_amount))
     UC.make_noise(player, 'clap', 'my hands', noise_amount, 10)
     
 

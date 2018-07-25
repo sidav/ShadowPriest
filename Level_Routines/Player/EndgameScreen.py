@@ -147,7 +147,7 @@ def show_statistics():
     put_line_in_a_middle(line, 13)
     CW.flushConsole()
     time.sleep(1)
-    line = "You have healed {} hitpoints, and lost {} hitpoints in total.".format(stat.total_hp_lost, stat.total_healed)
+    line = "You have healed {} hitpoints, and there was {} damage inflicted to you in total.".format(stat.total_hp_lost, stat.total_healed)
     put_line_in_a_middle(line, 14)
     CW.flushConsole()
     time.sleep(1)
