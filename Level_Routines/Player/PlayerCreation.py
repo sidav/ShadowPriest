@@ -35,7 +35,7 @@ def create_player():
         'memorize the surroundings, how good he is at questioning someone and how much powers of the unknown(?) he can wield. '
         'There is no information that can unravel what supposed masters of this discipline can or cannot do. ',
     ]
-    player_stats = MENU.values_pick_menu('PRIEST IS INITIATING', 'Select your base stats:', val_names, descriptions, 1, 10, 4, 25)
+    player_stats = MENU.values_pick_menu('PRIEST IS INITIATING', '                      Select your base stats:', val_names, descriptions, 1, 10, 4, 25)
     player = Player(0, 0)
     player.set_name(player_name)
     player.get_rpg_stats().set_stats_by_array(player_stats)
