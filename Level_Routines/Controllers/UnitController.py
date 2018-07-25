@@ -96,7 +96,7 @@ def try_hide_in_shadow(unit):
     x, y = unit.get_position()
     if LC.count_vision_blocking_tiles_around_coordinates(x, y) >= 4:
         unit.set_hidden_in_shadow(True)
-        unit.spend_turns_for_action(TC.cost_for('hide'))
+        unit.spend_turns_for_action(TC.cost_for('hide', unit))
         return True
     return False
 
@@ -133,17 +133,17 @@ def is_victim_turned_back_to_attacker(attacker, victim):
 def melee_attack(attacker:Unit, victim:Unit):
     attacker_weapon = attacker.get_inventory().get_equipped_weapon()
     if attacker_weapon is None:
-        attacker.spend_turns_for_action(TC.cost_for('Barehanded attack'))
+        attacker.spend_turns_for_action(TC.cost_for('Barehanded attack', attacker))
         if MeleeAttack.try_to_attack_with_bare_hands(attacker, victim):
             event = EC.attack_with_bare_hands_event(attacker, victim)
     else:
         if (victim.can_be_stabbed() or is_victim_turned_back_to_attacker(attacker, victim)) \
                 and not victim.is_of_type('Player') and attacker_weapon.is_stabbing():
-            attacker.spend_turns_for_action(TC.cost_for('stab'))
+            attacker.spend_turns_for_action(TC.cost_for('stab', attacker))
             if MeleeAttack.try_to_stab(attacker, victim):
                 event = EC.stab_event(attacker, victim)
         elif MeleeAttack.try_to_attack_with_weapon(attacker, victim):
-            attacker.spend_turns_for_action(TC.cost_for('melee attack'))
+            attacker.spend_turns_for_action(TC.cost_for('melee attack', attacker))
             event = EC.attack_with_melee_weapon_event(attacker, victim)
     LC.add_event_to_stack(event)
 
