@@ -36,5 +36,5 @@ def do_debug_key(keypressed):
                 LOG.append_warning_message('All AIs lobotomized.')
             else:
                 LOG.append_message('All AIs are now self-aware.')
-    else:
-        LOG.append_message('These commands are available only in developer mode.')
+    # else:
+    #     LOG.append_message('These commands are available only in developer mode.')
