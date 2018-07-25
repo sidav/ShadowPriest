@@ -13,7 +13,7 @@ setup(
     name = "Shadow Priest",
     version = "0.2.0",
     description = "A stealth-focused roguelike.",
-    options = {'build_exe': {'includes': additional_mods, 'excludes': excluded_mods, 'optimize': 2}},
+    options = {'build_exe': {'build_exe': 'build/ShadowPriest', 'includes': additional_mods, 'excludes': excluded_mods, 'optimize': 2}},
     executables = [Executable("ShadowPriest.py")]
 )
 
