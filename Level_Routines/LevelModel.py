@@ -78,6 +78,12 @@ class LevelModel:
             return self._level_map[x][y].is_upstairs()
         return False
 
+    def is_downstairs_present(self, x, y):
+        if self.is_stairs_present(x, y):
+            return self._level_map[x][y].is_downstairs()
+        return False
+
+
     def get_stairs_name(self, stairs_x, stairs_y):
         if self.is_stairs_present(stairs_x, stairs_y):
             return self._level_map[stairs_x][stairs_y].get_stairs_name()

@@ -19,6 +19,9 @@ class StairsTile(LevelTile):
     def is_upstairs(self):
         return self._appearance == LTD._UP_STAIR_CODE
 
+    def is_downstairs(self):
+        return self._appearance == LTD._DOWN_STAIR_CODE
+
     def get_stairs_name(self):
         if self._appearance == LTD._DOWN_STAIR_CODE:
             return 'stairs leading down'

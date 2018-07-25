@@ -5,7 +5,7 @@ from . import ActorController as AC, ActorController_Detection as ACD
 from ..Events import EventCreator as EC
 from ..Creators import ActorCreator as ACREATOR
 from Message_Log import MessageLog as LOG
-
+from ..Player import Statistics as stat
 # High-level AI here. Technical things going to ActorController.
 
 ALERTED_STATE_DURATION = 30 # In ticks. 1 turn is 10 ticks.
@@ -47,6 +47,8 @@ def decide_state(lvl, actor):
             # TODO
             pass
         else:
+            from ..Player import Statistics as stat
+            stat.spotted_times += 1
             AC.do_shout_for_attention_to(actor, e_x, e_y, "\"HERE YOU ARE! STOP RIGHT THERE!\"", 10)
             increase_global_alert(ALERT_INCREMENT_FOR_PLAYER_NOTICED)
 
@@ -100,6 +102,8 @@ def increase_global_alert(amount):
 
 
 def call_reinforcements():
+    from ..Player import Statistics as stat
+    stat.total_alarms += 1
     LOG.append_message('Reinforcements have been called. ')
     LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))
     LC.spawn_unit_outside_player_fov(ACREATOR.create_enforcer(0, 0))

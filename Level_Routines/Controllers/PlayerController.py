@@ -91,6 +91,8 @@ def do_key_action(lvl):
             if keyPressed.text == 'i': # list equipped items
                 PC_I.show_equipped_items(player)
                 LC.force_redraw_screen()
+            if keyPressed.text == '>': # descend the stairs
+                do_descend(player)
 
 
 def player_has_spent_time(player):
@@ -102,6 +104,17 @@ def player_has_spent_time(player):
 #     if action_name != '':
 #         player.spend_turns_for_action(TC.cost_for(action_name))
 #     # player_has_spent_time = True
+
+
+def do_descend(player):
+    x, y = player.get_position()
+    from ..Player import EndgameScreen
+    if LC.are_downstairs_present(x, y):
+        EndgameScreen.show_endgame_screen(False)
+    elif GC.DEBUG_ENABLED:
+        EndgameScreen.show_endgame_screen(True)
+    else:
+        LOG.append_message('I see no downstairs there.')
 
 
 def wait_or_hide(player):

@@ -12,6 +12,7 @@ from Level_Routines.Mechanics import MeleeAttack, Knockout, RangedAttack
 from Level_Routines.Player import Statusbar
 from . import PlayerController as P_C, AiController as AI, UnitController as U_C, StatusEffectsController as SEC
 from Level_Routines.Units.Unit import Unit
+from ..Player import Statistics as stat
 
 player_x = player_y = 0
 last_tile = '.'
@@ -34,6 +35,10 @@ def add_event_to_stack(event):
     events_stack.push_event(event)
 
 
+def are_downstairs_present(x, y):
+    return current_level.is_downstairs_present(x, y)
+
+
 def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
     if Knockout.try_to_knockout(attacker, victim):
         KO_time = Knockout.calculate_knockout_time(attacker, victim)
@@ -42,6 +47,7 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         body = BodyCreator.create_unconscious_body_from_unit(victim, get_current_turn() + KO_time)
         current_level.add_item_on_floor_without_cordinates(body)
         event = EC.knockout_attack_event(attacker, victim)
+        stat.enemies_KOed += 1
     else:
         event = EC.action_event(attacker, 'failed to strangle', victim.get_name(), 2)
     attacker.spend_turns_for_action(TC.cost_for('knockout attack'))
