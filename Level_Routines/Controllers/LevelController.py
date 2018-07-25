@@ -44,7 +44,7 @@ def knockout_attack(attacker:Unit, victim:Unit):  # TODO: chances and shit
         event = EC.knockout_attack_event(attacker, victim)
     else:
         event = EC.action_event(attacker, 'failed to strangle', victim.get_name(), 2)
-    attacker.spend_turns_for_action(TC.cost_for('knockout attack'))
+    attacker.spend_turns_for_action(TC.cost_for('knockout attack', attacker))
     events_stack.push_event(event)
 
 
@@ -53,7 +53,7 @@ def ranged_attack(attacker:Unit, target_x, target_y):
 
     if attacker_weapon.get_loaded_ammunition() is None or attacker_weapon.get_loaded_ammunition().get_quantity() == 0:
         event = EC.empty_ammo_shooting_event(attacker, '*Click!*')
-        attacker.spend_turns_for_action(TC.cost_for('firing'))
+        attacker.spend_turns_for_action(TC.cost_for('firing', attacker))
         events_stack.push_event(event)
         return
 
@@ -67,9 +67,9 @@ def ranged_attack(attacker:Unit, target_x, target_y):
     else:
         # TODO: "shooting at things" code here
         attacker_weapon.get_loaded_ammunition().change_quantity_by(-1)
-        attacker.spend_turns_for_action(TC.cost_for('firing'))
+        attacker.spend_turns_for_action(TC.cost_for('firing', attacker))
         return
-    attacker.spend_turns_for_action(TC.cost_for('firing'))
+    attacker.spend_turns_for_action(TC.cost_for('firing', attacker))
     events_stack.push_event(event)
 
 
