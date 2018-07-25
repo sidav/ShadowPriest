@@ -37,12 +37,12 @@ def apply_specific_status_effect_to_a_unit(se_name, unit):
         if unit.is_of_type('Player'):
             stat.total_healed += 1
     elif se_name == 'POISON':
+        unit.decrease_hitpoints(1)
         if unit.is_of_type('Player'):
-            unit.decrease_hitpoints(1)
-        stat.total_hp_lost += 1
+            stat.total_hp_lost += 1
     elif se_name == 'PAINKILLER':
+        unit.decrease_hitpoints(2)
         if unit.is_of_type('Player'):
-            unit.decrease_hitpoints(2)
-        stat.total_hp_lost += 2
+            stat.total_hp_lost += 2
     else:
         LOG.append_warning_message('Unknown status effect "{}" passed to a controller!'.format(se_name))
