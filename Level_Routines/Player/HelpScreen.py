@@ -35,6 +35,8 @@ def show_help():
     values.append('(s)trangle an enemy')
     names.append('w')
     values.append('(w)ield or unwield a weapon')
+    names.append('>')
+    values.append('Descend the stairs.')
     names.append('-')
     values.append('Toggle the single-arrow-only mode for displayed enemies.')
     MENU.name_value_menu('COMMANDS LIST', general_info, names, values)
