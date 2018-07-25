@@ -2,7 +2,7 @@ from Message_Log import MessageLog as LOG
 # Contains methods for calculation of lengths of actions (for the timing system)
 
 
-def cost_for(action, unit=None):
+def cost_for(action, unit=None, dirx=0, diry=0):
     action = action.lower()
     if action == 'wait':
         return 10
@@ -27,15 +27,23 @@ def cost_for(action, unit=None):
     if unit is None:
         LOG.append_error_message('No unit specified for "{0}" action.'.format(action))
         return 10
+
     str = unit.get_rpg_stats().get_strength()
     nim = unit.get_rpg_stats().get_nimbleness()
     end = unit.get_rpg_stats().get_endurance()
     adv = unit.get_rpg_stats().get_advertence()
     knw = unit.get_rpg_stats().get_knowledge()
+
     if action == 'move':
         if unit.is_of_type('Player'):
-            return 10 - (nim // 3)
-        return 10
+            time = 10 - (nim // 4)
+        else:
+            time = 10
+        if dirx * diry != 0:
+            return time * 14 // 10
+        else:
+            return time
+
     elif action == 'melee attack':
         return 16 - str // 2 - nim // 3
     elif action == 'firing':

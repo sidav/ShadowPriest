@@ -48,7 +48,7 @@ def try_move_forward(unit): # TODO: merge with the try_move_by_vector()
     lookx, looky = unit.get_look_direction()
     if levelmodel.is_tile_passable(posx + lookx, posy + looky):
         unit.move_forward()
-        unit.spend_turns_for_action(TC.cost_for('move', unit))
+        unit.spend_turns_for_action(TC.cost_for('move', unit, lookx, looky))
         return True
     return False
 
@@ -57,7 +57,7 @@ def try_move_by_vector(unit, x, y):
     posx, posy = unit.get_position()
     if levelmodel.is_tile_passable(posx + x, posy + y):
         unit.move_by_vector(x, y)
-        unit.spend_turns_for_action(TC.cost_for('move', unit))
+        unit.spend_turns_for_action(TC.cost_for('move', unit, x, y))
         return True
     return False
 
