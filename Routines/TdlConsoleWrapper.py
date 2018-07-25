@@ -8,11 +8,18 @@ _SCREEN_HEIGHT = 25#25 is default
 _LIMIT_FPS = 10  # 20 frames-per-second maximum
 
 try:
-    tdl.set_font('shadowpriest8x12_gs_ro.png', greyscale=True, altLayout=False)
+    tdl.set_font('shadowpriest12x20.png', greyscale=False, altLayout=False)
 except:
-    print("Oh fuck, the font is missing!")
-    closeProgram()
-    pass
+    try:
+        tdl.set_font('shadowpriest16x24_gs_ro.png', greyscale=True, altLayout=False)
+    except:
+        try:
+            tdl.set_font('shadowpriest8x12_gs_ro.png', greyscale=True, altLayout=False)
+        except:
+            print("The font is missing!")
+            input('Add the font to exe folder please.')
+            closeProgram()
+            pass
 
 #console = tdl.init(_SCREEN_WIDTH, _SCREEN_HEIGHT, title="Roguelike", fullscreen= False, renderer= "SDL")
 FORECOLOR = (255,255,255)
